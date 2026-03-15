@@ -144,6 +144,49 @@
   .node-grid .flow-node-value.importing { color: var(--grid-pos); }
   .node-home .flow-node-value { color: var(--accent); }
 
+  /* ─── Flow Cross ─── */
+  .flow-center {
+    grid-column: 2; grid-row: 2;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flow-hub {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--card-border);
+    position: absolute; z-index: 2;
+    transition: background 0.4s;
+  }
+  .flow-hub.active { background: var(--text-dim); }
+  .flow-arm {
+    position: absolute; display: flex;
+    opacity: 0; transition: opacity 0.4s;
+    overflow: visible;
+  }
+  .flow-arm.active { opacity: 1; }
+  .flow-arm-v { width: 2px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); flex-direction: column; }
+  .flow-arm-h { height: 2px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); flex-direction: row; }
+  .flow-arm.active.flow-arm-v { background: rgba(255,255,255,0.25); }
+  .flow-arm.active.flow-arm-h { background: rgba(255,255,255,0.25); }
+  .arm-up    { top: 0; bottom: calc(50% + 8px); align-items: center; justify-content: space-between; }
+  .arm-down  { top: calc(50% + 8px); bottom: 0; align-items: center; justify-content: space-between; }
+  .arm-left  { left: 0; right: calc(50% + 8px); align-items: center; justify-content: space-between; }
+  .arm-right { left: calc(50% + 8px); right: 0; align-items: center; justify-content: space-between; }
+  .flow-arrow {
+    font-size: 14px; color: var(--text-dim);
+    transition: transform 0.4s, color 0.4s;
+    z-index: 1; line-height: 1; flex-shrink: 0;
+  }
+  /* Default: arrows point toward center (incoming) */
+  .arm-up .flow-arrow    { transform: rotate(0deg); }    /* ▼ points down */
+  .arm-down .flow-arrow  { transform: rotate(180deg); }  /* ▼ flipped up */
+  .arm-left .flow-arrow  { transform: rotate(0deg); }    /* ▶ points right */
+  .arm-right .flow-arrow { transform: rotate(180deg); }  /* ▶ flipped left */
+  /* Outgoing: arrows point away from center */
+  .arm-up .flow-arrow.outgoing    { transform: rotate(180deg); }
+  .arm-down .flow-arrow.outgoing  { transform: rotate(0deg); }
+  .arm-left .flow-arrow.outgoing  { transform: rotate(180deg); }
+  .arm-right .flow-arrow.outgoing { transform: rotate(0deg); }
+
 
   /* ─── Status Row ─── */
   .status-row { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -436,7 +479,14 @@
     <div class="dashboard-columns">
     <div class="dashboard-col">
     <div class="power-flow">
-      <div class="flow-grid">
+      <div class="flow-grid" id="flowGrid">
+        <div class="flow-center" id="flowCenter">
+          <div class="flow-hub" id="flowHub"></div>
+          <div class="flow-arm flow-arm-v arm-up" id="armUp"><span class="flow-arrow" id="arrowUp">▼</span><span class="flow-arrow">▼</span><span class="flow-arrow">▼</span></div>
+          <div class="flow-arm flow-arm-v arm-down" id="armDown"><span class="flow-arrow">▼</span><span class="flow-arrow">▼</span><span class="flow-arrow" id="arrowDown">▼</span></div>
+          <div class="flow-arm flow-arm-h arm-left" id="armLeft"><span class="flow-arrow" id="arrowLeft">▶</span><span class="flow-arrow">▶</span><span class="flow-arrow">▶</span></div>
+          <div class="flow-arm flow-arm-h arm-right" id="armRight"><span class="flow-arrow">▶</span><span class="flow-arrow">▶</span><span class="flow-arrow" id="arrowRight">▶</span></div>
+        </div>
         <div class="flow-node node-solar">
           <div class="flow-node-icon">☀️</div>
           <div class="flow-node-label">Solar</div>
@@ -1049,6 +1099,41 @@ function updateUI(d) {
   $('consumeEnergy').textContent=d.ConsumeEnergy.toFixed(1);
   const locale = currentLang === 'cs' ? 'cs-CZ' : 'en-GB';
   $('refreshBar').textContent=t('updated')+' '+new Date().toLocaleTimeString(locale);
+  updateFlowArrows(d);
+}
+
+function updateFlowArrows(d) {
+  var $=function(id){return document.getElementById(id);};
+
+  var solarOn = d.SolarPower > 0;
+  var battActive = d.BAT_Power !== 0;
+  var battOut = d.BAT_Power < 0;
+  var gridActive = d.feedInPower !== 0;
+  var gridOut = d.feedInPower > 0;
+  var homeOn = d.HomePower > 0;
+  var anyActive = solarOn || battActive || gridActive || homeOn;
+
+  // Hub
+  $('flowHub').classList.toggle('active', anyActive);
+
+  function setArm(armId, active, outgoing, color) {
+    var arm = $(armId);
+    arm.classList.toggle('active', active);
+    var arrows = arm.querySelectorAll('.flow-arrow');
+    for (var i = 0; i < arrows.length; i++) {
+      arrows[i].classList.toggle('outgoing', outgoing);
+      arrows[i].style.color = active ? color : '';
+    }
+  }
+
+  // Solar arm (up): always incoming
+  setArm('armUp', solarOn, false, 'var(--solar)');
+  // Battery arm (left): charging=outgoing, discharging=incoming
+  setArm('armLeft', battActive, battOut, battOut ? 'var(--battery-charge)' : 'var(--battery-discharge)');
+  // Grid arm (right): importing=incoming, exporting=outgoing
+  setArm('armRight', gridActive, gridOut, gridOut ? 'var(--grid-neg)' : 'var(--grid-pos)');
+  // Home arm (down): always outgoing
+  setArm('armDown', homeOn, true, 'var(--accent)');
 }
 
 // ═══════════════════════════════════════════

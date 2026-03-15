@@ -4,7 +4,7 @@ Real-time monitoring app for **Solax X3 Hybrid G4** solar inverters. Connects di
 
 ## Features
 
-- Live power data (Solar, Battery, Grid, Home consumption)
+- Live power flow visualization (Solar, Battery, Grid, Home consumption)
 - 3-phase grid details (voltage, current, power, frequency)
 - Battery status (SoC, voltage, temperature, charge/discharge)
 - EPS (backup power) monitoring
