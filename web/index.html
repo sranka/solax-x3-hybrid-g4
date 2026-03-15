@@ -1019,7 +1019,7 @@ function formatData(d) {
   };
   r.GridPower=r.GridAPower+r.GridBPower+r.GridCPower;
   r.SolarPower=r.PowerDc1+r.PowerDc2;
-  r.HomePower=r.SolarPower+r.BAT_Power-r.feedInPower;
+  r.HomePower=r.SolarPower-r.BAT_Power-r.feedInPower;
   if(r.HomePower<0) r.HomePower=0;
   r.EPSTotal=r.EPSAPower+r.EPSBPower+r.EPSCPower;
   return r;
@@ -1074,8 +1074,8 @@ function updateUI(d) {
 
   const bE=$('batteryPower');
   bE.textContent=Math.abs(d.BAT_Power);
-  bE.className='flow-node-value '+(d.BAT_Power>0?'discharging':d.BAT_Power<0?'charging':'');
-  bE.parentElement.querySelector('.flow-node-unit').textContent='W '+(d.BAT_Power>0?t('battDischarging'):d.BAT_Power<0?t('battCharging'):'idle');
+  bE.className='flow-node-value '+(d.BAT_Power<0?'discharging':d.BAT_Power>0?'charging':'');
+  bE.parentElement.querySelector('.flow-node-unit').textContent='W '+(d.BAT_Power<0?t('battDischarging'):d.BAT_Power>0?t('battCharging'):'idle');
   $('batterySOC').textContent=d.BatteryCapacity+'%';
   $('battSOCDetail').textContent=d.BatteryCapacity+'%';
   $('battPowerDetail').textContent=d.BAT_Power+' W';
@@ -1137,7 +1137,7 @@ function updateFlowArrows(d) {
 
   var solarOn = d.SolarPower > 0;
   var battActive = d.BAT_Power !== 0;
-  var battOut = d.BAT_Power < 0;
+  var battOut = d.BAT_Power > 0;
   var gridActive = d.feedInPower !== 0;
   var gridOut = d.feedInPower > 0;
   var homeOn = d.HomePower > 0;
@@ -1171,7 +1171,9 @@ function updateFlowArrows(d) {
   }
 
   // Solar arm (up): always incoming
-  sumIn = Math.abs(d.SolarPower) + Math.abs(Math.max(d.BAT_Power, 0)) + Math.abs(Math.min(d.feedInPower,0)) || 10000;
+  sumIn = Math.abs(d.SolarPower) + Math.abs(Math.min(d.BAT_Power, 0)) + Math.abs(Math.min(d.feedInPower,0)) || 10000;
+  // console.log('sumIn', sumIn);
+  // console.log('solar', d.SolarPower, 'battery', d.BAT_Power, 'grid', d.feedInPower, 'home', d.HomePower);
   setArm('armUp', solarOn, false, 'var(--solar)', d.SolarPower, sumIn);
   // Battery arm (left): charging=outgoing, discharging=incoming
   setArm('armLeft', battActive, battOut, battOut ? 'var(--battery-charge)' : 'var(--battery-discharge)', d.BAT_Power, sumIn);
