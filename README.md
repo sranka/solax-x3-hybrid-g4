@@ -32,6 +32,8 @@ DEV_PROXY_TARGET=http://192.168.199.192 npm start
 
 Starts a Node.js dev server at [http://localhost:8080](http://localhost:8080) that serves the web app and proxies all POST requests to the inverter specified by `DEV_PROXY_TARGET`. This avoids CORS/mixed-content issues without any special browser flags. Without `DEV_PROXY_TARGET`, it serves static files only.
 
+In the app's connection settings, set the inverter hostname to `localhost:8080` — the dev server will forward requests to the real inverter.
+
 ### Insecure mode (legacy)
 
 If you prefer the old approach that launches Chrome with relaxed security:
