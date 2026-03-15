@@ -183,8 +183,8 @@
     overflow: visible;
   }
   .flow-arm.active { opacity: 1; }
-  .flow-arm-v { width: 2px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); flex-direction: column; }
-  .flow-arm-h { height: 2px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); flex-direction: row; }
+  .flow-arm-v { width: 2px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); flex-direction: column; transition: opacity 0.4s, width 0.4s; }
+  .flow-arm-h { height: 2px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); flex-direction: row; transition: opacity 0.4s, height 0.4s; }
   .flow-arm.active.flow-arm-v { background: rgba(255,255,255,0.25); }
   .flow-arm.active.flow-arm-h { background: rgba(255,255,255,0.25); }
   .arm-up    { top: 0; bottom: calc(50% + 8px); align-items: center; justify-content: space-between; }
@@ -1146,9 +1146,23 @@ function updateFlowArrows(d) {
   // Hub
   $('flowHub').classList.toggle('active', anyActive);
 
-  function setArm(armId, active, outgoing, color) {
+  function armSize(power, maxPower = 10000) {
+    var abs = Math.abs(power);
+    if (abs <= 0) return 2;
+    // Scale from 2px at 0W to 15px at max
+    return Math.min(15, Math.max(2, 2 + (abs / maxPower) * 13));
+  }
+
+  function setArm(armId, active, outgoing, color, power, maxPower = 10000) {
     var arm = $(armId);
     arm.classList.toggle('active', active);
+    var isV = arm.classList.contains('flow-arm-v');
+    var sz = armSize(power || 0, maxPower);
+    if (isV) {
+      arm.style.width = active ? sz + 'px' : '';
+    } else {
+      arm.style.height = active ? sz + 'px' : '';
+    }
     var arrows = arm.querySelectorAll('.flow-arrow');
     for (var i = 0; i < arrows.length; i++) {
       arrows[i].classList.toggle('outgoing', outgoing);
@@ -1157,13 +1171,14 @@ function updateFlowArrows(d) {
   }
 
   // Solar arm (up): always incoming
-  setArm('armUp', solarOn, false, 'var(--solar)');
+  sumIn = Math.abs(d.SolarPower) + Math.abs(Math.max(d.BAT_Power, 0)) + Math.abs(Math.min(d.feedInPower,0)) || 10000;
+  setArm('armUp', solarOn, false, 'var(--solar)', d.SolarPower, sumIn);
   // Battery arm (left): charging=outgoing, discharging=incoming
-  setArm('armLeft', battActive, battOut, battOut ? 'var(--battery-charge)' : 'var(--battery-discharge)');
+  setArm('armLeft', battActive, battOut, battOut ? 'var(--battery-charge)' : 'var(--battery-discharge)', d.BAT_Power, sumIn);
   // Grid arm (right): importing=incoming, exporting=outgoing
-  setArm('armRight', gridActive, gridOut, gridOut ? 'var(--grid-neg)' : 'var(--grid-pos)');
+  setArm('armRight', gridActive, gridOut, gridOut ? 'var(--grid-neg)' : 'var(--grid-pos)', d.feedInPower, sumIn);
   // Home arm (down): always outgoing
-  setArm('armDown', homeOn, true, 'var(--accent)');
+  setArm('armDown', homeOn, true, 'var(--accent)', d.HomePower, sumIn);
 }
 
 // ═══════════════════════════════════════════
