@@ -83,9 +83,9 @@
     font-size: 11px; color: var(--text-dim); font-weight: 400;
     max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-  .refresh-icon { display: inline-block; transform: rotate(90deg); }
+  .refresh-icon { display: inline-block; width: 28px; height: 28px; line-height: 0; }
   .header-btn.refresh-btn.fetching .refresh-icon { animation: header-spin 0.8s linear infinite; }
-  @keyframes header-spin { from { transform: rotate(90deg); } to { transform: rotate(450deg); } }
+  @keyframes header-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
   .header-right { display: flex; align-items: center; gap: 6px; }
   .header-btn {
@@ -271,7 +271,6 @@
   }
   .form-group.form-check label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 14px; margin-bottom: 0; }
   .form-group.form-check input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent); flex-shrink: 0; padding: 0; }
-  .header-btn.refresh-btn { font-size: 30px; }
   .header-btn.pause-btn { font-size: 22px; }
   .header-btn.pause-btn.paused { color: var(--warning); border-color: var(--warning); }
   .pull-indicator {
@@ -482,7 +481,7 @@
       <div class="switcher-dropdown" id="switcherDropdown"></div>
     </div>
     <button class="header-btn pause-btn" id="pauseBtn" aria-label="Pause">⏸</button>
-    <button class="header-btn refresh-btn" id="refreshBtn" aria-label="Refresh"><span class="refresh-icon">&#8635;</span></button>
+    <button class="header-btn refresh-btn" id="refreshBtn" aria-label="Refresh"><span class="refresh-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.636-6.364"/><polyline points="21 2 21 8 15 8"/></svg></span></button>
     <button class="header-btn" id="openSettings" aria-label="Settings">⚙</button>
   </div>
 </div>
