@@ -9,6 +9,9 @@
   "android": {
     "allowMixedContent": true
   },
+  "ios": {
+    "allowMixedContent": true
+  },
   "plugins": {
     "CapacitorHttp": {
       "enabled": true

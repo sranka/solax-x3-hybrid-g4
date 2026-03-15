@@ -10,7 +10,7 @@ Real-time monitoring app for **Solax X3 Hybrid G4** solar inverters. Connects di
 - EPS (backup power) monitoring
 - Energy totals (daily yield, feed-in, consumption)
 - Multiple inverter support with quick switching
-- Works as a standalone Android app or a web app in the browser
+- Works as a standalone Android/iOS app or a web app in the browser
 
 ## Screenshots
 
@@ -87,6 +87,40 @@ python3 -m http.server 8080
 ```
 
 Then open `http://<your-computer-ip>:8080/app-debug.apk` on your phone.
+
+## iOS App
+
+The project also uses [Capacitor](https://capacitorjs.com/) to wrap the web app into a native iOS application. Like the Android version, this removes the HTTPS/mixed-content restriction — the app can freely connect to inverters over HTTP on the local network.
+
+### Prerequisites
+
+- Node.js 18+
+- Xcode (with command-line tools installed)
+- An Apple Developer account (free account works for personal device testing)
+
+### Build
+
+```bash
+npm install
+npm run build:ios
+```
+
+Alternatively, open the project in Xcode and build from there:
+
+```bash
+npx cap open ios
+```
+
+Then select your target device or simulator and hit **Product > Build** (⌘B).
+
+### Install on iPhone
+
+1. Open the project in Xcode: `npx cap open ios`
+2. Connect your iPhone via USB (or set up wireless debugging)
+3. Select your iPhone as the build target
+4. Set your Apple Developer team in **Signing & Capabilities** (under the "App" target)
+5. Hit **Run** (⌘R) — Xcode will build, install, and launch the app on your phone
+6. On first install, you may need to trust the developer certificate on your iPhone: **Settings > General > VPN & Device Management**
 
 ## Inverter API
 
