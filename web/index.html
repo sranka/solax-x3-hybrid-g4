@@ -64,13 +64,8 @@
     font-size: 11px; color: var(--text-dim); font-weight: 400;
     max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--danger); transition: background 0.3s;
-  }
-  .status-dot.connected { background: var(--success); box-shadow: 0 0 8px rgba(34,197,94,0.5); }
-  .status-dot.fetching { background: var(--warning); animation: pulse-dot 1s infinite; }
-  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-btn.refresh-btn.fetching { animation: header-spin 0.8s linear infinite; }
+  @keyframes header-spin { to { transform: rotate(360deg); } }
 
   .header-right { display: flex; align-items: center; gap: 6px; }
   .header-btn {
@@ -203,15 +198,9 @@
   }
   .form-group.form-check label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 14px; margin-bottom: 0; }
   .form-group.form-check input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent); flex-shrink: 0; padding: 0; }
-  .refresh-btn {
-    background: rgba(255,255,255,0.06); border: 1px solid var(--card-border);
-    color: var(--text-dim); border-radius: 8px;
-    font-size: 30px; cursor: pointer; padding: 4px;
-    transition: color 0.2s, background 0.2s; line-height: 1;
-    width: 38px; height: 38px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .refresh-btn:active { background: rgba(255,255,255,0.15); color: #fff; }
+  .header-btn.refresh-btn { font-size: 30px; }
+  .header-btn.pause-btn { font-size: 22px; }
+  .header-btn.pause-btn.paused { color: var(--warning); border-color: var(--warning); }
   .pull-indicator {
     position: fixed; top: -40px; left: 50%; transform: translateX(-50%);
     width: 36px; height: 36px; line-height: 36px; text-align: center;
@@ -226,16 +215,6 @@
     color: var(--text-dim); opacity: 0.5;
     font-family: 'JetBrains Mono', monospace;
   }
-  .pause-btn {
-    background: rgba(255,255,255,0.06); border: 1px solid var(--card-border);
-    color: var(--text-dim); border-radius: 8px;
-    font-size: 30px; cursor: pointer; padding: 4px;
-    transition: color 0.2s, background 0.2s; line-height: 1;
-    width: 38px; height: 38px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .pause-btn:active { background: rgba(255,255,255,0.12); }
-  .pause-btn.paused { color: var(--warning); border-color: var(--warning); }
 
   /* ─── Phase Table ─── */
   .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -420,7 +399,8 @@
       </button>
       <div class="switcher-dropdown" id="switcherDropdown"></div>
     </div>
-    <div class="status-dot" id="statusDot"></div>
+    <button class="header-btn pause-btn" id="pauseBtn" aria-label="Pause">⏸</button>
+    <button class="header-btn refresh-btn" id="refreshBtn" aria-label="Refresh">&#8635;</button>
     <button class="header-btn" id="openSettings" aria-label="Settings">⚙</button>
   </div>
 </div>
@@ -555,9 +535,7 @@
     </div>
 
     <div class="refresh-bar">
-      <button class="pause-btn" id="pauseBtn" aria-label="Pause">⏸</button>
       <span id="refreshBar">--</span>
-      <button class="refresh-btn" id="refreshBtn" aria-label="Refresh">&#8635;</button>
     </div>
     <div class="build-fingerprint" id="buildFingerprint"></div>
   </div>
@@ -960,8 +938,8 @@ async function fetchData(force) {
   if (paused && !force) return;
   const cfg = getActiveConfig();
   if (!cfg) return;
-  const dot = document.getElementById('statusDot');
-  dot.className = 'status-dot fetching';
+  const rbtn = document.getElementById('refreshBtn');
+  rbtn.classList.add('fetching');
 
   try {
     const hdrs = {'Content-Type':'application/x-www-form-urlencoded'};
@@ -976,12 +954,12 @@ async function fetchData(force) {
     if (!json.Data||!Array.isArray(json.Data)) throw new Error(t('missingData'));
     lastData = formatData(json.Data);
     consecutiveErrors = 0;
-    dot.className = 'status-dot connected';
+    rbtn.classList.remove('fetching');
     document.getElementById('errorBanner').classList.remove('show');
     updateUI(lastData);
   } catch(err) {
     consecutiveErrors++;
-    dot.className = 'status-dot';
+    rbtn.classList.remove('fetching');
     document.getElementById('errorBannerMsg').textContent = err.message;
     if (consecutiveErrors >= 2) {
       document.getElementById('errorBanner').classList.add('show');
@@ -1070,7 +1048,7 @@ function startPolling() {
     document.getElementById('setupScreen').style.display='';
     document.getElementById('dashboard').style.display='none';
     document.getElementById('headerSubtitle').textContent=t('disconnected');
-    document.getElementById('statusDot').className='status-dot';
+    document.getElementById('refreshBtn').classList.remove('fetching');
     return;
   }
   const manual = cfg.manualRefresh;
