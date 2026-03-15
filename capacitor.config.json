@@ -1,0 +1,20 @@
+{
+  "appId": "com.github.sranka.solax_x3_hybrid_g4",
+  "appName": "Solax FVE Monitor",
+  "webDir": "web",
+  "server": {
+    "cleartext": true,
+    "allowMixedContent": true
+  },
+  "android": {
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "SystemBars": {
+      "style": "DARK"
+    }
+  }
+}

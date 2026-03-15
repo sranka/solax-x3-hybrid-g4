@@ -1,0 +1,21 @@
+{
+  "name": "solax-x3-hybrid-g4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "start": "python3 -m http.server 8080 -d web",
+    "dev": "open -a 'Google Chrome' --args --disable-web-security --user-data-dir=/tmp/chrome-dev-solax http://localhost:8080 & python3 -m http.server 8080 -d web",
+    "build": "npx cap sync android && cd android && ./gradlew assembleDebug",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.2.0",
+    "@capacitor/cli": "^8.2.0",
+    "@capacitor/core": "^8.2.0"
+  }
+}

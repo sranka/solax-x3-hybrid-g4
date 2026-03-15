@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# Android build
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/.gradle/
+android/local.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Capacitor auto-generated (re-created by `npx cap sync`)
+android/app/src/main/assets/public/
+
+# Java / SDK
+.sdkmanrc
+
+# Misc
+*.log

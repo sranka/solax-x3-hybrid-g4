@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
+<title>Solax FVE Monitor</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #111827;
+    --card: #1a2035;
+    --card-border: #252d44;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --solar: #f59e0b;
+    --solar-glow: rgba(245, 158, 11, 0.15);
+    --grid-pos: #ef4444;
+    --grid-neg: #22c55e;
+    --battery-charge: #22c55e;
+    --battery-discharge: #f97316;
+    --eps: #a78bfa;
+    --accent: #38bdf8;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 12px 16px;
+    padding-top: calc(12px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px)));
+    padding-left: calc(16px + var(--safe-area-inset-left, env(safe-area-inset-left, 0px)));
+    padding-right: calc(16px + var(--safe-area-inset-right, env(safe-area-inset-right, 0px)));
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--solar), #f97316);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .header h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+  .header-subtitle {
+    font-size: 11px; color: var(--text-dim); font-weight: 400;
+    max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--danger); transition: background 0.3s;
+  }
+  .status-dot.connected { background: var(--success); box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+  .status-dot.fetching { background: var(--warning); animation: pulse-dot 1s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .header-right { display: flex; align-items: center; gap: 6px; }
+  .header-btn {
+    background: rgba(255,255,255,0.06); border: 1px solid var(--card-border);
+    color: var(--text-dim); border-radius: 8px;
+    font-size: 22px; cursor: pointer; padding: 10px 12px;
+    transition: color 0.2s, background 0.2s; line-height: 1;
+    min-width: 44px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .header-btn:hover, .header-btn:active { color: var(--text); background: rgba(255,255,255,0.12); }
+
+  .error-banner {
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
+    display: none; align-items: center; gap: 12px;
+  }
+  .error-banner.show { display: flex; }
+  .error-banner-text { flex: 1; font-size: 13px; color: var(--danger); }
+  .error-banner-text strong { display: block; margin-bottom: 2px; color: var(--text); }
+  .error-banner .btn { width: auto; padding: 8px 16px; font-size: 13px; margin: 0; }
+
+  /* ─── Main ─── */
+  .main {
+    padding: 12px; max-width: 600px; margin: 0 auto;
+    padding-bottom: calc(12px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    padding-left: calc(12px + var(--safe-area-inset-left, env(safe-area-inset-left, 0px)));
+    padding-right: calc(12px + var(--safe-area-inset-right, env(safe-area-inset-right, 0px)));
+  }
+
+  /* ─── Power Flow ─── */
+  .power-flow {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 20px 16px; margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .power-flow::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 50% 0%, var(--solar-glow) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .flow-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 8px; position: relative;
+  }
+  .flow-node {
+    text-align: center; padding: 12px 6px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    position: relative; z-index: 1;
+  }
+  .flow-node-icon { font-size: 24px; margin-bottom: 4px; }
+  .flow-node-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-dim); margin-bottom: 2px;
+  }
+  .flow-node-value {
+    font-family: 'JetBrains Mono', monospace; font-size: 20px;
+    font-weight: 700; line-height: 1.2;
+  }
+  .flow-node-unit { font-size: 11px; color: var(--text-dim); font-weight: 400; }
+
+  .node-solar { grid-column: 2; }
+  .node-solar .flow-node-value { color: var(--solar); }
+  .node-battery { grid-column: 1; grid-row: 2; }
+  .node-grid { grid-column: 3; grid-row: 2; }
+  .node-home { grid-column: 2; grid-row: 3; }
+  .node-battery .flow-node-value.charging { color: var(--battery-charge); }
+  .node-battery .flow-node-value.discharging { color: var(--battery-discharge); }
+  .node-grid .flow-node-value.exporting { color: var(--grid-neg); }
+  .node-grid .flow-node-value.importing { color: var(--grid-pos); }
+  .node-home .flow-node-value { color: var(--accent); }
+
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--text-dim); min-height: 28px;
+  }
+  .flow-arrow.active { color: var(--solar); }
+
+  /* ─── Status Row ─── */
+  .status-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .status-chip {
+    flex: 1; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 10px 12px; text-align: center;
+  }
+  .status-chip-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-dim); margin-bottom: 2px;
+  }
+  .status-chip-value { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; }
+  .status-chip-value.mode-normal { color: var(--success); }
+  .status-chip-value.mode-eps { color: var(--eps); }
+  .status-chip-value.mode-fault { color: var(--danger); }
+  .status-chip-value.mode-idle { color: var(--text-dim); }
+
+  /* ─── Cards ─── */
+  .card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-dim); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-title-icon { font-size: 14px; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; }
+  .detail-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
+  .detail-label { font-size: 12px; color: var(--text-dim); }
+  .detail-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; }
+
+  /* ─── Battery Bar ─── */
+  .battery-bar-container { margin-top: 8px; }
+  .battery-bar-bg { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .battery-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease, background 0.3s; background: var(--success); }
+  .battery-bar-fill.low { background: var(--danger); }
+  .battery-bar-fill.mid { background: var(--warning); }
+
+  /* ─── Energy ─── */
+  .energy-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .energy-item { text-align: center; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.02); }
+  .energy-item-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); }
+  .energy-item-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; }
+  .energy-item-unit { font-size: 11px; color: var(--text-dim); font-weight: 400; }
+
+  .refresh-bar {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 8px; font-size: 11px;
+    color: var(--text-dim); font-family: 'JetBrains Mono', monospace;
+  }
+  .pause-btn {
+    background: rgba(255,255,255,0.06); border: 1px solid var(--card-border);
+    color: var(--text-dim); border-radius: 8px;
+    font-size: 16px; cursor: pointer; padding: 6px 10px;
+    transition: color 0.2s, background 0.2s; line-height: 1;
+    min-width: 38px; min-height: 38px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pause-btn:active { background: rgba(255,255,255,0.12); }
+  .pause-btn.paused { color: var(--warning); border-color: var(--warning); }
+
+  /* ─── Phase Table ─── */
+  .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .phase-table th {
+    color: var(--text-dim); font-weight: 500; text-align: right; padding: 3px 6px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .phase-table th:first-child { text-align: left; }
+  .phase-table td {
+    font-family: 'JetBrains Mono', monospace; text-align: right; padding: 3px 6px;
+    font-size: 12px; font-weight: 600;
+  }
+  .phase-table td:first-child {
+    text-align: left; color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+  }
+
+  /* ─── Modal (shared) ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 200; display: none; align-items: flex-end; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2); border: 1px solid var(--card-border);
+    border-radius: 20px 20px 0 0; width: 100%; max-width: 600px;
+    max-height: 90dvh; overflow-y: auto; padding: 24px 20px calc(40px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    animation: slide-up 0.3s ease;
+  }
+  @keyframes slide-up { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  .modal-handle { width: 36px; height: 4px; background: var(--card-border); border-radius: 2px; margin: 0 auto 20px; }
+  .modal h2 { font-size: 18px; margin-bottom: 20px; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 6px;
+  }
+  .form-group input, .form-group select {
+    width: 100%; padding: 12px 14px; background: var(--card);
+    border: 1px solid var(--card-border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+  .form-hint { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+  .btn {
+    width: 100%; padding: 14px; border: none; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), #0ea5e9); color: #fff; margin-bottom: 8px; }
+  .btn-danger { background: var(--danger); color: #fff; margin-bottom: 8px; }
+  .btn-secondary { background: var(--card); color: var(--text-dim); border: 1px solid var(--card-border); }
+  .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+
+  /* ─── Connection List ─── */
+  .conn-list { margin-bottom: 20px; }
+  .conn-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 12px; margin-bottom: 8px;
+    transition: border-color 0.2s; position: relative;
+  }
+  .conn-item.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .conn-item-info { flex: 1; min-width: 0; cursor: pointer; }
+  .conn-item-name {
+    font-size: 14px; font-weight: 600;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .conn-item-host {
+    font-size: 12px; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .conn-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .conn-action-btn {
+    background: rgba(255,255,255,0.05); border: none; color: var(--text-dim);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: background 0.2s, color 0.2s;
+  }
+  .conn-action-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+  .conn-action-btn.delete:hover { background: rgba(239,68,68,0.2); color: var(--danger); }
+
+  .conn-empty {
+    text-align: center; padding: 32px 16px; color: var(--text-dim); font-size: 14px;
+  }
+  .conn-empty-icon { font-size: 32px; margin-bottom: 8px; }
+
+  /* ─── Switcher ─── */
+  .switcher-wrap { position: relative; }
+  .switcher-btn {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 8px; padding: 4px 10px 4px 8px;
+    color: var(--text); font-size: 12px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 5px;
+    max-width: 150px; font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .switcher-btn:hover { border-color: var(--accent); }
+  .switcher-btn .arrow { font-size: 10px; color: var(--text-dim); }
+  .switcher-btn .sname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .switcher-dropdown {
+    position: absolute; top: calc(100% + 6px); right: 0;
+    min-width: 200px; background: var(--bg2); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 6px; z-index: 110;
+    display: none; box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  }
+  .switcher-dropdown.open { display: block; }
+  .switcher-option {
+    display: block; width: 100%; text-align: left;
+    padding: 10px 12px; background: none; border: none;
+    color: var(--text); font-size: 13px; font-weight: 500;
+    cursor: pointer; border-radius: 8px; transition: background 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .switcher-option:hover { background: rgba(255,255,255,0.06); }
+  .switcher-option.active { background: rgba(56,189,248,0.12); color: var(--accent); }
+  .switcher-option-host {
+    font-size: 11px; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── Toast ─── */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; z-index: 300;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--danger); color: #fff; padding: 10px 20px;
+    border-radius: 10px; font-size: 13px; font-weight: 500;
+    transition: transform 0.3s ease; max-width: 90%; text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--success); }
+
+  /* ─── Loading Screen ─── */
+  .loading-screen {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 60dvh; text-align: center; padding: 40px 20px;
+  }
+  .loading-icon { font-size: 48px; margin-bottom: 16px; animation: float 2s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .loading-screen h2 { font-size: 20px; margin-bottom: 8px; }
+  .loading-screen p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+  .loading-screen .btn { max-width: 280px; }
+
+  /* ─── Install Banner ─── */
+  .install-banner {
+    background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(245,158,11,0.1));
+    border: 1px solid var(--card-border); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 12px; display: none;
+    align-items: center; gap: 12px;
+  }
+  .install-banner.show { display: flex; }
+  .install-banner-text { flex: 1; font-size: 13px; }
+  .install-banner-text strong { display: block; margin-bottom: 2px; }
+  .install-btn {
+    padding: 8px 16px; background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;
+  }
+  .dismiss-btn { background: none; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; padding: 4px; }
+
+  /* ─── Confirm dialog ─── */
+  .confirm-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 300; display: none; align-items: center; justify-content: center;
+  }
+  .confirm-overlay.open { display: flex; }
+  .confirm-box {
+    background: var(--bg2); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 24px 20px; width: 90%; max-width: 340px;
+    text-align: center;
+  }
+  .confirm-box p { margin-bottom: 20px; font-size: 14px; }
+  .confirm-box .confirm-actions { display: flex; gap: 8px; }
+  .confirm-box .confirm-actions .btn { flex: 1; margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon">☀</div>
+    <div>
+      <h1>Solax FVE</h1>
+      <div class="header-subtitle" id="headerSubtitle">Nepřipojeno</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="switcher-wrap" id="switcherWrap" style="display:none">
+      <button class="switcher-btn" id="switcherBtn">
+        <span class="sname" id="switcherName">—</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="switcher-dropdown" id="switcherDropdown"></div>
+    </div>
+    <div class="status-dot" id="statusDot"></div>
+    <button class="header-btn" id="openSettings" aria-label="Nastavení">⚙</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Install Banner -->
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-text"><strong>Nainstalovat na telefon</strong>Funguje i offline</div>
+    <button class="install-btn" id="installBtn">Instalovat</button>
+    <button class="dismiss-btn" id="dismissInstall">✕</button>
+  </div>
+
+  <!-- Error Banner -->
+  <div class="error-banner" id="errorBanner">
+    <div class="error-banner-text"><strong>Nelze se připojit</strong><span id="errorBannerMsg">Zkontrolujte IP adresu a heslo</span></div>
+    <button class="btn btn-primary" onclick="openSettingsModal()">Nastavení</button>
+  </div>
+
+  <!-- Setup Screen -->
+  <div class="loading-screen" id="setupScreen">
+    <div class="loading-icon">☀️</div>
+    <h2>Solax FVE Monitor</h2>
+    <p>Přidejte první střídač</p>
+    <button class="btn btn-primary" onclick="openSettingsModal()">Nastavení připojení</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" style="display:none;">
+    <div class="power-flow">
+      <div class="flow-grid">
+        <div class="flow-node node-solar">
+          <div class="flow-node-icon">☀️</div>
+          <div class="flow-node-label">Solar</div>
+          <div class="flow-node-value" id="solarPower">--</div>
+          <div class="flow-node-unit">W</div>
+        </div>
+        <div class="flow-node node-battery">
+          <div class="flow-node-icon">🔋</div>
+          <div class="flow-node-label">Baterie</div>
+          <div class="flow-node-value" id="batteryPower">--</div>
+          <div class="flow-node-unit">W</div>
+          <div class="battery-bar-container">
+            <div class="battery-bar-bg"><div class="battery-bar-fill" id="batteryBar" style="width:0%"></div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px"><span id="batterySOC">--%</span></div>
+        </div>
+        <div class="flow-arrow" id="arrowSolarDown">↓</div>
+        <div class="flow-node node-grid">
+          <div class="flow-node-icon">⚡</div>
+          <div class="flow-node-label">Síť</div>
+          <div class="flow-node-value" id="gridPower">--</div>
+          <div class="flow-node-unit">W</div>
+        </div>
+        <div class="flow-node node-home">
+          <div class="flow-node-icon">🏠</div>
+          <div class="flow-node-label">Spotřeba</div>
+          <div class="flow-node-value" id="homePower">--</div>
+          <div class="flow-node-unit">W</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-row">
+      <div class="status-chip">
+        <div class="status-chip-label">Režim</div>
+        <div class="status-chip-value" id="runMode">--</div>
+      </div>
+      <div class="status-chip">
+        <div class="status-chip-label">Výroba dnes</div>
+        <div class="status-chip-value" id="yieldToday" style="color:var(--solar)">-- kWh</div>
+      </div>
+      <div class="status-chip">
+        <div class="status-chip-label">Celkem</div>
+        <div class="status-chip-value" id="yieldTotal" style="color:var(--text-dim)">-- MWh</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">☀️</span> Solární panely</div>
+      <div class="detail-grid">
+        <div class="detail-row"><span class="detail-label">MPPT1</span><span class="detail-value" id="pv1Power">-- W</span></div>
+        <div class="detail-row"><span class="detail-label">MPPT2</span><span class="detail-value" id="pv2Power">-- W</span></div>
+        <div class="detail-row"><span class="detail-label">DC1</span><span class="detail-value" id="pv1Detail">-- V / -- A</span></div>
+        <div class="detail-row"><span class="detail-label">DC2</span><span class="detail-value" id="pv2Detail">-- V / -- A</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">🔋</span> Baterie</div>
+      <div class="detail-grid">
+        <div class="detail-row"><span class="detail-label">Výkon</span><span class="detail-value" id="battPowerDetail">-- W</span></div>
+        <div class="detail-row"><span class="detail-label">Nabití</span><span class="detail-value" id="battSOCDetail">--%</span></div>
+        <div class="detail-row"><span class="detail-label">Napětí</span><span class="detail-value" id="battVoltage">-- V</span></div>
+        <div class="detail-row"><span class="detail-label">Teplota</span><span class="detail-value" id="battTemp">-- °C</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">⚡</span> Síť — 3 fáze</div>
+      <table class="phase-table">
+        <thead><tr><th></th><th>Napětí</th><th>Proud</th><th>Výkon</th><th>Freq</th></tr></thead>
+        <tbody>
+          <tr><td>L1</td><td id="gridAV">--</td><td id="gridAI">--</td><td id="gridAP">--</td><td id="gridAF">--</td></tr>
+          <tr><td>L2</td><td id="gridBV">--</td><td id="gridBI">--</td><td id="gridBP">--</td><td id="gridBF">--</td></tr>
+          <tr><td>L3</td><td id="gridCV">--</td><td id="gridCI">--</td><td id="gridCP">--</td><td id="gridCF">--</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px">
+        <div class="detail-row"><span class="detail-label">Tok do sítě (feedin)</span><span class="detail-value" id="feedinPower">-- W</span></div>
+      </div>
+    </div>
+
+    <div class="card" id="epsCard" style="display:none">
+      <div class="card-title"><span class="card-title-icon">🔌</span> Záložní napájení (EPS)</div>
+      <table class="phase-table">
+        <thead><tr><th></th><th>Napětí</th><th>Proud</th><th>Výkon</th></tr></thead>
+        <tbody>
+          <tr><td>L1</td><td id="epsAV">--</td><td id="epsAI">--</td><td id="epsAP">--</td></tr>
+          <tr><td>L2</td><td id="epsBV">--</td><td id="epsBI">--</td><td id="epsBP">--</td></tr>
+          <tr><td>L3</td><td id="epsCV">--</td><td id="epsCI">--</td><td id="epsCP">--</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">📊</span> Energie celkem</div>
+      <div class="energy-row">
+        <div class="energy-item">
+          <div class="energy-item-label">Do sítě</div>
+          <div class="energy-item-value" id="feedInEnergy" style="color:var(--grid-neg)">--</div>
+          <div class="energy-item-unit">kWh</div>
+        </div>
+        <div class="energy-item">
+          <div class="energy-item-label">Ze sítě</div>
+          <div class="energy-item-value" id="consumeEnergy" style="color:var(--grid-pos)">--</div>
+          <div class="energy-item-unit">kWh</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refresh-bar">
+      <button class="pause-btn" id="pauseBtn" aria-label="Pozastavit">⏸</button>
+      <span id="refreshBar">Poslední aktualizace: --</span>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal — Connection List -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>⚙ Střídače</h2>
+    <div class="conn-list" id="connList"></div>
+    <button class="btn btn-primary" id="addNewConn">+ Přidat střídač</button>
+    <button class="btn btn-secondary" id="closeSettings">Zavřít</button>
+  </div>
+</div>
+
+<!-- Edit/Add Connection Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="editModalTitle">Přidat střídač</h2>
+
+    <div class="form-group">
+      <label>Název</label>
+      <input type="text" id="cfgName" placeholder="Dům, Garáž, Střecha…" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>IP adresa střídače</label>
+      <input type="text" id="cfgHost" placeholder="192.168.199.192" inputmode="url" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="form-hint">Lokální IP adresa Solax donglu</div>
+    </div>
+    <div class="form-group">
+      <label>Heslo (pwd)</label>
+      <input type="text" id="cfgPassword" placeholder="Sériové číslo donglu nebo heslo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="form-hint">Obvykle sériové číslo WiFi donglu nebo vlastní heslo</div>
+    </div>
+    <div class="form-group">
+      <label>Protokol</label>
+      <select id="cfgProtocol">
+        <option value="http">HTTP</option>
+        <option value="https">HTTPS</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Interval obnovení (s)</label>
+      <input type="number" id="cfgInterval" value="10" min="3" max="300" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>X-Forwarded-For (volitelné)</label>
+      <input type="text" id="cfgForwardedFor" placeholder="5.8.8.8" autocomplete="off">
+      <div class="form-hint">Některé novější dongly vyžadují tento header</div>
+    </div>
+
+    <button class="btn btn-primary" id="saveConn">Uložit</button>
+    <button class="btn btn-secondary" id="cancelEdit">Zrušit</button>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <p id="confirmMsg">Opravdu smazat?</p>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary btn-sm" id="confirmNo">Ne</button>
+      <button class="btn btn-danger btn-sm" id="confirmYes">Ano, smazat</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  Multi-connection config in localStorage
+// ═══════════════════════════════════════════
+const STORAGE_KEY = 'solax_fve_connections';
+const ACTIVE_KEY = 'solax_fve_active';
+
+function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function loadConnections() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; } }
+function saveConnections(list) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e) {} }
+function getActiveId() { try { return localStorage.getItem(ACTIVE_KEY) || null; } catch(e) { return null; } }
+function setActiveId(id) { try { localStorage.setItem(ACTIVE_KEY, id || ''); } catch(e) {} }
+
+// Migrate old single-config format
+(function() {
+  try {
+    const old = localStorage.getItem('solax_fve_config');
+    if (!old) return;
+    const c = JSON.parse(old);
+    if (!c.host) return;
+    const list = loadConnections();
+    if (list.length > 0) return;
+    const id = generateId();
+    list.push({ id, name: c.host, host: c.host, password: c.password,
+      protocol: c.protocol||'http', interval: c.interval||10, forwardedFor: c.forwardedFor||'' });
+    saveConnections(list);
+    setActiveId(id);
+    localStorage.removeItem('solax_fve_config');
+  } catch(e) {}
+})();
+
+let connections = loadConnections();
+let activeId = getActiveId();
+let refreshTimer = null;
+let lastData = null;
+let editingId = null;
+let paused = false;
+let consecutiveErrors = 0;
+
+// ═══════════════════════════════════════════
+//  Data Parsing (X3 Hybrid G4)
+// ═══════════════════════════════════════════
+function r16s(n){return n<32768?n:n-65536}
+function r32u(a,b){return a+65536*b}
+function r32s(a,b){return a<32768?a+65536*b:a+65536*b-4294967296}
+function readRunMode(m){return["Waiting","Checking","Normal","Fault","Permanent Fault","Updating","EPS Check","EPS Mode","Self Test","Idle","Standby"][m]||String(m)}
+
+function formatData(d) {
+  const r = {
+    Yield_Today:d[70]/10, Yield_Total:r32u(d[68],d[69])/10,
+    PowerDc1:d[14], PowerDc2:d[15], BAT_Power:r16s(d[41]),
+    feedInPower:r32s(d[34],d[35]),
+    GridAPower:r16s(d[6]), GridBPower:r16s(d[7]), GridCPower:r16s(d[8]),
+    FeedInEnergy:r32u(d[86],d[87])/100, ConsumeEnergy:r32u(d[88],d[89])/100,
+    RunMode:readRunMode(d[19]),
+    EPSAPower:r16s(d[29]), EPSBPower:r16s(d[30]), EPSCPower:r16s(d[31]),
+    Vdc1:d[10]/10, Vdc2:d[11]/10, Idc1:d[12]/10, Idc2:d[13]/10,
+    EPSAVoltage:d[23]/10, EPSBVoltage:d[24]/10, EPSCVoltage:d[25]/10,
+    EPSACurrent:r16s(d[26])/10, EPSBCurrent:r16s(d[27])/10, EPSCCurrent:r16s(d[28])/10,
+    BatteryCapacity:d[103], BatteryVoltage:r32u(d[169],d[170])/100,
+    BatteryTemperature:r16s(d[105]),
+    GridAVoltage:d[0]/10, GridBVoltage:d[1]/10, GridCVoltage:d[2]/10,
+    GridACurrent:r16s(d[3])/10, GridBCurrent:r16s(d[4])/10, GridCCurrent:r16s(d[5])/10,
+    FreqacA:d[16]/100, FreqacB:d[17]/100, FreqacC:d[18]/100,
+  };
+  r.GridPower=r.GridAPower+r.GridBPower+r.GridCPower;
+  r.SolarPower=r.PowerDc1+r.PowerDc2;
+  r.HomePower=r.SolarPower+r.BAT_Power-r.feedInPower;
+  if(r.HomePower<0) r.HomePower=0;
+  r.EPSTotal=r.EPSAPower+r.EPSBPower+r.EPSCPower;
+  return r;
+}
+
+// ═══════════════════════════════════════════
+//  Fetch & UI
+// ═══════════════════════════════════════════
+function getActiveConfig() { return connections.find(c=>c.id===activeId)||null; }
+
+async function fetchData() {
+  if (paused) return;
+  const cfg = getActiveConfig();
+  if (!cfg) return;
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot fetching';
+
+  try {
+    const hdrs = {'Content-Type':'application/x-www-form-urlencoded'};
+    if (cfg.forwardedFor) hdrs['X-Forwarded-For'] = cfg.forwardedFor;
+    const resp = await fetch(`${cfg.protocol}://${cfg.host}`, {
+      method:'POST', headers:hdrs,
+      body:`optType=ReadRealTimeData&pwd=${cfg.password}`,
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const json = await resp.json();
+    if (!json.Data||!Array.isArray(json.Data)) throw new Error('Chybí pole Data');
+    lastData = formatData(json.Data);
+    consecutiveErrors = 0;
+    dot.className = 'status-dot connected';
+    document.getElementById('errorBanner').classList.remove('show');
+    updateUI(lastData);
+  } catch(err) {
+    consecutiveErrors++;
+    dot.className = 'status-dot';
+    document.getElementById('errorBannerMsg').textContent = err.message;
+    if (consecutiveErrors >= 2) {
+      document.getElementById('errorBanner').classList.add('show');
+    }
+    showToast(`Chyba: ${err.message}`);
+  }
+}
+
+function updateUI(d) {
+  const $=id=>document.getElementById(id);
+  $('solarPower').textContent=d.SolarPower;
+  $('pv1Power').textContent=d.PowerDc1+' W';
+  $('pv2Power').textContent=d.PowerDc2+' W';
+  $('pv1Detail').textContent=d.Vdc1.toFixed(1)+' V / '+d.Idc1.toFixed(1)+' A';
+  $('pv2Detail').textContent=d.Vdc2.toFixed(1)+' V / '+d.Idc2.toFixed(1)+' A';
+
+  const bE=$('batteryPower');
+  bE.textContent=Math.abs(d.BAT_Power);
+  bE.className='flow-node-value '+(d.BAT_Power>0?'discharging':d.BAT_Power<0?'charging':'');
+  bE.parentElement.querySelector('.flow-node-unit').textContent='W '+(d.BAT_Power>0?'▲ vybíjí':d.BAT_Power<0?'▼ nabíjí':'idle');
+  $('batterySOC').textContent=d.BatteryCapacity+'%';
+  $('battSOCDetail').textContent=d.BatteryCapacity+'%';
+  $('battPowerDetail').textContent=d.BAT_Power+' W';
+  $('battVoltage').textContent=d.BatteryVoltage.toFixed(1)+' V';
+  $('battTemp').textContent=d.BatteryTemperature+' °C';
+  const bar=$('batteryBar');
+  bar.style.width=Math.min(100,Math.max(0,d.BatteryCapacity))+'%';
+  bar.className='battery-bar-fill'+(d.BatteryCapacity<15?' low':d.BatteryCapacity<40?' mid':'');
+
+  const gE=$('gridPower');
+  gE.textContent=Math.abs(d.feedInPower);
+  gE.className='flow-node-value '+(d.feedInPower>0?'exporting':d.feedInPower<0?'importing':'');
+  gE.parentElement.querySelector('.flow-node-unit').textContent='W '+(d.feedInPower>0?'◀ export':d.feedInPower<0?'▶ import':'');
+  $('feedinPower').textContent=d.feedInPower+' W';
+  $('gridAV').textContent=d.GridAVoltage.toFixed(0)+' V';
+  $('gridBV').textContent=d.GridBVoltage.toFixed(0)+' V';
+  $('gridCV').textContent=d.GridCVoltage.toFixed(0)+' V';
+  $('gridAI').textContent=d.GridACurrent.toFixed(1)+' A';
+  $('gridBI').textContent=d.GridBCurrent.toFixed(1)+' A';
+  $('gridCI').textContent=d.GridCCurrent.toFixed(1)+' A';
+  $('gridAP').textContent=d.GridAPower+' W';
+  $('gridBP').textContent=d.GridBPower+' W';
+  $('gridCP').textContent=d.GridCPower+' W';
+  $('gridAF').textContent=d.FreqacA.toFixed(2)+' Hz';
+  $('gridBF').textContent=d.FreqacB.toFixed(2)+' Hz';
+  $('gridCF').textContent=d.FreqacC.toFixed(2)+' Hz';
+  $('homePower').textContent=Math.round(d.HomePower);
+
+  const eC=$('epsCard');
+  if(d.EPSTotal!==0||d.RunMode==='EPS Mode'){
+    eC.style.display='';
+    $('epsAV').textContent=d.EPSAVoltage.toFixed(0)+' V';
+    $('epsBV').textContent=d.EPSBVoltage.toFixed(0)+' V';
+    $('epsCV').textContent=d.EPSCVoltage.toFixed(0)+' V';
+    $('epsAI').textContent=d.EPSACurrent.toFixed(1)+' A';
+    $('epsBI').textContent=d.EPSBCurrent.toFixed(1)+' A';
+    $('epsCI').textContent=d.EPSCCurrent.toFixed(1)+' A';
+    $('epsAP').textContent=d.EPSAPower+' W';
+    $('epsBP').textContent=d.EPSBPower+' W';
+    $('epsCP').textContent=d.EPSCPower+' W';
+  } else eC.style.display='none';
+
+  const mE=$('runMode');
+  mE.textContent=d.RunMode;
+  mE.className='status-chip-value mode-'+(d.RunMode==='Normal'?'normal':d.RunMode.includes('EPS')?'eps':d.RunMode.includes('Fault')?'fault':'idle');
+
+  $('yieldToday').textContent=d.Yield_Today.toFixed(1)+' kWh';
+  const tk=d.Yield_Total;
+  $('yieldTotal').textContent=tk>=1000?(tk/1000).toFixed(1)+' MWh':tk.toFixed(0)+' kWh';
+  $('feedInEnergy').textContent=d.FeedInEnergy.toFixed(1);
+  $('consumeEnergy').textContent=d.ConsumeEnergy.toFixed(1);
+  $('refreshBar').textContent='Aktualizace: '+new Date().toLocaleTimeString('cs-CZ');
+}
+
+// ═══════════════════════════════════════════
+//  Polling
+// ═══════════════════════════════════════════
+function startPolling() {
+  if(refreshTimer) clearInterval(refreshTimer);
+  lastData=null;
+  consecutiveErrors=0;
+  paused=false;
+  updatePauseBtn();
+  document.getElementById('errorBanner').classList.remove('show');
+  const cfg=getActiveConfig();
+  if(!cfg){
+    document.getElementById('setupScreen').style.display='';
+    document.getElementById('dashboard').style.display='none';
+    document.getElementById('headerSubtitle').textContent='Nepřipojeno';
+    document.getElementById('statusDot').className='status-dot';
+    return;
+  }
+  document.getElementById('setupScreen').style.display='none';
+  document.getElementById('dashboard').style.display='';
+  document.getElementById('headerSubtitle').textContent=cfg.protocol+'://'+cfg.host;
+  fetchData();
+  refreshTimer=setInterval(fetchData,(cfg.interval||10)*1000);
+}
+
+function togglePause(){
+  paused=!paused;
+  updatePauseBtn();
+  if(!paused) fetchData();
+}
+
+function updatePauseBtn(){
+  const btn=document.getElementById('pauseBtn');
+  btn.textContent=paused?'▶':'⏸';
+  btn.classList.toggle('paused',paused);
+  btn.setAttribute('aria-label',paused?'Pokračovat':'Pozastavit');
+}
+
+function switchTo(id){
+  activeId=id; setActiveId(id);
+  updateSwitcher(); startPolling();
+}
+
+// ═══════════════════════════════════════════
+//  Switcher
+// ═══════════════════════════════════════════
+function updateSwitcher() {
+  const w=document.getElementById('switcherWrap');
+  if(connections.length<=1){ w.style.display='none'; return; }
+  w.style.display='';
+  const cfg=getActiveConfig();
+  document.getElementById('switcherName').textContent=cfg?cfg.name:'—';
+  const dd=document.getElementById('switcherDropdown');
+  dd.innerHTML='';
+  connections.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='switcher-option'+(c.id===activeId?' active':'');
+    b.innerHTML=`<div>${esc(c.name)}</div><div class="switcher-option-host">${esc(c.host)}</div>`;
+    b.addEventListener('click',()=>{switchTo(c.id);dd.classList.remove('open');});
+    dd.appendChild(b);
+  });
+}
+
+document.getElementById('switcherBtn').addEventListener('click',e=>{
+  e.stopPropagation();
+  document.getElementById('switcherDropdown').classList.toggle('open');
+});
+document.addEventListener('click',()=>document.getElementById('switcherDropdown').classList.remove('open'));
+
+// ═══════════════════════════════════════════
+//  Settings Modal — List
+// ═══════════════════════════════════════════
+function openSettingsModal(){
+  renderConnList();
+  document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettingsModal(){ document.getElementById('settingsModal').classList.remove('open'); }
+
+function renderConnList(){
+  const list=document.getElementById('connList');
+  if(!connections.length){
+    list.innerHTML='<div class="conn-empty"><div class="conn-empty-icon">📡</div>Žádné střídače<br>Přidejte první připojení</div>';
+    return;
+  }
+  list.innerHTML='';
+  connections.forEach(c=>{
+    const el=document.createElement('div');
+    el.className='conn-item'+(c.id===activeId?' active':'');
+    el.innerHTML=`
+      <div class="conn-item-info">
+        <div class="conn-item-name">${esc(c.name)}</div>
+        <div class="conn-item-host">${esc(c.protocol)}://${esc(c.host)}</div>
+      </div>
+      <div class="conn-item-actions">
+        <button class="conn-action-btn edit" title="Upravit">✎</button>
+        <button class="conn-action-btn delete" title="Smazat">✕</button>
+      </div>`;
+    el.querySelector('.conn-item-info').addEventListener('click',()=>{switchTo(c.id);closeSettingsModal();});
+    el.querySelector('.edit').addEventListener('click',e=>{e.stopPropagation();openEditModal(c.id);});
+    el.querySelector('.delete').addEventListener('click',e=>{e.stopPropagation();confirmDelete(c.id,c.name);});
+    list.appendChild(el);
+  });
+}
+
+document.getElementById('openSettings').addEventListener('click',openSettingsModal);
+document.getElementById('pauseBtn').addEventListener('click',togglePause);
+document.getElementById('closeSettings').addEventListener('click',closeSettingsModal);
+document.getElementById('settingsModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSettingsModal()});
+
+// ═══════════════════════════════════════════
+//  Edit / Add
+// ═══════════════════════════════════════════
+function openEditModal(id){
+  editingId=id||null;
+  document.getElementById('editModalTitle').textContent=editingId?'Upravit střídač':'Přidat střídač';
+  const $=x=>document.getElementById(x);
+  if(!editingId){
+    $('cfgName').value='';$('cfgHost').value='';$('cfgPassword').value='';
+    $('cfgProtocol').value='http';$('cfgInterval').value='10';$('cfgForwardedFor').value='';
+  } else {
+    const c=connections.find(x=>x.id===id);
+    if(!c)return;
+    $('cfgName').value=c.name||'';$('cfgHost').value=c.host||'';$('cfgPassword').value=c.password||'';
+    $('cfgProtocol').value=c.protocol||'http';$('cfgInterval').value=c.interval||10;
+    $('cfgForwardedFor').value=c.forwardedFor||'';
+  }
+  $('editModal').classList.add('open');
+}
+function closeEditModal(){ document.getElementById('editModal').classList.remove('open'); editingId=null; }
+
+document.getElementById('addNewConn').addEventListener('click',()=>openEditModal(null));
+document.getElementById('cancelEdit').addEventListener('click',closeEditModal);
+document.getElementById('editModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEditModal()});
+
+document.getElementById('saveConn').addEventListener('click',()=>{
+  const host=document.getElementById('cfgHost').value.trim();
+  const password=document.getElementById('cfgPassword').value.trim();
+  const protocol=document.getElementById('cfgProtocol').value;
+  const interval=parseInt(document.getElementById('cfgInterval').value)||10;
+  const forwardedFor=document.getElementById('cfgForwardedFor').value.trim();
+  let name=document.getElementById('cfgName').value.trim()||host;
+
+  if(!host){showToast('Zadejte IP adresu');return;}
+  if(!password){showToast('Zadejte heslo');return;}
+
+  const entry={host,password,protocol,interval,forwardedFor,name};
+
+  if(editingId){
+    const idx=connections.findIndex(c=>c.id===editingId);
+    if(idx>=0) connections[idx]={...connections[idx],...entry};
+  } else {
+    const id=generateId();
+    entry.id=id;
+    connections.push(entry);
+    if(connections.length===1){activeId=id;setActiveId(id);}
+  }
+
+  saveConnections(connections);
+  closeEditModal();
+  renderConnList();
+  updateSwitcher();
+
+  if(editingId===activeId||connections.length===1) startPolling();
+  showToast('Uloženo ✓','success');
+});
+
+// ═══════════════════════════════════════════
+//  Delete
+// ═══════════════════════════════════════════
+let pendingDeleteId=null;
+
+function confirmDelete(id,name){
+  pendingDeleteId=id;
+  document.getElementById('confirmMsg').textContent=`Smazat „${name}"?`;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+document.getElementById('confirmNo').addEventListener('click',()=>{
+  document.getElementById('confirmOverlay').classList.remove('open');pendingDeleteId=null;
+});
+document.getElementById('confirmYes').addEventListener('click',()=>{
+  if(pendingDeleteId){
+    connections=connections.filter(c=>c.id!==pendingDeleteId);
+    saveConnections(connections);
+    if(activeId===pendingDeleteId){
+      activeId=connections.length?connections[0].id:null;
+      setActiveId(activeId||'');
+      startPolling();
+    }
+    renderConnList();updateSwitcher();
+    showToast('Smazáno','success');
+  }
+  document.getElementById('confirmOverlay').classList.remove('open');pendingDeleteId=null;
+});
+document.getElementById('confirmOverlay').addEventListener('click',e=>{
+  if(e.target===e.currentTarget){e.currentTarget.classList.remove('open');pendingDeleteId=null;}
+});
+
+// ═══════════════════════════════════════════
+//  Utils
+// ═══════════════════════════════════════════
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(type==='success'?' success':'');
+  setTimeout(()=>t.className='toast',3000);
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// ═══════════════════════════════════════════
+//  PWA Install
+// ═══════════════════════════════════════════
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBanner').classList.add('show');});
+document.getElementById('installBtn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('installBanner').classList.remove('show');});
+document.getElementById('dismissInstall').addEventListener('click',()=>document.getElementById('installBanner').classList.remove('show'));
+
+// ═══════════════════════════════════════════
+//  Init
+// ═══════════════════════════════════════════
+updateSwitcher();
+startPolling();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e=>console.log('SW:',e));
+</script>
+</body>
+</html>
