@@ -1,4 +1,4 @@
-package com.github.sranka.solax_x3_hybrid_g4;
+package com.github.sranka.solax_fve_realtime_app;
 
 import android.os.Bundle;
 import androidx.core.view.WindowCompat;
