@@ -1,0 +1,1099 @@
+Function_Code,Register,Variable,W/R,Description,Unit,Data_Format,Length
+0x03,0x0000,InverterSN,R,Inverter serial number (14 chars),,14char,7
+0x03,0x0007,FactoryName,R,Factory name (14 chars),,14char,7
+0x03,0x000E,ModuleName,R,Module name (14 chars),,14char,7
+0x03,0x0015,REV,R,Reserved,,uint16,1
+0x03,0x0016,TimeStart,R,Time start,,uint16,1
+0x03,0x0017,ReconnectionTime,R,Reconnection time,1s,uint16,1
+0x03,0x0018,CheckingTime,R,Checking time,1s,uint16,1
+0x03,0x0019,VacMinProtect,R,Grid under-voltage protection,0.1V,uint16,1
+0x03,0x001A,VacMaxProtect,R,Grid over-voltage protection,0.1V,uint16,1
+0x03,0x001B,FacMinProtect,R,Grid under-frequency protection,0.01Hz,uint16,1
+0x03,0x001C,FacMaxProtect,R,Grid over-frequency protection,0.01Hz,uint16,1
+0x03,0x001D,SafetyCode,R,Safety code (country),,uint16,1
+0x03,0x001E,MateBoxEnable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x001F,Grid10MinAvgProtect,R,10 minutes over voltage protect,0.1V,uint16,1
+0x03,0x0020,VacMinSlowProtect,R,Grid under-voltage slow protect,0.1V,uint16,1
+0x03,0x0021,VacMaxSlowProtect,R,Grid over-voltage slow protect,0.1V,uint16,1
+0x03,0x0022,FacMinSlowProtect,R,Grid under-frequency slow protect,0.01Hz,uint16,1
+0x03,0x0023,FacMaxSlowProtect,R,Grid over-frequency slow protect,0.01Hz,uint16,1
+0x03,0x0024,REV,R,Reserved,-,uint16,1
+0x03,0x0025,PowerLimitsPercent,R,Output power limits percent,0~100,uint16,1
+0x03,0x0026,PowerfactorMode,R,0:Off 1:Over Excited 2:Under Excited 3:Curve 4:Qu 5:Fix Q Power,1,uint16,1
+0x03,0x0027,PowerfactorData,R,Power factor data,0.01,uint16,1
+0x03,0x0028,PowerFactor_Curve_PF1,R,PF curve PF1,0.01,uint16,1
+0x03,0x0029,PowerFactor_Curve_PF2,R,PF curve PF2,0.01,uint16,1
+0x03,0x002A,PowerFactor_Curve_PF3,R,PF curve PF3,0.01,uint16,1
+0x03,0x002B,PowerFactor_Curve_PF4,R,PF curve PF4,0.01,uint16,1
+0x03,0x002C,PowerFactor_Curve_Power1,R,PF curve power 1,1%,uint16,1
+0x03,0x002D,PowerFactor_Curve_Power2,R,PF curve power 2,1%,uint16,1
+0x03,0x002E,PowerFactor_Curve_Power3,R,PF curve power 3,1%,uint16,1
+0x03,0x002F,PowerFactor_Curve_Power4,R,PF curve power 4,1%,uint16,1
+0x03,0x0030,PowerFactor_Curve_PfLockInPoint,R,PF curve lock-in point,0.01,uint16,1
+0x03,0x0031,PowerFactor_Curve_PfLockOutPoint,R,PF curve lock-out point,0.01,uint16,1
+0x03,0x0032,PowerFactor_Curve_3Tau,R,PF curve 3Tau,1s,uint16,1
+0x03,0x0033,PowerFactor_Qu_VoltRatio1,R,Qu volt ratio 1,1%,uint16,1
+0x03,0x0034,PowerFactor_Qu_VoltRatio4,R,Qu volt ratio 4,1%,uint16,1
+0x03,0x0035,PowerFactor_Qu_QuResponseV1,R,Qu response V1,0.1V,uint16,1
+0x03,0x0036,PowerFactor_Qu_QuResponseV2,R,Qu response V2,0.1V,uint16,1
+0x03,0x0037,PowerFactor_Qu_QuResponseV3,R,Qu response V3,0.1V,uint16,1
+0x03,0x0038,PowerFactor_Qu_QuResponseV4,R,Qu response V4,0.1V,uint16,1
+0x03,0x0039,PowerFactor_Qu_K,R,Qu K value,0.1,int16,1
+0x03,0x003A,PowerFactor_Qu_3Tau,R,Qu 3Tau,1s,uint16,1
+0x03,0x003B,PowerFactor_Qu_QuDelayTimer,R,Qu delay timer,1s,uint16,1
+0x03,0x003C,PowerFactor_Qu_QuLockEn,R,Qu lock enable,,uint16,1
+0x03,0x003D,PowerFactor_Qu_QuLockIn,R,Qu lock-in,1%,uint16,1
+0x03,0x003E,PowerFactor_Qu_QuLockOut,R,Qu lock-out,1%,uint16,1
+0x03,0x003F,PowerFactor_FixQPower,R,Fix Q power,1Var,int16,1
+0x03,0x0040,PowerFactor_FixQPower_Max,R,Fix Q power max,1Var,int16,1
+0x03,0x0041,PowerFactor_FixQPower_Min,R,Fix Q power min,1Var,int16,1
+0x03,0x0042,wConnection_FL,R,Connection low frequency,0.01Hz,int16,1
+0x03,0x0043,wConnection_FH,R,Connection high frequency,0.01Hz,int16,1
+0x03,0x0044,wConnection_VL,R,Connection low voltage,0.1V,int16,1
+0x03,0x0045,wConnection_VH,R,Connection high voltage,0.1V,int16,1
+0x03,0x0046,wConnection_ObserveT,R,Connection observation time,1s,int16,1
+0x03,0x0047,wConnection_GradientEn,R,Connection gradient select,1,int16,1
+0x03,0x0048,wReconnection_FL,R,Reconnection low frequency,0.01Hz,int16,1
+0x03,0x0049,wReconnection_FH,R,Reconnection high frequency,0.01Hz,int16,1
+0x03,0x004A,wReconnection_VL,R,Reconnection low voltage,0.1V,int16,1
+0x03,0x004B,wReconnection_VH,R,Reconnection high voltage,0.1V,int16,1
+0x03,0x004C,wReconnection_ObserveT,R,Reconnection observation time,1s,int16,1
+0x03,0x004D,wReconnection_GradientEn,R,Reconnection gradient select,1,int16,1
+0x03,0x004E,wReconnection_Gradient,R,Reconnection gradient,1%,int16,1
+0x03,0x004F,Reserve,R,Reserved (0x004F~0x007C),,uint16,46
+0x03,0x007D,FirmwareVersion_DSP_Minor,R,Firmware version DSP minor,,uint16,1
+0x03,0x007E,HardwareVersion_DSP,R,Hardware version DSP,,uint16,1
+0x03,0x007F,FirmwareVersion_DSP_Major,R,Firmware version DSP major,,uint16,1
+0x03,0x0080,FirmwareVersion_ARM_Major,R,Firmware version ARM major,,uint16,1
+0x03,0x0081,Rev,R,Reserved,,uint16,1
+0x03,0x0082,FirmwareVersion_ModbusRTU,R,Firmware version Modbus RTU,,uint16,1
+0x03,0x0083,FirmwareVersion_ARM_Minor,R,Firmware version ARM minor,,uint16,1
+0x03,0x0084,FirmwareVersion_ARM_Bootloader,R,Firmware version ARM bootloader,1,uint16,1
+0x03,0x0085,RTC_Seconds,R,RTC seconds,—,uint16,1
+0x03,0x0086,RTC_Minutes,R,RTC minutes,—,uint16,1
+0x03,0x0087,RTC_Hours,R,RTC hours,—,uint16,1
+0x03,0x0088,RTC_Days,R,RTC days,—,uint16,1
+0x03,0x0089,RTC_Months,R,RTC months,—,uint16,1
+0x03,0x008A,RTC_Years,R,RTC years,—,uint16,1
+0x03,0x008B,SolarChargerUseMode,R,0:Self use 1:Feedin Priority 2:Backup 3:Manual 4:Peak Shaving 5:TOU,1,uint16,1
+0x03,0x008C,ManualMode,R,0:Stop 1:Force charge 2:Force discharge,1,uint16,1
+0x03,0x008D,wBattery1_Type,R,0:Lead Acid 1:Lithium,1,uint16,1
+0x03,0x008E,Charge_floatVolt,R,Lead-acid battery charge float voltage,0.1V,uint16,1
+0x03,0x008F,Battery_DischargeCutVoltage,R,Lead-acid battery discharge cut-off voltage,0.1V,uint16,1
+0x03,0x0090,Battery_ChargeMaxCurrent,R,Lead-acid battery charge max current,0.1A,uint16,1
+0x03,0x0091,Battery_DischargeMaxCurrent,R,Lead-acid battery discharge max current,0.1A,uint16,1
+0x03,0x0092,absorpt_voltage,R,Lead-acid battery absorpt voltage,0.1V,uint16,1
+0x03,0x0093,SelfUse_Discharge_MinSoC / SelfUse_NightCharge_Enable,R,Hi: Self-use discharge min SoC (10~100%) | Lo: Self-use night charge enable (0:Disable 1:Enable),1%/1,uint8(Hi/Lo),1
+0x03,0x0094,SelfUse_NightCharge_UpperSoC,R,10%~100%,1%,uint16,1
+0x03,0x0095,Feedin_NightCharge_UpperSoC / Feedin_Discharge_MinSoC,R,Hi: Feed-in night charge upper SoC (10~100%) | Lo: Feed-in discharge min SoC (10~100%),1%/1%,uint8(Hi/Lo),1
+0x03,0x0096,BackUp_NightCharge_UpperSoC / BackUp_Discharge_MinSoC,R,Hi: Backup night charge upper SoC (30~100%) | Lo: Backup discharge min SoC (30~100%),1%/1%,uint8(Hi/Lo),1
+0x03,0x0097,ChargePeriod1_StartTime,R,Charge period 1 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0098,ChargePeriod1_EndTime,R,Charge period 1 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0099,DischargePeriod1_StartTime,R,Discharge period 1 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x009A,DischargePeriod1_EndTime,R,Discharge period 1 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x009B,ChrgDischrgPeriod2_Enable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x009C,ChargePeriod2_StartTime,R,Charge period 2 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x009D,ChargePeriod2_EndTime,R,Charge period 2 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x009E,DischargePeriod2_StartTime,R,Discharge period 2 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x009F,DischargePeriod2_EndTime,R,Discharge period 2 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x00A0,EpsRestartSoc,R,10~100,1%,uint16,1
+0x03,0x00A1,HotStandbyEN,R,0:enable 1:disable,1,uint16,1
+0x03,0x00A2,ExtendBmsSetting,R,0:disable 1:enable,1,uint16,1
+0x03,0x00A3,BatteryHeatingEn,R,0:disable 1:enable,-,uint16,1
+0x03,0x00A4,HeatingPeriod1_StartTime,R,Heating period 1 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x00A5,HeatingPeriod1_EndTime,R,Heating period 1 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x00A6,HeatingPeriod2_StartTime,R,Heating period 2 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x00A7,HeatingPeriod2_EndTime,R,Heating period 2 end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x00A8,wBatteryDischargeBackupVoltage,R,Battery discharge backup voltage,0.1V,uint16,1
+0x03,0x00A9,MatchResistanceSet(X3),R,0:disable 1:enable,-,uint16,1
+0x03,0x00AA,RegistrationCode,R,Registration code (10 chars),,10char,5
+0x03,0x00AF,ModBusRTU_Address,R,Modbus RTU address,1,uint16,1
+0x03,0x00B0,ModBusRTU_BaudRate,R,0:115200 1:57600 2:56000 3:38400 4:19200 5:14400 6:9600,bit/s,uint16,1
+0x03,0x00B1,mVoltZeroResult(X3),R,Calibration result,1,uint16,1
+0x03,0x00B2,PgridBias,R,0:Disable 1:Grid 2:INV,-,uint16,1
+0x03,0x00B3,FastCtCheckEn,R,0:disable 1:enable,1,uint16,1
+0x03,0x00B4,VPPExitIdleEn,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x00B5,Factorylimit,R,Factory export limit,1W,uint16,1
+0x03,0x00B6,ExportControl_UserLimit,R,Export control user limit,1W(X1)/10W(X3),uint16,1
+0x03,0x00B7,Off-grid_Mute,R,0:off 1:on,1,uint16,1
+0x03,0x00B8,Off-grid_MinSoC,R,Off-grid min SoC,1%,uint16,1
+0x03,0x00B9,Off-grid_Frequency,R,Off-grid frequency,1,uint16,1
+0x03,0x00BA,InverterPowerType,R,Inverter power type,1W,uint16,1
+0x03,0x00BB,Language,R,0:EN 1:DE 2:FR 3:PL 4:ES 5:PT 6:IT 7:CN 8:UA 9:BR,,uint16,1
+0x03,0x00BC,EnableMPPT,R,0:Disable 1:Enable,,uint16,1
+0x03,0x00BD,wTuvp_L2,R,Trip time under-voltage L2,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00BE,wTovp_L2,R,Trip time over-voltage L2,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00BF,wTufp_L2,R,Trip time under-frequency L2,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C0,wTofp_L2,R,Trip time over-frequency L2,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C1,wTuvp_L1,R,Trip time under-voltage L1,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C2,wTovp_L1,R,Trip time over-voltage L1,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C3,wTufp_L1,R,Trip time under-frequency L1,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C4,wTofp_L1,R,Trip time over-frequency L1,1ms(X1)/10ms(X3),uint16,1
+0x03,0x00C5,TestStep,R,"Self test step (1-8 tests, 9=success)",1~8,uint16,1
+0x03,0x00C6,OvpValue_59S2,R,Ovp(59.S2) value,0.1V,uint16,1
+0x03,0x00C7,OvpTime_59S2,R,Ovp(59.S2) time,1ms,uint16,1
+0x03,0x00C8,UvpValue_27S1,R,Uvp(27.S1) value,0.1V,uint16,1
+0x03,0x00C9,UvpTime_27S1,R,Uvp(27.S1) time,1ms,uint16,1
+0x03,0x00CA,OfpValue_81S1,R,Ofp(81>.S1) value,0.01Hz,uint16,1
+0x03,0x00CB,OfpTime_81S1,R,Ofp(81>.S1) time,1ms,uint16,1
+0x03,0x00CC,UfpValue_81S1,R,Ufp(81<.S1) value,0.01Hz,uint16,1
+0x03,0x00CD,UfpTime_81S1,R,Ufp(81<.S1) time,1ms,uint16,1
+0x03,0x00CE,SelfTestOvp10mAvgVal,R,Ovp10(59.S1) value,0.1V,uint16,1
+0x03,0x00CF,SelfTestOvp10mAvgTime,R,Ovp10(59.S1) time,1s,uint16,1
+0x03,0x00D0,SelfTestOfpVal_Restrictive,R,Ofp2(81>.S2) value,0.01Hz,uint16,1
+0x03,0x00D1,SelfTestOfpTime_Restrictive,R,Ofp2(81>.S2) time,1ms,uint16,1
+0x03,0x00D2,SelfTestUfpVal_Restrictive,R,Ufp2(81<.S2) value,0.01Hz,uint16,1
+0x03,0x00D3,SelfTestUfpTime_Restrictive,R,Ufp2(81<.S2) time,1ms,uint16,1
+0x03,0x00D4,SelfTestUvpRestrictiveVal,R,Uvp(27.S2) value,0.1V,uint16,1
+0x03,0x00D5,SelfTestUvpRestrictiveTime,R,Uvp(27.S2) time,1ms,uint16,1
+0x03,0x00D6,SelfTest_Time,R,Self test time,1s,uint16,1
+0x03,0x00D7,MainBreakerCurrentLimit,R,32A~100A,1A,uint16,1
+0x03,0x00D8,PfLockInPoint,R,PF lock-in point (deprecated in PDF v3.36),105~110,uint16,1
+0x03,0x00D9,PfLockOutPoint,R,PF lock-out point (deprecated in PDF v3.36),98~90,uint16,1
+0x03,0x00DA,wInverterOutputSwitch,R,1=ON 0=Off,0/1,uint16,1
+0x03,0x00DB,OFPL_Point,R,Overfrequency load reduction point,0.01Hz,uint16,1
+0x03,0x00DC,OFPL_SetRate,R,Overfrequency load reduction rate,1%,uint16,1
+0x03,0x00DD,OFPL_DelayTime,R,Overfrequency load reduction delay,1ms,uint16,1
+0x03,0x00DE,OFPL_fstop_disch,W,OFPL fstop discharge,0.01Hz,uint16,1
+0x03,0x00DF,OFPL_fPmin,W,OFPL fPmin,0.01Hz,uint16,1
+0x03,0x00E0,UserPassword,R,User password,1,uint16,1
+0x03,0x00E1,AdvancePassword,R,Advance password,1,uint16,1
+0x03,0x00E2,UFPL_Point,R,Underfrequency load increase point,0.01Hz,uint16,1
+0x03,0x00E3,UFPL_SetRate,R,Underfrequency load increase rate,1%,uint16,1
+0x03,0x00E4,UFPL_DelayTime,R,Underfrequency load increase delay,1ms,uint16,1
+0x03,0x00E5,OFPL_CurveType,R,0:Symmetry 1:Asymmetry,0/1,uint16,1
+0x03,0x00E6,OFPL_Tstop,R,Overfrequency asymmetry curve stop time,1s,uint16,1
+0x03,0x00E7,OFPL_RemovePoint,R,Overfrequency remove point,0.01Hz,uint16,1
+0x03,0x00E8,UFPL_RemovePoint,R,Underfrequency remove point,0.01Hz,uint16,1
+0x03,0x00E9,ExportSoftLimitEn,R,Export soft limit enable,-,uint16,1
+0x03,0x00EA,ExportHardLimitEn,R,Export hard limit enable,-,uint16,1
+0x03,0x00EB,GeneralSoftLimitEn,R,General soft limit enable,-,uint16,1
+0x03,0x00EC,GeneralHardLimitEn,R,General hard limit enable,-,uint16,1
+0x03,0x00ED,wAcPowerLimit,R,AC power limit,1VA(X1)/10VA(X3),uint16,1
+0x03,0x00EE,ConnectSlop(X3),R,Connect slope,1%,uint16,1
+0x03,0x00EF,ReconnectSlop(X3),R,Reconnect slope,1%,uint16,1
+0x03,0x00F0,HardExportPower,R,Hard export power,1W(X1)/10W(X3),uint16,1
+0x03,0x00F1,HardAcPowerLimit,R,Hard AC power limit,1VA(X1)/10VA(X3),uint16,1
+0x03,0x00F2,SetpointTimeout,R,Setpoint timeout,1ms,uint16,1
+0x03,0x00F3,wPowerLimitGra,R,Power limit gradation,0.0001,uint16,1
+0x03,0x00F4,PuFunc_VoltResponse_V2,R,PU function voltage response V2,0.1V,uint16,1
+0x03,0x00F5,PuFunc_VoltResponse_V3,R,PU function voltage response V3,0.1V,uint16,1
+0x03,0x00F6,PuFunc_VoltResponse_V4,R,PU function voltage response V4,0.1V,uint16,1
+0x03,0x00F7,PuFunc_VoltResponse_V1,R,PU function voltage response V1,0.1V,uint16,1
+0x03,0x00F8,PuFunc_3Tau,R,PU function 3Tau,0.01,uint16,1
+0x03,0x00F9,PUFuncEnable,R,0:disable 1:enable,1,uint16,1
+0x03,0x00FA,SetPuPower1,R,Set PU power 1,1%,uint16,1
+0x03,0x00FB,SetPuPower2,R,Set PU power 2,1%,uint16,1
+0x03,0x00FC,SetPuPower3,R,Set PU power 3,1%,uint16,1
+0x03,0x00FD,SetPuPower4,R,Set PU power 4,1%,uint16,1
+0x03,0x00FE,REV,R,Reserved,-,uint16,1
+0x03,0x00FF,Pu_Type,R,PU type,1,uint16,1
+0x03,0x0100,UFPL_fstop_ch,R,UFPL fstop charge,0.01Hz,uint16,1
+0x03,0x0101,UFPL_fPmax,R,UFPL fPmax,0.01Hz,uint16,1
+0x03,0x0102,DRMFunctionEnable,R,0:disable 1:enable,1,uint16,1
+0x03,0x0103,CtType(X3),R,0:100A 1:200A,1,uint16,1
+0x03,0x0104,wShadowFixFuncEnable,R,0:Off 1:Low 2:Middle 3:High,1,uint16,1
+0x03,0x0105,MachineType_X1orX3,R,1:X1 3:X3,-,uint16,1
+0x03,0x0106,PhasePowerBalance(X3),R,0:disable 1:enable,1,uint16,1
+0x03,0x0107,wMachineStyle,R,0:X-Hybrid 1:X-FIT,1,uint16,1
+0x03,0x0108,MeterFunction,R,0:disable 1:enable,1,uint16,1
+0x03,0x0109,Meter1ID,R,Meter1 ID 1~200,1,uint16,1
+0x03,0x010A,Meter2ID,R,Meter2 ID 1~200,1,uint16,1
+0x03,0x010B,DirectionMeterCT1,R,0:Positive 1:Negative,1,uint16,1
+0x03,0x010C,DirectionMeter2,R,0:Positive 1:Negative,1,uint16,1
+0x03,0x010D,ExternalInv,R,0:Enable 1:Disable,1,uint16,1
+0x03,0x010E,BatteryChargeMaxSoc,R,Charger upper limit,1%,uint16,1
+0x03,0x010F,bBatterToEVCharge,R,0:Enable 1:Disable,1,uint16,1
+0x03,0x0110,InPutDI1,R,0:Low 1:High,1,uint16,1
+0x03,0x0111,DischCutOffPoint_DifferentEN,R,Lead-acid 0:disable 1:enable,1,uint16,1
+0x03,0x0112,REV,R,Reserved,-,uint16,1
+0x03,0x0113,DischCutOffVoltage_GridMode,R,Lead-acid discharge cut-off on-grid,0.1V,uint16,1
+0x03,0x0114,ShadowFixFuncEnable2,R,0:Off 1:Low 2:Middle 3:High,1,uint16,1
+0x03,0x0115,Meter/CT_Select,R,0:Meter 1:CT,1,uint16,1
+0x03,0x0116,FVRT_Function,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x0117,FVRT_VacUpper,R,FVRT Vac upper limit,0.1V,uint16,1
+0x03,0x0118,FVRT_VacLower,R,FVRT Vac lower limit,0.1V,uint16,1
+0x03,0x0119,REV,R,Reserved,-,uint16,1
+0x03,0x011A,REV,R,Reserved,-,uint16,1
+0x03,0x011B,bPVConnectionMode(X1),R,PV connection,1,uint16,1
+0x03,0x011C,ShutDown(X1),R,0:Disable 1:Enable,1,uint16,1
+0x03,0x011D,MicroGrid(X1),R,0:Disable 1:Enable,1,uint16,1
+0x03,0x011E,SelfuseModeBackupEn,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x011F,bSelfUse_BackupSoc,R,10~100,1%,uint16,1
+0x03,0x0120,bLeaseModeEnable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x0121,bDeviceLockFlag,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x0122,ManualModeControl,R,0:OFF 1:ON,1,uint16,1
+0x03,0x0123,FeedinOnPower,R,Grid connected pull-in power,1W,uint16,1
+0x03,0x0124,bSwitchOnSoc,R,SOC trigger pull-in,1%,uint16,1
+0x03,0x0125,ConsumeOffPower,R,Power consumption off trigger,1W,uint16,1
+0x03,0x0126,bSwitchOffSoc,R,SOC trigger breaking action,1%,uint16,1
+0x03,0x0127,MinimumPerOnSignal,R,Min duration single pull-in,1min,uint16,1
+0x03,0x0128,MaximumPerDayOn,R,Max cumulative pickup time/day,1min,uint16,1
+0x03,0x0129,bScheduleEnable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x012A,WorkStartTime1,R,Work start time 1 | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x012B,WorkEndTime1,R,Work end time 1 | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x012C,WorkStartTime2,R,Work start time 2 | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x012D,WorkEndTime2,R,Work end time 2 | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x012E,WorkMode,R,0:Disable 1:Manual 2:SmartSave,1,uint16,1
+0x03,0x012F,DryContactMode,R,0:Load Management 1:Generator Control,1,uint16,1
+0x03,0x0130,ParallelSetting,R,0:Free 1:Master 2:Slave,1,uint16,1
+0x03,0x0131,ExternalGenEn,R,0:Disable 1:ATS Control 2:Dry Contact,1,uint16,1
+0x03,0x0132,ExternalGenMaxCharge,R,ExternalGenMaxCharge,1W(X1)/10W(X3),uint16,1
+0x03,0x013E,485CommFunSelect,R,0:modbus485 1:EVCharge 2:DataHub 3:AdaptBoxG2 4:EVC&AdaptBoxG2 5:AdaptBoxG2&Meter 6:EVC&AdaptBoxG2&Meter,1,uint16,1
+0x03,0x0140,StartGenMethod,R,0:reference soc 1:immediately,1,uint16,1
+0x03,0x0141,SwitchOnSoC_Gen,R,Switch on SoC (reference soc),1%,uint16,1
+0x03,0x0142,SwitchOffSoC_Gen,R,Switch off SoC (reference soc),1%,uint16,1
+0x03,0x0143,MaxRunTime,R,MaxRunTime,1Min,uint16,1
+0x03,0x0145,MinRestTime,R,MinRestTime,1Min,uint16,1
+0x03,0x0146,AllowWorkStartTime,R,Allow work start time | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0147,AllowWorkStopTime,R,Allow work stop time | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0148,GenMinPower,R,0~60000,1W,uint16,1
+0x03,0x014F,PeakShavingDischarP1_Start,R,Peak shaving discharge P1 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0150,PeakShavingDischarP1_Stop,R,Peak shaving discharge P1 stop | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0151,PeakShavingDischarP2_Start,R,Peak shaving discharge P2 start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0152,PeakShavingDischarP2_Stop,R,Peak shaving discharge P2 stop | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0153,PeakShaving_PeriodBPeakLimits1,R,Discharge P1 power limit,1W,uint16,1
+0x03,0x0154,PeakShaving_PeriodDPeakLimits2,R,Discharge P2 power limit,1W,uint16,1
+0x03,0x0155,PeakShaving_PeriodAChargeFromGridEn,R,From grid charging switch,1,uint16,1
+0x03,0x0156,PeakShaving_PeriodAChargePowerLimits,R,Charging power from grid,1W,uint16,1
+0x03,0x0157,PeakShaving_PeriodAMax_SOC,R,Max SOC charged from grid,1%,uint16,1
+0x03,0x0158,PeakShaving_PeriodCReserved_SOC,R,Peak shaving reserved SOC,1%,uint16,1
+0x03,0x015C,EVChargerAddr,R,0~255,1,uint16,1
+0x03,0x015E,AdaptBoxG2Addr,R,0~255,1,uint16,1
+0x03,0x0160,CTFaultEn,R,Cycle detection CT 0:Disable 1:Enable,1,uint16,1
+0x03,0x0161,u16SuperBuckUpEn,R,EPS mode w/o battery 0:Disable 1:Enable,1,uint16,1
+0x03,0x0162,GenCharge_StartTime,R,Gen charge start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0163,GenCharge_EndTime,R,Gen charge end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0164,GenDischarge_StartTime,R,Gen discharge start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0165,GenDischarge_EndTime,R,Gen discharge end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0166,GenP2_SetEnable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x0167,GenP2Charge_StartTime,R,Gen P2 charge start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0168,GenP2Charge_EndTime,R,Gen P2 charge end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x0169,GenP2Discharge_StartTime,R,Gen P2 discharge start | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x016A,GenP2Discharge_EndTime,R,Gen P2 discharge end | Hi: Minute (0-59) Lo: Hour (0-23),,uint8(Hi/Lo),1
+0x03,0x016B,ChargeFromGenEnable,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x016C,ChargeFromGen_ChargeSoC,R,10~100,1%,uint16,1
+0x03,0x016D,FastInEPSEn,R,0:Disable 1:Enable,1,uint8,1
+0x03,0x016E,TOUMode_WorkMode / TOUMode_TotalMinSoc,R,Hi: TOU work mode | Lo: TOU total min SoC (10~100%),1%,uint8(Hi/Lo),1
+0x03,0x016F,TOUMode_SelfuseMinSOC,R,TOU self-use min SOC,1%,uint16,1
+0x03,0x0170,TOUMode_ChargeFromGridEn / TOUMode_ChargeStopSOC,R,Hi: TOU charge stop SOC (1%) | Lo: TOU charge from grid enable,1,uint8(Hi/Lo),1
+0x03,0x0171,TOUMode_DischgPowerLimitRate / TOUMode_DischargeMinSOC,R,Hi: TOU discharge min SOC (1%) | Lo: TOU discharge power limit rate (0~100%),1%,uint8(Hi/Lo),1
+0x03,0x0172,TOUMode_PeakShavingLimit_L,R,TOU peak shaving limit LSB,1W,uint32,2
+0x03,0x0174,bShotoffEn(X3),R,0:NO 1:NC,1,uint16,1
+0x03,0x0175,PowerFactor_Qu_VoltRatio2,R,Qu volt ratio 2,1%,uint16,1
+0x03,0x0176,PowerFactor_Qu_VoltRatio3,R,Qu volt ratio 3,1%,uint16,1
+0x03,0x0177,CTCutDownINV,R,0:Disable 1:Enable,1,uint16,1
+0x03,0x0200,Subsystem_Num,R,Subsystem number,1,uint16,1
+0x03,0x0201,BMS_MasterVersion,R,BMS master version x.y (Hi=x Lo=y),1,uint8(Hi/Lo),1
+0x03,0x0202,BMS_Slave1Version,R,BMS slave 1 version,1,uint16,1
+0x03,0x0203,BMS_Slave2Version,R,BMS slave 2 version,1,uint16,1
+0x03,0x0204,BMS_Slave3Version,R,BMS slave 3 version,1,uint16,1
+0x03,0x0205,BMS_Slave4Version,R,BMS slave 4 version,1,uint16,1
+0x03,0x0206,BMS_Slave5Version,R,BMS slave 5 version,1,uint16,1
+0x03,0x0207,BMS_Slave6Version,R,BMS slave 6 version,1,uint16,1
+0x03,0x0208,BMS_Slave7Version,R,BMS slave 7 version,1,uint16,1
+0x03,0x0209,BMS_Slave8Version,R,BMS slave 8 version,1,uint16,1
+0x03,0x020A,masterSN,R,BMS master serial number,,14char,7
+0x03,0x0211,slave1_2SN,R,BMS slave 1-2 SN,,14char,7
+0x03,0x0218,slave3_4SN,R,BMS slave 3-4 SN,,14char,7
+0x03,0x021F,slave5_6SN,R,BMS slave 5-6 SN,,14char,7
+0x03,0x0226,slave7_8SN,R,BMS slave 7-8 SN,,14char,7
+0x03,0x3098,ReadBlockCheckResult,R,DataHub upgrade results,1,uint16,18
+0x03,0xF000,SetLength,R,Number of set items,1,uint16,1
+0x03,0xF001,ReadSetValue,R,Value of each setting item,/,uint16,N
+0x04,0x0000,GridVoltage(X1),R,Grid voltage (X1),0.1V,uint16,1
+0x04,0x0001,GridCurrent(X1),R,Grid current (X1),0.1A,int16,1
+0x04,0x0002,GridPower(X1),R,Grid power (X1),1W,int16,1
+0x04,0x0003,PV1_Voltage,R,PV1 voltage,0.1V,uint16,1
+0x04,0x0004,PV2_Voltage,R,PV2 voltage,0.1V,uint16,1
+0x04,0x0005,PV1_Current,R,PV1 current,0.1A,uint16,1
+0x04,0x0006,PV2_Current,R,PV2 current,0.1A,uint16,1
+0x04,0x0007,GridFrequency(X1),R,Grid frequency (X1),0.01Hz,uint16,1
+0x04,0x0008,Temperature,R,Inverter temperature,1°C,int16,1
+0x04,0x0009,RunMode,R,Run mode,,uint16,1
+0x04,0x000A,PV1_Power,R,PV1 power,1W,uint16,1
+0x04,0x000B,PV2_Power,R,PV2 power,1W,uint16,1
+0x04,0x000C,TemperFaultValue,R,Temperature fault value,1°C,int16,1
+0x04,0x000D,Pv1VoltFaultValue,R,PV1 voltage fault value,0.1V,uint16,1
+0x04,0x000E,Pv2VoltFaultValue,R,PV2 voltage fault value,0.1V,uint16,1
+0x04,0x000F,GfciFaultValue,R,GFCI fault value,1mA,uint16,1
+0x04,0x0010,GridVoltFaultValue,R,Grid voltage fault value,0.1V,uint16,1
+0x04,0x0011,GridFreqFaultValue,R,Grid frequency fault value,0.01Hz,uint16,1
+0x04,0x0012,DciFaultValue,R,DCI fault value,1mA,uint16,1
+0x04,0x0013,TimeCountDown,R,Time countdown,1ms,uint16,1
+0x04,0x0014,BatVoltage_Charge1,R,Battery voltage,0.1V,int16,1
+0x04,0x0015,BatCurrent_Charge1,R,Battery current,0.1A,int16,1
+0x04,0x0016,Batpower_Charge1,R,Battery power,1W,int16,1
+0x04,0x0017,BMS_Connect_State,R,0:Disconnected 1:Connected,-,uint16,1
+0x04,0x0018,TemperatureBat,R,Battery temperature,1°C,int16,1
+0x04,0x0019,BDCStatus,R,0:discharge 1:charge 2:stop,-,uint16,1
+0x04,0x001A,GridStatus,R,0:OnGrid 1:OffGrid,-,uint16,1
+0x04,0x001B,MPPTCount,R,MPPT count,1,uint16,1
+0x04,0x001C,Battery_Capacity,R,Battery capacity,1%,uint16,1
+0x04,0x001D,OutputEnergy_Charge_L,R,Output energy charge (0x1D:LSB 0x1E:MSB),0.1kWh,uint32,2
+0x04,0x001F,REV,R,Reserved,,uint16,1
+0x04,0x0020,OutputEnergy_Charge_today,R,Output energy charge today,0.1kWh,uint16,1
+0x04,0x0021,InputEnergy_Charge_L,R,Input energy charge (0x21:LSB 0x22:MSB),0.1kWh,uint32,2
+0x04,0x0023,InputEnergy_Charge_today,R,Input energy charge today,0.1kWh,uint16,1
+0x04,0x0024,BMS_ChargeMaxCurrent,R,BMS charge max current (real time),0.1A,uint16,1
+0x04,0x0025,BMS_DischargeMaxCurrent,R,BMS discharge max current (real time),0.1A,uint16,1
+0x04,0x0026,BMS_BatteryCapacity_L,R,BMS battery capacity (0x26:LSB 0x27:MSB),Wh,uint32,2
+0x04,0x0028,REV,R,Reserved,,uint16,1
+0x04,0x003E,PCSMajorFault,R,PCS major fault,-,uint16,1
+0x04,0x003F,BatteryMajorFault,R,Battery major fault,-,uint16,1
+0x04,0x0040,InvFaultMessage_L,R,Inverter error code (0x40:LSB 0x41:MSB),-,uint32,2
+0x04,0x0042,REV,R,Reserved,-,uint16,1
+0x04,0x0043,Mgr_FaultMessage,R,Manager error code,-,uint16,1
+0x04,0x0044,BatBMS_FaultMessage_L,R,BMS error code (0x44:LSB 0x45:MSB),-,uint32,2
+0x04,0x0046,feedin_power_L,R,Feed-in power (0x46:LSB 0x47:MSB),1W,int32,2
+0x04,0x0048,feedin_energy_total_L,R,Feed-in energy total (0x48:LSB 0x49:MSB),0.01kWh,uint32,2
+0x04,0x004A,consum_energy_total_L,R,Consume energy total (0x4A:LSB 0x4B:MSB),0.01kWh,uint32,2
+0x04,0x004C,Off-gridVoltage(X1),R,Off-grid voltage (X1),0.1V,uint16,1
+0x04,0x004D,Off-gridCurrent(X1),R,Off-grid current (X1),0.1A,uint16,1
+0x04,0x004E,Off-gridPower(X1),R,Off-grid power (X1),1VA,uint16,1
+0x04,0x004F,Off-gridFrequency(X1),R,Off-grid frequency (X1),0.01Hz,uint16,1
+0x04,0x0050,Etoday_togrid,R,Today energy to grid (inverter AC port),0.1kWh,uint16,1
+0x04,0x0051,Rev,R,Reserved,-,uint16,1
+0x04,0x0052,Etotal_togrid_L,R,Total energy to grid (0x52:LSB 0x53:MSB),0.1kWh,uint32,2
+0x04,0x0054,LockState,R,0:locked 1:unlocked,-,uint16,1
+0x04,0x0055,REV,R,Reserved (17 registers),-,uint16,17
+0x04,0x0066,BusVolt,R,Bus voltage,0.1V,uint16,1
+0x04,0x0067,wDcvFaultVal,R,DCV fault value,0.1V,uint16,1
+0x04,0x0068,wOverLoadFaultVal,R,Overload fault value,1W,uint16,1
+0x04,0x0069,wBatteryVoltFaultVal,R,Battery voltage fault value,0.1V,uint16,1
+0x04,0x006A,GridVoltage_R(X3),R,Grid voltage R (X3),0.1V,uint16,1
+0x04,0x006B,GridCurrent_R(X3),R,Grid current R (X3),0.1A,int16,1
+0x04,0x006C,GridPower_R(X3),R,Grid power R (X3),1W,int16,1
+0x04,0x006D,GridFrequency_R(X3),R,Grid frequency R (X3),0.01Hz,uint16,1
+0x04,0x006E,GridVoltage_S(X3),R,Grid voltage S (X3),0.1V,uint16,1
+0x04,0x006F,GridCurrent_S(X3),R,Grid current S (X3),0.1A,int16,1
+0x04,0x0070,GridPower_S(X3),R,Grid power S (X3),1W,int16,1
+0x04,0x0071,GridFrequency_S(X3),R,Grid frequency S (X3),0.01Hz,uint16,1
+0x04,0x0072,GridVoltage_T(X3),R,Grid voltage T (X3),0.1V,uint16,1
+0x04,0x0073,GridCurrent_T(X3),R,Grid current T (X3),0.1A,int16,1
+0x04,0x0074,GridPower_T(X3),R,Grid power T (X3),1W,int16,1
+0x04,0x0075,GridFrequency_T(X3),R,Grid frequency T (X3),0.01Hz,uint16,1
+0x04,0x0076,Off-gridVolt_R(X3),R,Off-grid voltage R (X3),0.1V,uint16,1
+0x04,0x0077,Off-gridCurrent_R(X3),R,Off-grid current R (X3),0.1A,uint16,1
+0x04,0x0078,Off-gridPowerActive_R(X3),R,Off-grid active power R (X3),1W,int16,1
+0x04,0x0079,Off-gridPowerS_R(X3),R,Off-grid apparent power R (X3),1VA,uint16,1
+0x04,0x007A,Off-gridVolt_S(X3),R,Off-grid voltage S (X3),0.1V,uint16,1
+0x04,0x007B,Off-gridCurrent_S(X3),R,Off-grid current S (X3),0.1A,uint16,1
+0x04,0x007C,Off-gridPowerActive_S(X3),R,Off-grid active power S (X3),1W,int16,1
+0x04,0x007D,Off-gridPowerS_S(X3),R,Off-grid apparent power S (X3),1VA,uint16,1
+0x04,0x007E,Off-gridVolt_T(X3),R,Off-grid voltage T (X3),0.1V,uint16,1
+0x04,0x007F,Off-gridCurrent_T(X3),R,Off-grid current T (X3),0.1A,uint16,1
+0x04,0x0080,Off-gridPowerActive_T(X3),R,Off-grid active power T (X3),1W,int16,1
+0x04,0x0081,Off-gridPowerS_T(X3),R,Off-grid apparent power T (X3),1VA,uint16,1
+0x04,0x0082,FeedinPower_Rphase(X3)_L,R,Feed-in power R phase (0x82:LSB 0x83:MSB),1W,int32,2
+0x04,0x0084,FeedinPower_Sphase(X3)_L,R,Feed-in power S phase (0x84:LSB 0x85:MSB),1W,int32,2
+0x04,0x0086,FeedinPower_Tphase(X3)_L,R,Feed-in power T phase (0x86:LSB 0x87:MSB),1W,int32,2
+0x04,0x0088,On-gridRunTime_L,R,On-grid run time (0x88:LSB 0x89:MSB),0.1h,int32,2
+0x04,0x008A,Off-gridRunTime_L,R,Off-grid run time (0x8A:LSB 0x8B:MSB),0.1h,int32,2
+0x04,0x008C,REV,R,Reserved,-,uint16,2
+0x04,0x008E,Off-gridYieldTotal_L,R,Off-grid yield total (0x8E:LSB 0x8F:MSB),0.1kWh,uint32,2
+0x04,0x0090,Off-gridYieldToday,R,Off-grid yield today,0.1kWh,uint16,1
+0x04,0x0091,EchargeToday,R,E-charge today (inverter AC port),0.1kWh,uint16,1
+0x04,0x0092,EchargeTotal_L,R,E-charge total (0x92:LSB 0x93:MSB),0.1kWh,uint32,2
+0x04,0x0094,EnergyTotal_L,R,Energy total (0x94:LSB 0x95:MSB),0.1kWh,uint32,2
+0x04,0x0096,SolarEnergyToday,R,Solar energy today,0.1kWh,uint16,1
+0x04,0x0097,REV,R,Reserved,-,uint16,1
+0x04,0x0098,feedin_energy_today_L,R,Feed-in energy today (0x98:LSB 0x99:MSB),0.01kWh,uint32,2
+0x04,0x009A,consum_energy_today_L,R,Consume energy today (0x9A:LSB 0x9B:MSB),0.01kWh,uint32,2
+0x04,0x009C,InvVoltR(X3),R,Inverter voltage R (X3),0.1V,uint16,1
+0x04,0x009D,InvVoltS(X3),R,Inverter voltage S (X3),0.1V,uint16,1
+0x04,0x009E,InvVoltT(X3),R,Inverter voltage T (X3),0.1V,uint16,1
+0x04,0x00A8,feedin_power_Meter2_L,R,Feed-in power meter 2 (0xA8:LSB 0xA9:MSB),1W,int32,2
+0x04,0x00AA,feedin_energy_total_Meter2_L,R,Feed-in energy total meter 2 (0xAA:LSB 0xAB:MSB),0.01kWh,uint32,2
+0x04,0x00AC,consum_energy_total_Meter2_L,R,Consume energy total meter 2 (0xAC:LSB 0xAD:MSB),0.01kWh,uint32,2
+0x04,0x00AE,feedin_energy_today_Meter2_L,R,Feed-in energy today meter 2 (0xAE:LSB 0xAF:MSB),0.01kWh,uint32,2
+0x04,0x00B0,consum_energy_today_Meter2_L,R,Consume energy today meter 2 (0xB0:LSB 0xB1:MSB),0.01kWh,uint32,2
+0x04,0x00B2,FeedinPower_Rphase_Meter2_L,R,Feed-in power R phase meter 2 (0xB2:LSB 0xB3:MSB),1W,int32,2
+0x04,0x00B4,FeedinPower_Sphase_Meter2_L,R,Feed-in power S phase meter 2 (0xB4:LSB 0xB5:MSB),1W,int32,2
+0x04,0x00B6,FeedinPower_Tphase_Meter2_L,R,Feed-in power T phase meter 2 (0xB6:LSB 0xB7:MSB),1W,int32,2
+0x04,0x00B8,Meter1CommunicationState,R,0:Com Error 1:Normal,1,uint16,1
+0x04,0x00B9,Meter2CommunicationState,R,0:Com Error 1:Normal,1,uint16,1
+0x04,0x00BA,Battery_Tem_High,R,Battery temperature high,0.1°C,int16,1
+0x04,0x00BB,Battery_Tem_Low,R,Battery temperature low,0.1°C,int16,1
+0x04,0x00BC,Cell_Voltage_High,R,Cell voltage high,0.001V,uint16,1
+0x04,0x00BD,Cell_Voltage_Low,R,Cell voltage low,0.001V,uint16,1
+0x04,0x00BE,BMS_UserSOC,R,BMS user SOC,1%,uint16,1
+0x04,0x00BF,BMS_UserSOH,R,BMS user SOH,1%,uint16,1
+0x04,0x00C0,GridReactivePower_Total_Meter,R,Grid reactive power total (meter),1Var,int16,1
+0x04,0x00C1,GridReactivePower_R_Meter,R,Grid reactive power R (meter),1Var,int16,1
+0x04,0x00C2,GridReactivePower_S_Meter,R,Grid reactive power S (meter),1Var,int16,1
+0x04,0x00C3,GridReactivePower_T_Meter,R,Grid reactive power T (meter),1Var,int16,1
+0x04,0x00C4,GridPowerFactor_Total_Meter,R,Grid power factor total (meter),0.01,int16,1
+0x04,0x00C5,GridPowerFactor_R_Meter,R,Grid power factor R (meter),0.01,int16,1
+0x04,0x00C6,GridPowerFactor_S_Meter,R,Grid power factor S (meter),0.01,int16,1
+0x04,0x00C7,GridPowerFactor_T_Meter,R,Grid power factor T (meter),0.01,int16,1
+0x04,0x00C8,GridFrequency_Meter,R,Grid frequency (meter),0.01Hz,uint16,1
+0x04,0x00C9,GridVoltage_Total_Meter,R,Grid voltage total (meter),0.1V,uint16,1
+0x04,0x00CA,GridVoltage_R_Meter,R,Grid voltage R (meter),0.1V,uint16,1
+0x04,0x00CB,GridVoltage_S_Meter,R,Grid voltage S (meter),0.1V,uint16,1
+0x04,0x00CC,GridVoltage_T_Meter,R,Grid voltage T (meter),0.1V,uint16,1
+0x04,0x00CD,GridCurrent_Total_Meter,R,Grid current total (meter),0.1A,int16,1
+0x04,0x00CE,GridCurrent_R_Meter,R,Grid current R (meter),0.1A,int16,1
+0x04,0x00CF,GridCurrent_S_Meter,R,Grid current S (meter),0.1A,int16,1
+0x04,0x00D0,GridCurrent_T_Meter,R,Grid current T (meter),0.1A,int16,1
+0x04,0x0100,ModbusPowerControl_State,R,0:disable 1:power ctrl 2:elec qty 3:SOC target 4:Push Pos/Neg 5:Push Zero 6:SelfConsume ChgDischg 7:SelfConsume ChgOnly,1,uint16,1
+0x04,0x0101,TargetFinishFlag,R,Target finish flag,1,uint16,1
+0x04,0x0102,ActivePowerTarget_L,R,Active power target LSB,1W,int32,2
+0x04,0x0104,ReactivePowerTarget_L,R,Reactive power target LSB,1Var,int32,2
+0x04,0x0106,ActivePowerReal_L,R,Active power real LSB,1W,int32,2
+0x04,0x0108,ReactivePowerReal_L,R,Reactive power real LSB,1Var,int32,2
+0x04,0x010A,ActivePower_Upper_L,R,Active power upper limit LSB,1W,int32,2
+0x04,0x010C,ActivePower_Lower_L,R,Active power lower limit LSB,1W,int32,2
+0x04,0x010E,ReactivePower_Upper_L,R,Reactive power upper limit LSB,1Var,int32,2
+0x04,0x0110,ReactivePower_Lower_L,R,Reactive power lower limit LSB,1Var,int32,2
+0x04,0x0112,TargetEnergy_L,R,Target energy LSB,1Wh,int32,2
+0x04,0x0114,Charge_Discharg_Power_L,R,Charge/discharge power LSB,1W,int32,2
+0x04,0x0116,ChargeableElectricCapacity_L,R,Chargeable electric capacity LSB,1Wh,uint32,2
+0x04,0x0118,DischargeableElectricCapacity_L,R,Dischargeable electric capacity LSB,1Wh,uint32,2
+0x04,0x011A,Time_of_Duration,R,Time of duration,1s,uint16,1
+0x04,0x011B,TargetSoc,R,Target SoC,1%,uint16,1
+0x04,0x011C,SocUpper,R,SoC upper limit,1%,uint16,1
+0x04,0x011D,SocLower,R,SoC lower limit,1%,uint16,1
+0x04,0x011E,RemoteCtrlTimeOut,R,Remote control timeout (4~65535),1s,uint16,1
+0x04,0x011F,wBatteryForceChargeFlag,R,0:No Action 1:Force Charge,1,uint16,1
+0x04,0x0120,wBMSRelayState,R,BMS relay state,1,uint16,1
+0x04,0x0121,BMS_RestartFlag,R,BMS restart flag,1,uint16,1
+0x04,0x0180,wSelfTest_step,R,TestStep: 1=Ovp(59.S2) 2=Uvp(27.S1) 3=Uvp(27.S2) 4=Ofp(81>.S1) 5=Ufp(81<.S1) 6=Ofp2(81>.S2) 7=Ufp2(81<.S2) 8=Ovp_10(59.S1) 9=success,1,uint16,1
+0x04,0x0181,wSelfTest_Time,R,Remaining time of each test,1s,uint16,1
+0x04,0x0182,wSelfTest_State,R,bit0-7: OvpTestState/UvpTestState/Uvp_RestriTestState/OfpTestState/UfpTestState/Ofp_RestriTestState/Ufp_RestriTestState/Ovp10mAvgTestState (1=finish 0=testing),1,uint16,1
+0x04,0x0183,Ovp_Threshold_Target,R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x0184,Ovp_Threshold_Time,R,Ovp(59.S2)test,1ms,uint16,1
+0x04,0x0185,Ovp_Outcome_Sample_R,R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x0186,Ovp_Outcome_TripValue_R,R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x0187,Ovp_Outcome_Time_R,R,Ovp(59.S2)test,1ms,uint16,1
+0x04,0x0188,Ovp_Outcome_Sample_S(X3),R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x0189,Ovp_Outcome_TripValue_S(X3),R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x018A,Ovp_Outcome_Time_S(X3),R,Ovp(59.S2)test,1ms,uint16,1
+0x04,0x018B,Ovp_Outcome_Sample_T(X3),R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x018C,Ovp_Outcome_TripValue_T(X3),R,Ovp(59.S2)test,0.1V,uint16,1
+0x04,0x018D,Ovp_Outcome_Time_T(X3),R,Ovp(59.S2)test,1ms,uint16,1
+0x04,0x018E,Uvp_Threshold_Target,R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x018F,Uvp_Threshold_Time,R,Uvp(27.S1)test,1ms,uint16,1
+0x04,0x0190,Uvp_Outcome_Sample_R,R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0191,Uvp_Outcome_TripValue_R,R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0192,Uvp_Outcome_Time_R,R,Uvp(27.S1)test,1ms,uint16,1
+0x04,0x0193,Uvp_Outcome_Sample_S(X3),R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0194,Uvp_Outcome_TripValue_S(X3),R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0195,Uvp_Outcome_Time_S(X3),R,Uvp(27.S1)test,1ms,uint16,1
+0x04,0x0196,Uvp_Outcome_Sample_T(X3),R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0197,Uvp_Outcome_TripValue_T(X3),R,Uvp(27.S1)test,0.1V,uint16,1
+0x04,0x0198,Uvp_Outcome_Time_T(X3),R,Uvp(27.S1)test,1ms,uint16,1
+0x04,0x0199,UvpRestric_Threshold_Target,R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x019A,UvpRestric_Threshold_Time,R,Uvp(27.S2)test,1ms,uint16,1
+0x04,0x019B,UvpRestric_Outcome_Sample_R,R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x019C,UvpRestric_Outcome_TripValue_R,R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x019D,UvpRestric_Outcome_Time_R,R,Uvp(27.S2)test,1ms,uint16,1
+0x04,0x019E,UvpRestric_Outcome_Sample_S(X3),R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x019F,UvpRestric_Outcome_TripValue_S(X3),R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x01A0,UvpRestric_Outcome_Time_S(X3),R,Uvp(27.S2)test,1ms,uint16,1
+0x04,0x01A1,UvpRestric_Outcome_Sample_T(X3),R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x01A2,UvpRestric_Outcome_TripValue_T(X3),R,Uvp(27.S2)test,0.1V,uint16,1
+0x04,0x01A3,UvpRestric_Outcome_Time_T(X3),R,Uvp(27.S2)test,1ms,uint16,1
+0x04,0x01A4,Ofp_Threshold_Target,R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01A5,Ofp_Threshold_Time,R,Ofp(81>.S1)test,1ms,uint16,1
+0x04,0x01A6,Ofp_Outcome_Sample_R,R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01A7,Ofp_Outcome_TripValue_R,R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01A8,Ofp_Outcome_Time_R,R,Ofp(81>.S1)test,1ms,uint16,1
+0x04,0x01A9,Ofp_Outcome_Sample_S(X3),R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01AA,Ofp_Outcome_TripValue_S(X3),R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01AB,Ofp_Outcome_Time_S(X3),R,Ofp(81>.S1)test,1ms,uint16,1
+0x04,0x01AC,Ofp_Outcome_Sample_T(X3),R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01AD,Ofp_Outcome_TripValue_T(X3),R,Ofp(81>.S1)test,0.01Hz,uint16,1
+0x04,0x01AE,Ofp_Outcome_Time_T(X3),R,Ofp(81>.S1)test,1ms,uint16,1
+0x04,0x01AF,Ufp_Threshold_Target,R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B0,Ufp_Threshold_Time,R,Ufp(81<.S1)test,1ms,uint16,1
+0x04,0x01B1,Ufp_Outcome_Sample_R,R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B2,Ufp_Outcome_TripValue_R,R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B3,Ufp_Outcome_Time_R,R,Ufp(81<.S1)test,1ms,uint16,1
+0x04,0x01B4,Ufp_Outcome_Sample_S(X3),R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B5,Ufp_Outcome_TripValue_S(X3),R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B6,Ufp_Outcome_Time_S(X3),R,Ufp(81<.S1)test,1ms,uint16,1
+0x04,0x01B7,Ufp_Outcome_Sample_T(X3),R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B8,Ufp_Outcome_TripValue_T(X3),R,Ufp(81<.S1)test,0.01Hz,uint16,1
+0x04,0x01B9,Ufp_Outcome_Time_T(X3),R,Ufp(81<.S1)test,1ms,uint16,1
+0x04,0x01BA,OfpRestric_Threshold_Target,R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01BB,OfpRestric_Threshold_Time,R,Ofp2(81>.S2)test,1ms,uint16,1
+0x04,0x01BC,OfpRestric_Outcome_Sample_R,R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01BD,OfpRestric_Outcome_TripValue_R,R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01BE,OfpRestric_Outcome_Time_R,R,Ofp2(81>.S2)test,1ms,uint16,1
+0x04,0x01BF,OfpRestric_Outcome_Sample_S(X3),R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01C0,OfpRestric_Outcome_TripValue_S(X3),R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01C1,OfpRestric_Outcome_Time_S(X3),R,Ofp2(81>.S2)test,1ms,uint16,1
+0x04,0x01C2,OfpRestric_Outcome_Sample_T(X3),R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01C3,OfpRestric_Outcome_TripValue_T(X3),R,Ofp2(81>.S2)test,0.01Hz,uint16,1
+0x04,0x01C4,OfpRestric_Outcome_Time_T(X3),R,Ofp2(81>.S2)test,1ms,uint16,1
+0x04,0x01C5,UfpRestric_Threshold_Target,R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01C6,UfpRestric_Threshold_Time,R,Ufp2(81<.S2)test,1ms,uint16,1
+0x04,0x01C7,UfpRestric_Outcome_Sample_R,R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01C8,UfpRestric_Outcome_TripValue_R,R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01C9,UfpRestric_Outcome_Time_R,R,Ufp2(81<.S2)test,1ms,uint16,1
+0x04,0x01CA,UfpRestric_Outcome_Sample_S(X3),R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01CB,UfpRestric_Outcome_TripValue_S(X3),R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01CC,UfpRestric_Outcome_Time_S(X3),R,Ufp2(81<.S2)test,1ms,uint16,1
+0x04,0x01CD,UfpRestric_Outcome_Sample_T(X3),R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01CE,UfpRestric_Outcome_TripValue_T(X3),R,Ufp2(81<.S2)test,0.01Hz,uint16,1
+0x04,0x01CF,UfpRestric_Outcome_Time_T(X3),R,Ufp2(81<.S2)test,1ms,uint16,1
+0x04,0x01D0,Ovp10mAvg_Threshold_Target,R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D1,Ovp10mAvg_Threshold_Time,R,Ovp10(59.S1)test,1s,uint16,1
+0x04,0x01D2,Ovp10mAvg_Outcome_Sample_R,R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D3,Ovp10mAvg_Outcome_TripValue_R,R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D4,Ovp10mAvg_Outcome_Time_R,R,Ovp10(59.S1)test,1s,uint16,1
+0x04,0x01D5,Ovp10mAvg_Outcome_Sample_S(X3),R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D6,Ovp10mAvg_Outcome_TripValue_S(X3),R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D7,Ovp10mAvg_Outcome_Time_S(X3),R,Ovp10(59.S1)test,1s,uint16,1
+0x04,0x01D8,Ovp10mAvg_Outcome_Sample_T(X3),R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01D9,Ovp10mAvg_Outcome_TripValue_T(X3),R,Ovp10(59.S1)test,0.1V,uint16,1
+0x04,0x01DA,Ovp10mAvg_Outcome_Time_T(X3),R,Ovp10(59.S1)test,1s,uint16,1
+0x04,0x01DD,SystemInvNum,R,System inverter number,1,uint16,1
+0x04,0x01DE,Rev,R,Reserved,1,uint16,1
+0x04,0x01DF,Rev,R,Reserved,1,uint16,1
+0x04,0x01E0,InvActivePower_R_All,R,Inv active power R all,1W,int32,2
+0x04,0x01E2,InvActivePower_S_All,R,Inv active power S all,1W,int32,2
+0x04,0x01E4,InvActivePower_T_All,R,Inv active power T all,1W,int32,2
+0x04,0x01E6,InvReactiveOrApparentPower_R_All,R,Inv reactive/apparent power R all,1VA,int32,2
+0x04,0x01E8,InvReactiveOrApparentPower_S_All,R,Inv reactive/apparent power S all,1VA,int32,2
+0x04,0x01EA,InvReactiveOrApparentPower_T_All,R,Inv reactive/apparent power T all,1VA,int32,2
+0x04,0x01EC,InvCurrent_R_All,R,Inv current R all,0.1A,int32,2
+0x04,0x01EE,InvCurrent_S_All,R,Inv current S all,0.1A,int32,2
+0x04,0x01F0,InvCurrent_T_All,R,Inv current T all,0.1A,int32,2
+0x04,0x01F2,PvPower_ChannelA_All,R,PV power channel A all,1W,uint32,2
+0x04,0x01F4,PvPower_ChannelB_All,R,PV power channel B all,1W,uint32,2
+0x04,0x01F6,PvCurrent_ChannelA_All,R,PV current channel A all,0.1A,uint32,2
+0x04,0x01F8,PvCurrent_ChannelB_All,R,PV current channel B all,0.1A,uint32,2
+0x04,0x01FA,BatPower_All,R,Battery power all,1W,int32,2
+0x04,0x01FC,BatCurrent_All,R,Battery current all,0.1A,int32,2
+0x04,0x01FE,ChargePowerLimit_All,R,Charge power limit all,1W,int32,2
+0x04,0x0200,DischargePowerLimit_All,R,Discharge power limit all,1W,int32,2
+0x04,0x0202,Rev,R,Reserved,-,uint16,1
+0x04,0x0203,Rev,R,Reserved,-,uint16,1
+0x04,0x0204,InvActivePower_R,R,slave1 data,1W,int16,1
+0x04,0x0205,InvActivePower_S,R,slave1 data,1W,int16,1
+0x04,0x0206,InvActivePower_T,R,slave1 data,1W,int16,1
+0x04,0x0207,InvReactiveOrApparentPower_R,R,slave1 data,1VA,int16,1
+0x04,0x0208,InvReactiveOrApparentPower_S,R,slave1 data,1VA,int16,1
+0x04,0x0209,InvReactiveOrApparentPower_T,R,slave1 data,1VA,int16,1
+0x04,0x020A,InvCurrent_R,R,slave1 data,0.1A,int16,1
+0x04,0x020B,InvCurrent_S,R,slave1 data,0.1A,int16,1
+0x04,0x020C,InvCurrent_T,R,slave1 data,0.1A,int16,1
+0x04,0x020D,PvPower_ChannelA,R,slave1 data,1W,uint16,1
+0x04,0x020E,PvPower_ChannelB,R,slave1 data,1W,uint16,1
+0x04,0x020F,PvVoltage_ChannelA,R,slave1 data,0.1V,uint16,1
+0x04,0x0210,PvVoltage_ChannelB,R,slave1 data,0.1V,uint16,1
+0x04,0x0211,PvCurrent_ChannelA,R,slave1 data,0.1A,uint16,1
+0x04,0x0212,PvCurrent_ChannelB,R,slave1 data,0.1A,uint16,1
+0x04,0x0213,BatPower,R,slave1 data,1W,uint16,1
+0x04,0x0214,BatVoltage,R,slave1 data,0.1V,uint16,1
+0x04,0x0215,BatCurrent,R,slave1 data,0.1A,uint16,1
+0x04,0x0216,ChargePowerLimit,R,slave1 data,1W,uint16,1
+0x04,0x0217,DischargePowerLimit,R,slave1 data,1W,uint16,1
+0x04,0x0218,BatFaultMessage,R,slave1 data,1,uint16,1
+0x04,0x0219,BatCapacity,R,slave1 data,1%,uint16,1
+0x04,0x021A,Rev,R,slave1 data,1,uint32,2
+0x04,0x021C,Rev,R,slave1 data,1,uint32,2
+0x04,0x021E,InvActivePower_R,R,slave2 data,1W,int16,1
+0x04,0x021F,InvActivePower_S,R,slave2 data,1W,int16,1
+0x04,0x0220,InvActivePower_T,R,slave2 data,1W,int16,1
+0x04,0x0221,InvReactiveOrApparentPower_R,R,slave2 data,1VA,int16,1
+0x04,0x0222,InvReactiveOrApparentPower_S,R,slave2 data,1VA,int16,1
+0x04,0x0223,InvReactiveOrApparentPower_T,R,slave2 data,1VA,int16,1
+0x04,0x0224,InvCurrent_R,R,slave2 data,0.1A,int16,1
+0x04,0x0225,InvCurrent_S,R,slave2 data,0.1A,int16,1
+0x04,0x0226,InvCurrent_T,R,slave2 data,0.1A,int16,1
+0x04,0x0227,PvPower_ChannelA,R,slave2 data,1W,uint16,1
+0x04,0x0228,PvPower_ChannelB,R,slave2 data,1W,uint16,1
+0x04,0x0229,PvVoltage_ChannelA,R,slave2 data,0.1V,uint16,1
+0x04,0x022A,PvVoltage_ChannelB,R,slave2 data,0.1V,uint16,1
+0x04,0x022B,PvCurrent_ChannelA,R,slave2 data,0.1A,uint16,1
+0x04,0x022C,PvCurrent_ChannelB,R,slave2 data,0.1A,uint16,1
+0x04,0x022D,BatPower,R,slave2 data,1W,uint16,1
+0x04,0x022E,BatVoltage,R,slave2 data,0.1V,uint16,1
+0x04,0x022F,BatCurrent,R,slave2 data,0.1A,uint16,1
+0x04,0x0230,ChargePowerLimit,R,slave2 data,1W,uint16,1
+0x04,0x0231,DischargePowerLimit,R,slave2 data,1W,uint16,1
+0x04,0x0232,BatFaultMessage,R,slave2 data,1,uint16,1
+0x04,0x0233,BatCapacity,R,slave2 data,1%,uint16,1
+0x04,0x0234,Rev,R,slave2 data,1,uint32,2
+0x04,0x0236,Rev,R,slave2 data,1,uint32,2
+0x04,0x0238,InvActivePower_R,R,slave3 data,1W,int16,1
+0x04,0x0239,InvActivePower_S,R,slave3 data,1W,int16,1
+0x04,0x023A,InvActivePower_T,R,slave3 data,1W,int16,1
+0x04,0x023B,InvReactiveOrApparentPower_R,R,slave3 data,1VA,int16,1
+0x04,0x023C,InvReactiveOrApparentPower_S,R,slave3 data,1VA,int16,1
+0x04,0x023D,InvReactiveOrApparentPower_T,R,slave3 data,1VA,int16,1
+0x04,0x023E,InvCurrent_R,R,slave3 data,0.1A,int16,1
+0x04,0x023F,InvCurrent_S,R,slave3 data,0.1A,int16,1
+0x04,0x0240,InvCurrent_T,R,slave3 data,0.1A,int16,1
+0x04,0x0241,PvPower_ChannelA,R,slave3 data,1W,uint16,1
+0x04,0x0242,PvPower_ChannelB,R,slave3 data,1W,uint16,1
+0x04,0x0243,PvVoltage_ChannelA,R,slave3 data,0.1V,uint16,1
+0x04,0x0244,PvVoltage_ChannelB,R,slave3 data,0.1V,uint16,1
+0x04,0x0245,PvCurrent_ChannelA,R,slave3 data,0.1A,uint16,1
+0x04,0x0246,PvCurrent_ChannelB,R,slave3 data,0.1A,uint16,1
+0x04,0x0247,BatPower,R,slave3 data,1W,uint16,1
+0x04,0x0248,BatVoltage,R,slave3 data,0.1V,uint16,1
+0x04,0x0249,BatCurrent,R,slave3 data,0.1A,uint16,1
+0x04,0x024A,ChargePowerLimit,R,slave3 data,1W,uint16,1
+0x04,0x024B,DischargePowerLimit,R,slave3 data,1W,uint16,1
+0x04,0x024C,BatFaultMessage,R,slave3 data,1,uint16,1
+0x04,0x024D,BatCapacity,R,slave3 data,1%,uint16,1
+0x04,0x024E,Rev,R,slave3 data,1,uint32,2
+0x04,0x0250,Rev,R,slave3 data,1,uint32,2
+0x04,0x0252,InvActivePower_R,R,slave4 data,1W,int16,1
+0x04,0x0253,InvActivePower_S,R,slave4 data,1W,int16,1
+0x04,0x0254,InvActivePower_T,R,slave4 data,1W,int16,1
+0x04,0x0255,InvReactiveOrApparentPower_R,R,slave4 data,1VA,int16,1
+0x04,0x0256,InvReactiveOrApparentPower_S,R,slave4 data,1VA,int16,1
+0x04,0x0257,InvReactiveOrApparentPower_T,R,slave4 data,1VA,int16,1
+0x04,0x0258,InvCurrent_R,R,slave4 data,0.1A,int16,1
+0x04,0x0259,InvCurrent_S,R,slave4 data,0.1A,int16,1
+0x04,0x025A,InvCurrent_T,R,slave4 data,0.1A,int16,1
+0x04,0x025B,PvPower_ChannelA,R,slave4 data,1W,uint16,1
+0x04,0x025C,PvPower_ChannelB,R,slave4 data,1W,uint16,1
+0x04,0x025D,PvVoltage_ChannelA,R,slave4 data,0.1V,uint16,1
+0x04,0x025E,PvVoltage_ChannelB,R,slave4 data,0.1V,uint16,1
+0x04,0x025F,PvCurrent_ChannelA,R,slave4 data,0.1A,uint16,1
+0x04,0x0260,PvCurrent_ChannelB,R,slave4 data,0.1A,uint16,1
+0x04,0x0261,BatPower,R,slave4 data,1W,uint16,1
+0x04,0x0262,BatVoltage,R,slave4 data,0.1V,uint16,1
+0x04,0x0263,BatCurrent,R,slave4 data,0.1A,uint16,1
+0x04,0x0264,ChargePowerLimit,R,slave4 data,1W,uint16,1
+0x04,0x0265,DischargePowerLimit,R,slave4 data,1W,uint16,1
+0x04,0x0266,BatFaultMessage,R,slave4 data,1,uint16,1
+0x04,0x0267,BatCapacity,R,slave4 data,1%,uint16,1
+0x04,0x0268,Rev,R,slave4 data,1,uint32,2
+0x04,0x026A,Rev,R,slave4 data,1,uint32,2
+0x04,0x026C,InvActivePower_R,R,slave5 data,1W,int16,1
+0x04,0x026D,InvActivePower_S,R,slave5 data,1W,int16,1
+0x04,0x026E,InvActivePower_T,R,slave5 data,1W,int16,1
+0x04,0x026F,InvReactiveOrApparentPower_R,R,slave5 data,1VA,int16,1
+0x04,0x0270,InvReactiveOrApparentPower_S,R,slave5 data,1VA,int16,1
+0x04,0x0271,InvReactiveOrApparentPower_T,R,slave5 data,1VA,int16,1
+0x04,0x0272,InvCurrent_R,R,slave5 data,0.1A,int16,1
+0x04,0x0273,InvCurrent_S,R,slave5 data,0.1A,int16,1
+0x04,0x0274,InvCurrent_T,R,slave5 data,0.1A,int16,1
+0x04,0x0275,PvPower_ChannelA,R,slave5 data,1W,uint16,1
+0x04,0x0276,PvPower_ChannelB,R,slave5 data,1W,uint16,1
+0x04,0x0277,PvVoltage_ChannelA,R,slave5 data,0.1V,uint16,1
+0x04,0x0278,PvVoltage_ChannelB,R,slave5 data,0.1V,uint16,1
+0x04,0x0279,PvCurrent_ChannelA,R,slave5 data,0.1A,uint16,1
+0x04,0x027A,PvCurrent_ChannelB,R,slave5 data,0.1A,uint16,1
+0x04,0x027B,BatPower,R,slave5 data,1W,uint16,1
+0x04,0x027C,BatVoltage,R,slave5 data,0.1V,uint16,1
+0x04,0x027D,BatCurrent,R,slave5 data,0.1A,uint16,1
+0x04,0x027E,ChargePowerLimit,R,slave5 data,1W,uint16,1
+0x04,0x027F,DischargePowerLimit,R,slave5 data,1W,uint16,1
+0x04,0x0280,BatFaultMessage,R,slave5 data,1,uint16,1
+0x04,0x0281,BatCapacity,R,slave5 data,1%,uint16,1
+0x04,0x0282,Rev,R,slave5 data,1,uint32,2
+0x04,0x0284,Rev,R,slave5 data,1,uint32,2
+0x04,0x0286,InvActivePower_R,R,slave6 data,1W,int16,1
+0x04,0x0287,InvActivePower_S,R,slave6 data,1W,int16,1
+0x04,0x0288,InvActivePower_T,R,slave6 data,1W,int16,1
+0x04,0x0289,InvReactiveOrApparentPower_R,R,slave6 data,1VA,int16,1
+0x04,0x028A,InvReactiveOrApparentPower_S,R,slave6 data,1VA,int16,1
+0x04,0x028B,InvReactiveOrApparentPower_T,R,slave6 data,1VA,int16,1
+0x04,0x028C,InvCurrent_R,R,slave6 data,0.1A,int16,1
+0x04,0x028D,InvCurrent_S,R,slave6 data,0.1A,int16,1
+0x04,0x028E,InvCurrent_T,R,slave6 data,0.1A,int16,1
+0x04,0x028F,PvPower_ChannelA,R,slave6 data,1W,uint16,1
+0x04,0x0290,PvPower_ChannelB,R,slave6 data,1W,uint16,1
+0x04,0x0291,PvVoltage_ChannelA,R,slave6 data,0.1V,uint16,1
+0x04,0x0292,PvVoltage_ChannelB,R,slave6 data,0.1V,uint16,1
+0x04,0x0293,PvCurrent_ChannelA,R,slave6 data,0.1A,uint16,1
+0x04,0x0294,PvCurrent_ChannelB,R,slave6 data,0.1A,uint16,1
+0x04,0x0295,BatPower,R,slave6 data,1W,uint16,1
+0x04,0x0296,BatVoltage,R,slave6 data,0.1V,uint16,1
+0x04,0x0297,BatCurrent,R,slave6 data,0.1A,uint16,1
+0x04,0x0298,ChargePowerLimit,R,slave6 data,1W,uint16,1
+0x04,0x0299,DischargePowerLimit,R,slave6 data,1W,uint16,1
+0x04,0x029A,BatFaultMessage,R,slave6 data,1,uint16,1
+0x04,0x029B,BatCapacity,R,slave6 data,1%,uint16,1
+0x04,0x029C,Rev,R,slave6 data,1,uint32,2
+0x04,0x029E,Rev,R,slave6 data,1,uint32,2
+0x04,0x02A0,InvActivePower_R,R,slave7 data,1W,int16,1
+0x04,0x02A1,InvActivePower_S,R,slave7 data,1W,int16,1
+0x04,0x02A2,InvActivePower_T,R,slave7 data,1W,int16,1
+0x04,0x02A3,InvReactiveOrApparentPower_R,R,slave7 data,1VA,int16,1
+0x04,0x02A4,InvReactiveOrApparentPower_S,R,slave7 data,1VA,int16,1
+0x04,0x02A5,InvReactiveOrApparentPower_T,R,slave7 data,1VA,int16,1
+0x04,0x02A6,InvCurrent_R,R,slave7 data,0.1A,int16,1
+0x04,0x02A7,InvCurrent_S,R,slave7 data,0.1A,int16,1
+0x04,0x02A8,InvCurrent_T,R,slave7 data,0.1A,int16,1
+0x04,0x02A9,PvPower_ChannelA,R,slave7 data,1W,uint16,1
+0x04,0x02AA,PvPower_ChannelB,R,slave7 data,1W,uint16,1
+0x04,0x02AB,PvVoltage_ChannelA,R,slave7 data,0.1V,uint16,1
+0x04,0x02AC,PvVoltage_ChannelB,R,slave7 data,0.1V,uint16,1
+0x04,0x02AD,PvCurrent_ChannelA,R,slave7 data,0.1A,uint16,1
+0x04,0x02AE,PvCurrent_ChannelB,R,slave7 data,0.1A,uint16,1
+0x04,0x02AF,BatPower,R,slave7 data,1W,uint16,1
+0x04,0x02B0,BatVoltage,R,slave7 data,0.1V,uint16,1
+0x04,0x02B1,BatCurrent,R,slave7 data,0.1A,uint16,1
+0x04,0x02B2,ChargePowerLimit,R,slave7 data,1W,uint16,1
+0x04,0x02B3,DischargePowerLimit,R,slave7 data,1W,uint16,1
+0x04,0x02B4,BatFaultMessage,R,slave7 data,1,uint16,1
+0x04,0x02B5,BatCapacity,R,slave7 data,1%,uint16,1
+0x04,0x02B6,Rev,R,slave7 data,1,uint32,2
+0x04,0x02B8,Rev,R,slave7 data,1,uint32,2
+0x04,0x02BA,InvActivePower_R,R,slave8 data,1W,int16,1
+0x04,0x02BB,InvActivePower_S,R,slave8 data,1W,int16,1
+0x04,0x02BC,InvActivePower_T,R,slave8 data,1W,int16,1
+0x04,0x02BD,InvReactiveOrApparentPower_R,R,slave8 data,1VA,int16,1
+0x04,0x02BE,InvReactiveOrApparentPower_S,R,slave8 data,1VA,int16,1
+0x04,0x02BF,InvReactiveOrApparentPower_T,R,slave8 data,1VA,int16,1
+0x04,0x02C0,InvCurrent_R,R,slave8 data,0.1A,int16,1
+0x04,0x02C1,InvCurrent_S,R,slave8 data,0.1A,int16,1
+0x04,0x02C2,InvCurrent_T,R,slave8 data,0.1A,int16,1
+0x04,0x02C3,PvPower_ChannelA,R,slave8 data,1W,uint16,1
+0x04,0x02C4,PvPower_ChannelB,R,slave8 data,1W,uint16,1
+0x04,0x02C5,PvVoltage_ChannelA,R,slave8 data,0.1V,uint16,1
+0x04,0x02C6,PvVoltage_ChannelB,R,slave8 data,0.1V,uint16,1
+0x04,0x02C7,PvCurrent_ChannelA,R,slave8 data,0.1A,uint16,1
+0x04,0x02C8,PvCurrent_ChannelB,R,slave8 data,0.1A,uint16,1
+0x04,0x02C9,BatPower,R,slave8 data,1W,uint16,1
+0x04,0x02CA,BatVoltage,R,slave8 data,0.1V,uint16,1
+0x04,0x02CB,BatCurrent,R,slave8 data,0.1A,uint16,1
+0x04,0x02CC,ChargePowerLimit,R,slave8 data,1W,uint16,1
+0x04,0x02CD,DischargePowerLimit,R,slave8 data,1W,uint16,1
+0x04,0x02CE,BatFaultMessage,R,slave8 data,1,uint16,1
+0x04,0x02CF,BatCapacity,R,slave8 data,1%,uint16,1
+0x04,0x02D0,Rev,R,slave8 data,1,uint32,2
+0x04,0x02D2,Rev,R,slave8 data,1,uint32,2
+0x04,0x02D4,InvActivePower_R,R,slave9 data,1W,int16,1
+0x04,0x02D5,InvActivePower_S,R,slave9 data,1W,int16,1
+0x04,0x02D6,InvActivePower_T,R,slave9 data,1W,int16,1
+0x04,0x02D7,InvReactiveOrApparentPower_R,R,slave9 data,1VA,int16,1
+0x04,0x02D8,InvReactiveOrApparentPower_S,R,slave9 data,1VA,int16,1
+0x04,0x02D9,InvReactiveOrApparentPower_T,R,slave9 data,1VA,int16,1
+0x04,0x02DA,InvCurrent_R,R,slave9 data,0.1A,int16,1
+0x04,0x02DB,InvCurrent_S,R,slave9 data,0.1A,int16,1
+0x04,0x02DC,InvCurrent_T,R,slave9 data,0.1A,int16,1
+0x04,0x02DD,PvPower_ChannelA,R,slave9 data,1W,uint16,1
+0x04,0x02DE,PvPower_ChannelB,R,slave9 data,1W,uint16,1
+0x04,0x02DF,PvVoltage_ChannelA,R,slave9 data,0.1V,uint16,1
+0x04,0x02E0,PvVoltage_ChannelB,R,slave9 data,0.1V,uint16,1
+0x04,0x02E1,PvCurrent_ChannelA,R,slave9 data,0.1A,uint16,1
+0x04,0x02E2,PvCurrent_ChannelB,R,slave9 data,0.1A,uint16,1
+0x04,0x02E3,BatPower,R,slave9 data,1W,uint16,1
+0x04,0x02E4,BatVoltage,R,slave9 data,0.1V,uint16,1
+0x04,0x02E5,BatCurrent,R,slave9 data,0.1A,uint16,1
+0x04,0x02E6,ChargePowerLimit,R,slave9 data,1W,uint16,1
+0x04,0x02E7,DischargePowerLimit,R,slave9 data,1W,uint16,1
+0x04,0x02E8,BatFaultMessage,R,slave9 data,1,uint16,1
+0x04,0x02E9,BatCapacity,R,slave9 data,1%,uint16,1
+0x04,0x02EA,Rev,R,slave9 data,1,uint32,2
+0x04,0x02EC,Rev,R,slave9 data,1,uint32,2
+0x04,0x06DF,total_length,R,Total length,1,uint16,1
+0x04,0x06E0,PallerLen,R,Parallel length,1,uint16,1
+0x04,0x06E1,bDHWakeUpSlaver,R,Data Hub wake up slaver,1,uint16,1
+0x04,0x06E2,bDHMasterBmsSwitchState,R,DH master BMS switch state,1,uint16,1
+0x04,0x06E3,bDHMasterBmsComState,R,DH master BMS com state,1,uint16,1
+0x04,0x06E4,bDHMasterBypassConfig,R,DH master bypass config,1,uint16,1
+0x04,0x06E5,bDHMasterBypassWorkState,R,DH master bypass work state,1,uint16,1
+0x04,0x06E6,bDHExternalGen,R,DH external generator,1,uint16,1
+0x04,0x06E7,bDHMasterRunMode,R,DH master run mode,1,uint16,1
+0x04,0x06E8,bDHMasterCom485State,R,DH master COM485 state (Only X1),1,uint16,1
+0x04,0x06E9,bDHBatteryChargeMaxSoc,R,DH battery charge max SOC (Only X1),1,uint16,1
+0x04,0x06EA~0x06FF,Rev[22],R,Reserved,1,uint16,1
+0x04,0x0700,ChargeLen,R,EV Charge - Charge length,1,uint16,1
+0x04,0x0701,RefPowerToEV,R,EV Charge - Ref power to EV,1,uint16,1
+0x04,0x0702,PowerToEV,R,EV Charge - Power to EV,1,uint32,2
+0x04,0x0704,PvRef,R,EV Charge - PV ref,1,uint16,1
+0x04,0x0705,FeedinPower_Rphase(X3)/FeedinPower(X1),R,EV Charge - Feed-in power R(X3)/total(X1),1,uint32,2
+0x04,0x0707,FeedinPower_Sphase(X3),R,EV Charge - Feed-in power S (X3),1,uint32,2
+0x04,0x0709,FeedinPower_Tphase(X3),R,EV Charge - Feed-in power T (X3),1,uint32,2
+0x04,0xEF00,bGetChargePower,R,Current charging power (Only X3),1,uint16,1
+0x04,0xF000-0xF01D,Error,R,Error/Warning data,1,uint16,30
+0x04,0xF01E,RealTime_Length,R,Number of set items,1,uint16,1
+0x04,0xF01F-,RealTime_Data,R,RealTime Data,1,uint16,N
+0x06,0x0000,UnlockPassword,W,UnlockPassword,1,uint16,1
+0x06,0x0001,Reconnection_Time,W,Reconnection time (15~600),1s,uint16,1
+0x06,0x0002,CheckingTime,W,Checking time 0~1500(X1) 0~1000(X3),1s,uint16,1
+0x06,0x0003,Adjust_Battery_U,W,Adjust battery voltage (0~3900),0.1V,uint16,1
+0x06,0x0004,Adjust_Battery_I,W,Adjust battery current (-350~350),0.1A,int16,1
+0x06,0x0005,Vac_Min,W,Vac min (230~3000 X1)(250~2300 X3),0.1V,uint16,1
+0x06,0x0006,Vac_Max,W,Vac max (1000~3000 X1)(1270~3000 X3),0.1V,uint16,1
+0x06,0x0007,Fac_Min,W,Fac min (4000~6500),0.01Hz,uint16,1
+0x06,0x0008,Fac_Max,W,Fac max (4500~7000 X1)(4000~7000 X3),0.01Hz,uint16,1
+0x06,0x0009,SafetyCode,W,Safety type (0-48 country codes),—,uint16,1
+0x06,0x000A,MateBoxEnable,W,MateBox enable 0:Disable 1:Enable,1,uint16,1
+0x06,0x000B,Grid_10Min_high,W,Grid 10min high (1500~3000),0.1V,uint16,1
+0x06,0x000C,Vac_Min_slow_protect,W,Vac min slow protect,0.1V,uint16,1
+0x06,0x000D,Vac_Max_slow_protect,W,Vac max slow protect,0.1V,uint16,1
+0x06,0x000E,Fac_Min_slow_Protect,W,Fac min slow protect (4000~6500),0.01Hz,uint16,1
+0x06,0x000F,Fac_Max_slow_Protect,W,Fac max slow protect,0.01Hz,uint16,1
+0x06,0x0010,DCI_Limit,W,DCI limit (20~1000),1mA,uint16,1
+0x06,0x0011,active_Power_Limit,W,Active power limit (0~100),0-100,uint16,1
+0x06,0x0012,Adjust_Pv1_Current,W,Adjust PV1 current (10~3000),0.01A,uint16,1
+0x06,0x0013,Adjust_Pv2_Current,W,Adjust PV2 current (10~3000),0.01A,uint16,1
+0x06,0x0014,Adjust_Pv1_Volt,W,Adjust PV1 voltage (100~10000),0.1V,uint16,1
+0x06,0x0015,Adjust_Pv2_Volt,W,Adjust PV2 voltage (100~10000),0.1V,uint16,1
+0x06,0x0016,Adjust_AC_Current_R,W,Adjust AC current R (10~300),0.1A,uint16,1
+0x06,0x0017,Adjust_AC_Volt_R,W,Adjust AC voltage R,0.1V,uint16,1
+0x06,0x001B,MatchResistanceSet,W,Match resistance 0:disable 1:enable,—,uint16,1
+0x06,0x001C,SystemON_OFF,W,System ON/OFF 0:OFF 1:ON,1,uint16,1
+0x06,0x001D,FactoryReset,W,Factory reset (1 effect),1,uint16,1
+0x06,0x001E,Inverter_Clear_History,W,Clear history (1 effect),1,uint16,1
+0x06,0x001F,CSolarhargerUseMode,W,Mode: 0:Self use 1:Feed-in priority 2:Back up 3:Manual 4:Peak Shaving 5:TOU,—,uint16,1
+0x06,0x0020,Manual_mode,W,0:Stop 1:Force charge 2:Force discharge,1,uint16,1
+0x06,0x0021,wBattery1_Type,W,Battery type 0:Lead Acid 1:Lithium,1%,uint16,1
+0x06,0x0022,Charge_floatVolt,W,Lead-acid charge float volt,0.1V,uint16,1
+0x06,0x0023,Discharge_CutVolt,W,Lead-acid discharge cut-off volt,0.1V,uint16,1
+0x06,0x0024,Battery1_ChargeMaxCurrent,W,Lead-acid charge max current (0~300),0.1A,uint16,1
+0x06,0x0025,Battery1_DischargeMaxCurrent,W,Lead-acid discharge max current (0~300),0.1A,uint16,1
+0x06,0x0026,wBatteryDischargeBackupVoltage,W,Battery discharge backup voltage,0.1V,uint16,1
+0x06,0x0027,CtType(X3),R,CT type 0:100A 1:200A,—,uint16,1
+0x06,0x0028,EpsDcvAdjEn(X3),W,EPS DCV adjust enable 0:Disable 1:Enable,-,uint16,1
+0x06,0x0029,CalibGainInvVoltR(X3),W,Calib gain inv volt R (500~3000),0.1V,uint16,1
+0x06,0x002A,CalibGainInvVoltS(X3),W,Calib gain inv volt S (500~3000),0.1V,uint16,1
+0x06,0x002B,CalibGainInvVoltT(X3),W,Calib gain inv volt T (500~3000),0.1V,uint16,1
+0x06,0x002C,CalibEPSDcvAdjR(X3),W,Calib EPS DCV adj R (500~3000),0.01V,int16,1
+0x06,0x002D,CalibEPSDcvAdjS(X3),W,Calib EPS DCV adj S (500~3000),0.01V,int16,1
+0x06,0x002E,CalibEPSDcvAdjT(X3),W,Calib EPS DCV adj T (500~3000),0.01V,int16,1
+0x06,0x002F,ClearEnergy_Meter/CT_1,W,Clear energy meter/CT 1 (1 effect),1,uint16,1
+0x06,0x0030,Adjust_AC_Current_S(X3),W,Adjust AC current S (10~300),0.1A,uint16,1
+0x06,0x0031,Adjust_AC_Volt_S(X3),W,Adjust AC voltage S,0.1V,uint16,1
+0x06,0x0032,Adjust_AC_Current_T(X3),W,Adjust AC current T (10~300),0.1A,uint16,1
+0x06,0x0033,Adjust_AC_Volt_T(X3),W,Adjust AC voltage T,0.1V,uint16,1
+0x06,0x0034,Adjust_CT_Zero(X3),W,Adjust CT zero (1 effect),1,uint16,1
+0x06,0x0035,Adjust_CT_Power_R(X3),W,Adjust CT power R (0~65535),1W,uint16,1
+0x06,0x0036,Adjust_CT_Power_S(X3),W,Adjust CT power S (0~65535),1W,uint16,1
+0x06,0x0037,Adjust_CT_Power_T(X3),W,Adjust CT power T (0~65535),1W,uint16,1
+0x06,0x0038,EpsPhaseSeqDetect,W,EPS phase seq detect 0:disable 1:enable,1,uint16,1
+0x06,0x0039,UserPassword,W,User password (0000~9999),-,uint16,1
+0x06,0x003A,AdvancedPassword,W,Advanced password (0000~9999),-,uint16,1
+0x06,0x0041,ExportControl_Factory_Limit,W,Export control factory limit,1W(X1)/10W(X3),uint16,1
+0x06,0x0042,ExportControl_User_Limit,W,Export control user limit,1W(X1)/10W(X3),uint16,1
+0x06,0x0043,Off-grid_Mute,W,Off-grid mute 0:disable 1:enable,1,uint16,1
+0x06,0x0044,Off-grid_MinSoC,W,Off-grid min SoC (10~25),1%,uint16,1
+0x06,0x0045,Off-grid_Frequency,W,Off-grid frequency 0:50Hz 1:60Hz,1,uint16,1
+0x06,0x0046,AgeingMode,W,Ageing mode 1:Enable 0:Disable,1,uint16,1
+0x06,0x0047,Language,W,Language (0:EN 1:DE 2:FR 3:PL 4:ES 5:PT 6:IT 7:CN 8:UA 9:BR),1,uint16,1
+0x06,0x0048,EnableMPPT,W,Enable MPPT 1:Enable 0:Disable,1,uint16,1
+0x06,0x0049,wTuvp_L2,W,Trip time under-voltage L2 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x004A,wTovp_L2,W,Trip time over-voltage L2 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x004B,wTufp_L2,W,Trip time under-frequency L2 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x004C,wTofp_L2,W,Trip time over-frequency L2 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x004D,wTuvp_L1,W,Trip time under-voltage L1,1ms(X1)/10ms(X3),uint16,1
+0x06,0x004E,wTovp_L1,W,Trip time over-voltage L1,1ms(X1)/10ms(X3),uint16,1
+0x06,0x004F,wTufp_L1,W,Trip time under-frequency L1 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x0050,wTofp_L1,W,Trip time over-frequency L1 (0~10000),1ms(X1)/10ms(X3),uint16,1
+0x06,0x0051,PVConnection,W,PV connection 0:MULTI 1:COMM,1,uint16,1
+0x06,0x0052,ShutDown,W,Shutdown 0:Disable 1:Enable,1,uint16,1
+0x06,0x0053,MicroGrid,W,MicroGrid 0:Disable 1:Enable,1,uint16,1
+0x06,0x0054,SelfTest_start,W,Self test start (0:stop 1-8:individual tests 10:test all),1,uint16,1
+0x06,0x0055,Clear_overload_fault,W,Clear overload fault (Write 1),1,uint16,1
+0x06,0x0056,Bat_Awaken,W,Battery awaken - lead acid (Write 1),1,uint16,1
+0x06,0x0057,OFPL_CurveType,W,OFPL curve type 0:Symmetry 1:Asymmetry,1,uint16,1
+0x06,0x0058,OFPL_Tstop,W,OFPL Tstop (0~600),1s,uint16,1
+0x06,0x0059,OFPL_RemovePoint,W,OFPL remove point (4950~5500),0.01Hz,uint16,1
+0x06,0x005A,OFPL_StartPoint,W,OFPL start point (4950~5500),0.01Hz,uint16,1
+0x06,0x005B,OFPL_SetRate,W,OFPL set rate (2~12),1%,uint16,1
+0x06,0x005C,OFPL_DelayTime,W,OFPL delay time,1ms,uint16,1
+0x06,0x005D,OFPL_fstop_disch,W,OFPL fstop discharge (4950~5500),0.01Hz,uint16,1
+0x06,0x005E,OFPL_fPmin,W,OFPL fPmin (4950~5500),0.01Hz,uint16,1
+0x06,0x005F,Reset_Mgr_EE,W,Reset manager EE config (1 effect),1,uint16,1
+0x06,0x0060,absorpt_voltage,W,Lead acid absorpt voltage,0.1V,uint16,1
+0x06,0x0061,SelfUse_Discharge_MinSoC,W,Self-use discharge min SoC (10~100%),1%,uint16,1
+0x06,0x0062,SelfUse_NightCharge_Enable,W,Self-use night charge enable,1,uint16,1
+0x06,0x0063,SelfUse_NightCharge_UpperSoC,W,Self-use night charge upper SoC (10~100%),1%,uint16,1
+0x06,0x0064,Feedin_NightCharge_UpperSoC,W,Feed-in night charge upper SoC (10~100%),1%,uint16,1
+0x06,0x0065,Feedin_Discharge_MinSoC,W,Feed-in discharge min SoC (10~100%),1%,uint16,1
+0x06,0x0066,BackUp_NightCharge_UpperSoC,W,Backup night charge upper SoC (30~100%),1%,uint16,1
+0x06,0x0067,BackUp_Discharge_MinSoC,W,Backup discharge min SoC (15~100%),1%,uint16,1
+0x06,0x0068,NightCharge_Period1_StartTime,W,Night charge period 1 start time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x0069,NightCharge_Period1_EndTime,W,Night charge period 1 end time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x006A,Discharge_Period1_StartTime,W,Discharge period 1 start time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x006B,Discharge_Period1_EndTime,W,Discharge period 1 end time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x006C,Set_Chrg&DischrgPeriod2_Enable,W,Charge/discharge period 2 enable,1,uint16,1
+0x06,0x006D,NightCharge_Period2_StartTime,W,Night charge period 2 start time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x006E,NightCharge_Period2_EndTime,W,Night charge period 2 end time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x006F,Discharge_Period2_StartTime,W,Discharge period 2 start time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x0070,Discharge_Period2_EndTime,W,Discharge period 2 end time (Hi:Hour Lo:Min),,uint8(Hi/Lo),1
+0x06,0x0071,MainBreakerCurrentLimit,W,Main breaker current limit (10~100 X1)(10~250 X3),1A,uint16,1
+0x06,0x0072,PowerfactorMode,W,PF mode 0:Off 1:Over Excited 2:Under Excited 3:Curve 4:Qu 5:Fix Q Power,1,uint16,1
+0x06,0x0073,PowerfactorData,W,Power factor data (80~100),0.01,uint16,1
+0x06,0x0074,PowerFactor_Curve_PF1,W,PF curve PF1 (80~100),0.01,uint16,1
+0x06,0x0075,PowerFactor_Curve_PF2,W,PF curve PF2 (80~100),0.01,uint16,1
+0x06,0x0076,PowerFactor_Curve_PF3,W,PF curve PF3 (80~100),0.01,uint16,1
+0x06,0x0077,PowerFactor_Curve_PF4,W,PF curve PF4 (80~100),0.01,uint16,1
+0x06,0x0078,PowerFactor_Curve_Power1,W,PF curve power 1 (0~100),1%,uint16,1
+0x06,0x0079,PowerFactor_Curve_Power2,W,PF curve power 2 (0~100),1%,uint16,1
+0x06,0x007A,PowerFactor_Curve_Power3,W,PF curve power 3 (0~100),1%,uint16,1
+0x06,0x007B,PowerFactor_Curve_Power4,W,PF curve power 4 (0~100),1%,uint16,1
+0x06,0x007C,PowerFactor_Curve_PfLockInPoint,W,PF curve lock-in point (105~110),0.01,uint16,1
+0x06,0x007D,PowerFactor_Curve_PfLockOutPoint,W,PF curve lock-out point (90~98),0.01,uint16,1
+0x06,0x007E,PowerFactor_Curve_3Tau,W,PF curve 3Tau (6~180),1s,uint16,1
+0x06,0x007F,PowerFactor_Qu_VoltRatio1,W,Qu volt ratio 1 (0~60),1%,uint16,1
+0x06,0x0080,PowerFactor_Qu_VoltRatio4,W,Qu volt ratio 4 (-60~-30 X1)(-60~0 X3),1%,int16,1
+0x06,0x0081,PowerFactor_Qu_QuResponseV1,W,Qu response V1,0.1V,uint16,1
+0x06,0x0082,PowerFactor_Qu_QuResponseV2,W,Qu response V2,0.1V,uint16,1
+0x06,0x0083,PowerFactor_Qu_QuResponseV3,W,Qu response V3,0.1V,uint16,1
+0x06,0x0084,PowerFactor_Qu_QuResponseV4,W,Qu response V4,0.1V,uint16,1
+0x06,0x0085,PowerFactor_Qu_K,W,Qu K (-100~100),0.1,int16,1
+0x06,0x0086,PowerFactor_Qu_3Tau,W,Qu 3Tau (6~180),1s,uint16,1
+0x06,0x0087,PowerFactor_Qu_QuDelayTimer,W,Qu delay timer (0~30 X1)(0~200 X3),1s,uint16,1
+0x06,0x0088,PowerFactor_Qu_QuLockEn,W,"Qu lock enable {0,1}",1,uint16,1
+0x06,0x0089,PowerFactor_Qu_QuLockIn,W,Qu lock-in (0~20),1%,uint16,1
+0x06,0x008A,PowerFactor_Qu_QuLockOut,W,Qu lock-out (0~20),1%,uint16,1
+0x06,0x008B,PowerFactor_FixQPower,W,Fix Q power (min~max),1Var(X1)/10Var(X3),int16,1
+0x06,0x008C,InvVoltZeroAdj(X3),W,1:Prepare calibration 2:Start calibration 3:Check results,1,uint16,1
+0x06,0x008D,PgridBias,W,0:Disable 1:Grid 2:INV,-,uint16,1
+0x06,0x008E,EpsRestartSoc,W,EPS restart SoC,1%,uint16,1
+0x06,0x008F,485CommFunSelect,W,0:modbus485 1:EVCharge 2:DataHub 3:AdaptBoxG2 4:EVC&AdaptBoxG2 5:AdaptBoxG2&Meter 6:EVC&AdaptBoxG2&Meter,1,uint16,1
+0x06,0x0090,ConnectSlop(X3),W,Connect slope (1~10000),1%,uint16,1
+0x06,0x0091,ReconnectSlop(X3),W,Reconnect slope (1~10000),1%,uint16,1
+0x06,0x0092,UFPL_StartPoint,W,Under freq safe load start point (4500~5050),0.01Hz,uint16,1
+0x06,0x0093,UFPL_SetRate,W,Under freq drop output slope (2~12),1%,uint16,1
+0x06,0x0094,UFPL_DelayTime,W,Freq droop delay time (0~1000),1ms,uint16,1
+0x06,0x0095,UFPL_RemovePoint,W,UFPL remove point (4500~5050),0.01Hz,uint16,1
+0x06,0x0096,UFPL_fstop_ch,W,UFPL fstop charge (4500~5050),0.01Hz,uint16,1
+0x06,0x0097,UFPL_fPmax,W,UFPL fPmax (4500~5050),0.01Hz,uint16,1
+0x06,0x0098,ShadowFixFuncEnable2,R,0:Off 1:Low 2:Middle 3:High,-,uint16,1
+0x06,0x0099,HotStandbyEN,W,0:enable 1:disable,1,uint16,1
+0x06,0x009A,ExtendBmsSetting,W,0:disable 1:enable,1,uint16,1
+0x06,0x009B,ATE_Test,W,1 effect,1,uint16,1
+0x06,0x009C,wShadowFixFuncEnable,W,0:Off 1:Low 2:Middle 3:High,1,uint16,1
+0x06,0x009D,ExternalSignal,W,ExternalSignal,1,uint16,1
+0x06,0x009E,PhasePowerBalance(X3),W,0:disable 1:enable,1,uint16,1
+0x06,0x009F,OFPL_Wgra,W,500~10000,0.0001,uint16,1
+0x06,0x00A0,MeterFunction,W,0:disable 1:enable,1,uint16,1
+0x06,0x00A1,Meter1_ID,W,Meter1 ID (1~200),1,uint16,1
+0x06,0x00A2,Meter2_ID,W,Meter2 ID (1~200),1,uint16,1
+0x06,0x00A3,ResetMeter2Energy,W,Reset meter2 energy (1 effect),1,uint16,1
+0x06,0x00A4,DirectionMeterCT1,W,0:Positive 1:Negative,1,uint16,1
+0x06,0x00A5,DirectionMeter2,W,0:Positive 1:Negative,1,uint16,1
+0x06,0x00A6,DischCutOffPoint_DifferentEN,W,Lead acid battery 0:disable 1:enable,1,uint16,1
+0x06,0x00A7,ExternalInv,W,0:Enable 1:Disable,1,uint16,1
+0x06,0x00A8,DischCutOffVoltage_GridMode,W,Lead acid battery DischargeCutVoltage~8000,0.1V,uint16,1
+0x06,0x00A9,DRMFunctionEnable,R,0:disable 1:enable,1,uint16,1
+0x06,0x00AA,Meter/CT_Select,W,0:Meter 1:CT,1,uint16,1
+0x06,0x00AB,FVRT_Function,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x00AC,FVRT_VacUpper,W,230~288(X1) 230~276(X3),1V,uint16,1
+0x06,0x00AD,FVRT_VacLower,W,46~240(X1) 30~230(X3),1V,uint16,1
+0x06,0x00AE,PuFuncEnable,W,0:disable 1:enable,1,uint16,1
+0x06,0x00AF,PuFunc_ResponseV1,W,(207.0~276.0)(X1) (250~2300)(X3),0.1V,uint16,1
+0x06,0x00B0,PuFunc_ResponseV2,W,(207.0~276.0)(X1) (250~2300)(X3),0.1V,uint16,1
+0x06,0x00B1,PuFunc_ResponseV3,W,(207.0~276.0)(X1) (1270~3000)(X3),0.1V,uint16,1
+0x06,0x00B2,PuFunc_ResponseV4,W,(207.0~276.0)(X1) (1270~3000)(X3),0.1V,uint16,1
+0x06,0x00B3,PuFunc_3Tau,W,6~180(X1) 3~180(X3),1s,uint16,1
+0x06,0x00B4,LeaseModeEnable,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x00B5,DeviceLockFlag,W,0:UnLock 1:Lock,1,uint16,1
+0x06,0x00B6,ManualModeControl,W,0:OFF 1:ON,1,uint16,1
+0x06,0x00B7,FeedinOnPower,W,0~8000,1W,uint16,1
+0x06,0x00B8,SwitchOnSoc,W,0~100,1%,uint16,1
+0x06,0x00B9,ConsumeOffPower,W,0~8000,1W,uint16,1
+0x06,0x00BA,SwitchOffSoc,W,0~100,1%,uint16,1
+0x06,0x00BB,MinimumPerOnSignal,W,5~100,1Min,uint16,1
+0x06,0x00BC,MaximumPerDayOn,W,5~1200,1Min,uint16,1
+0x06,0x00BD,ScheduleEnable,W,0:disable 1:enable,1,uint16,1
+0x06,0x00BE,WorkStartTime1,W,bP1_StartHour/bP1_StartMinute,,uint8(Hi/Lo),1
+0x06,0x00BF,WorkEndTime1,W,bP1_StopHour/bP1_StopMinute,,uint8(Hi/Lo),1
+0x06,0x00C0,WorkStartTime2,W,bP2_StartHour/bP2_StartMinute,,uint8(Hi/Lo),1
+0x06,0x00C1,WorkEndTime2,W,bP2_StopHour/bP2_StopMinute,,uint8(Hi/Lo),1
+0x06,0x00C2,LoadManagementWorkMode,W,0:Disable 1:Manual 2:SmartSave,1,uint16,1
+0x06,0x00C3,DryContactMode,W,0:Load Management 1:Generator Control,1,uint16,1
+0x06,0x00C4,SelfuseModeBackupEn,W,0:disable 1:enable,1,uint16,1
+0x06,0x00C5,SelfUse_BackupSoc,W,10~100,1%,uint16,1
+0x06,0x00C6,ParallelSetting,W,0:Free 1:Master,1,uint16,1
+0x06,0x00C7,ExternalGenEn,W,0:Disable 1:ATS Control 2:Dry Contact,1,uint16,1
+0x06,0x00C8,ExternalGenMaxCharge,W,ExternalGenMaxCharge,1W(X1)/10W(X3),uint16,1
+0x06,0x00C9,ModBusRTU_Address,W,ModBusRTU_Address,1,uint16,1
+0x06,0x00CA,ModBusRTU_BaudRate,W,0:115200 1:57600 2:56000 3:38400 4:19200 5:14400 6:9600,bit/s,uint16,1
+0x06,0x00CB,SetPuPower1,W,0~20,1%,uint16,1
+0x06,0x00CC,SetPuPower2,W,0~100,1%,uint16,1
+0x06,0x00CD,SetPuPower3,W,0~100,1%,uint16,1
+0x06,0x00CE,SetPuPower4,W,0~20,1%,uint16,1
+0x06,0x00CF,BatteryHeatingEn,W,BatteryHeatingEn,—,uint16,1
+0x06,0x00D0,HeatingPeriod1_StartTime,W,HeatingPeriod1 Start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00D1,HeatingPeriod1_EndTime,W,HeatingPeriod1 End Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00D2,HeatingPeriod2_StartTime,W,HeatingPeriod2 Start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00D3,HeatingPeriod2_EndTime,W,HeatingPeriod2 End Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00D4,ExportSoftLimitEn,W,0:Disable 1:Enable,-,uint16,1
+0x06,0x00D5,ExportHardLimitEn,W,0:Disable 1:Enable,-,uint16,1
+0x06,0x00D6,HardExportPower,W,0~15000,1W(X1)/10W(X3),uint16,1
+0x06,0x00D7,GeneralSoftLimitEn,W,0:Disable 1:Enable,-,uint16,1
+0x06,0x00D8,GeneralHardLimitEn,W,0:Disable 1:Enable,-,uint16,1
+0x06,0x00D9,SoftAcPowerLimit,W,0~15000,1VA(X1)/10VA(X3),uint16,1
+0x06,0x00DA,HardAcPowerLimit,W,0~15000,1VA(X1)/10VA(X3),uint16,1
+0x06,0x00DB,ResetErrorLog,W,Write 1 effect,-,uint16,1
+0x06,0x00DC,ResetINVEnergy,W,Write 1 effect,-,uint16,1
+0x06,0x00DD,Reserve,W,Reserved,-,uint16,2
+0x06,0x00DF,ResetINV,W,Write 1 effect,-,uint16,1
+0x06,0x00E0,BatteryChargeMaxSoc,W,10~100,1%,uint16,1
+0x06,0x00E1,mBatteryToEVCharge,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x00E2,BMS_Restart,W,1:effect,1,uint16,1
+0x06,0x00E3,StartGenMethod,W,0:reference soc 1:immediately,1,uint16,1
+0x06,0x00E4,SwitchOnSoC_Gen,W,Switch on SoC (reference soc),1%,uint16,1
+0x06,0x00E5,SwitchOffSoC_Gen,W,Switch off SoC (reference soc),1%,uint16,1
+0x06,0x00E6,MaxRunTime,W,MaxRunTime (1~60000),1Min,uint16,1
+0x06,0x00E7,MinRestTime,W,MinRestTime (1~60000),1Min,uint16,1
+0x06,0x00E8,AllowWorkStartTime,W,Allow work start time Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00E9,AllowWorkStopTime,W,Allow work stop time Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x00EA,PeakShavingDischarPeriod_P1_Start,W,Peak shaving discharge period 1 start,,uint8(Hi/Lo),1
+0x06,0x00EB,PeakShavingDischarPeriod_P1_Stop,W,Peak shaving discharge period 1 stop,,uint8(Hi/Lo),1
+0x06,0x00EC,PeakShavingDischarPeriod_P2_Start,W,Peak shaving discharge period 2 start,,uint8(Hi/Lo),1
+0x06,0x00ED,PeakShavingDischarPeriod_P2_Stop,W,Peak shaving discharge period 2 stop,,uint8(Hi/Lo),1
+0x06,0x00EE,PeakShaving_PeriodBPeakLimits1,W,0~60000(X1) 0~3000(X3),1W(X1)/10W(X3),uint16,1
+0x06,0x00EF,PeakShaving_PeriodDPeakLimits2,W,0~60000(X1) 0~3000(X3),1W(X1)/10W(X3),uint16,1
+0x06,0x00F0,PeakShaving_PeriodAChargeFromGridEn,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x00F1,PeakShaving_PeriodAChargePowerLimits,W,0~7500(X1) 0~15000(X3),1W,uint16,1
+0x06,0x00F2,PeakShaving_PeriodAMax_SOC,W,10~100,1%,uint16,1
+0x06,0x00F3,PeakShaving_PeriodCReserved_SOC,W,10~100,1%,uint16,1
+0x06,0x00F4,VPPExitIdleEn,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x00F5,FastCtCheckEn,W,0:disable 1:enable,1,uint16,1
+0x06,0x00F9,EVChargerAddr,W,0~255,1,uint16,1
+0x06,0x00FB,AdaptBoxG2Addr,W,0~255,1,uint16,1
+0x06,0x00FD,CTFaultEn,W,Cycle detection CT enable 0:Disable 1:Enable,1,uint16,1
+0x06,0x00FE,SuperBuckUpEn,W,EPS mode without battery 0:Disable 1:Enable,1,uint16,1
+0x06,0x00FF,SmartScheduleWorkMode,W,0:Self use 1:Feedin Priority 2:Bat not discharge,1,uint16,1
+0x06,0x0100,GenCharge_StartTime,W,GenCharge start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0101,GenCharge_EndTime,W,GenCharge end Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0102,GenDischarge_StartTime,W,GenDischarge start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0103,GenDischarge_EndTime,W,GenDischarge end Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0104,GenP2_SetEnable,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x0105,GenP2Charge_StartTime,W,GenP2 charge start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0106,GenP2Charge_EndTime,W,GenP2 charge end Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0107,GenP2Discharge_StartTime,W,GenP2 discharge start Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0108,GenP2Discharge_EndTime,W,GenP2 discharge end Hour/Minute,,uint8(Hi/Lo),1
+0x06,0x0109,ChargeFromGenEnable,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x010A,ChargeFromGen_ChargeSoC,W,10~100,1%,uint16,1
+0x06,0x010B,GenMinPower,W,0~60000,1W,uint16,1
+0x06,0x010C,FastInEPS,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x010D,CTCutDownINVEn,W,0:Disable 1:Enable,1,uint16,1
+0x06,0x0113,bShotoffEn,W,0-1,1,uint16,1
+0x06,0x0114,PowerFactor_Qu_VoltRatio2,W,0~60,1%,uint16,1
+0x06,0x0115,PowerFactor_Qu_VoltRatio3,W,0~60,1%,uint16,1
+0x10,0x0000,RTC-Seconds,W,RTC Seconds (0~59),1s,uint16,1
+0x10,0x0001,RTC-Minutes,W,RTC Minutes (0~59),1min,uint16,1
+0x10,0x0002,RTC-Hours,W,RTC Hours (0~23),1h,uint16,1
+0x10,0x0003,RTC-Days,W,RTC Days (1~31),1d,uint16,1
+0x10,0x0004,RTC-Months,W,RTC Months (1~12),1mon,uint16,1
+0x10,0x0005,RTC-Years,W,RTC Years (0~99),1y,uint16,1
+0x10,0x001B,NightCharge_P1_StartTime,W,Night charge period 1 start Hour/Minute,,uint8(Hi/Lo),1
+0x10,0x001C,NightCharge_P1_EndTime,W,Night charge period 1 end Hour/Minute,,uint8(Hi/Lo),1
+0x10,0x001D,DisCharge_P1_StartTime,W,Discharge period 1 start Hour/Minute,,uint8(Hi/Lo),1
+0x10,0x001E,DisCharge_P1_EndTime,W,Discharge period 1 end Hour/Minute,,uint8(Hi/Lo),1
+0x10,0x007C,ModbusPowerControl,W,0:disable remote 1:power ctrl 2:elec qty ctrl 3:SOC target ctrl 4:Push Power Pos/Neg 5:Push Power Zero 6:Self Consume Charge-Discharge 7:Self Consume Charge Only,1,uint16,1
+0x10,0x007D,TargetSetType,W,1:set 2:update,1,uint16,1
+0x10,0x007E,RemoteControl_ActivePower_L,W,Active power LSB (pos=charge neg=discharge),1W,int32,2
+0x10,0x0080,RemoteControl_ReactivePower_L,W,Reactive power LSB (pos=inductive neg=capacitive),1Var,int32,2
+0x10,0x0082,Time_of_Duration,W,Power control mode time of duration,1s,uint16,1
+0x10,0x0083,TargetSoc,W,Target SoC,1%,uint16,1
+0x10,0x0084,TargetEnergy_L,W,Target energy LSB,1Wh,uint32,2
+0x10,0x0086,Charge_Discharg_Power_L,W,Charge/discharge power LSB (pos=charge neg=discharge),1W,int32,2
+0x10,0x0088,RemoteCtrlTimeOut,W,Timeout counter,1s,uint16,1
+0x10,0x0089,PushModePower_L,W,Push mode power LSB (pos=discharge neg=charge),1W,int32,2
+0x10,0x00A0,PowerControlMode,W,Select power control mode (8=duration based 9=target capacity),1,uint16,1
+0x10,0x00A1,TargetSetType_PV,W,1:Set Target (immediate) 2:Update Target (after current mode),1,uint16,1
+0x10,0x00A2,PVPowerLimit_L,W,PV power limit LSB,1W,uint16,1
+0x10,0x00A3,PVPowerLimit_H,W,PV power limit MSB,1W,uint16,1
+0x10,0x00A4,PushModePower_PV_L,W,Battery power target LSB (pos=discharge neg=charge),1W,uint16,1
+0x10,0x00A5,PushModePower_PV_H,W,Battery power target MSB,1W,uint16,1
+0x10,0x00A6,TimeOfDuration_PV,W,Time of duration (mode 8) / Target SOC 0~100% (mode 9),1s/1%,uint16,1
+0x10,0x00A7,RemoteControlTimeOut_PV,W,Remote control timeout,1s,uint16,1
+0x10,0xF000-0xF013,WriteSetValue,W,Write value of setting item (internal device comm only),1,uint16,20
