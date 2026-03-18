@@ -37,6 +37,8 @@
     color: var(--text);
     min-height: 100dvh;
     overflow-x: hidden;
+    transition: transform 0.3s ease;
+    transform-origin: 0 0;
   }
 
   /* ─── Header ─── */
@@ -1406,6 +1408,84 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
       indicator.style.top = '-40px';
     }
   });
+})();
+
+/* ─── Double-tap zoom with pan ─── */
+(function() {
+  var zoomTimer = null;
+  var scale = 2;
+  var panX = 0, panY = 0;
+  var dragging = false;
+  var startX, startY, lastPanX, lastPanY;
+
+  function applyTransform() {
+    document.body.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')';
+  }
+
+  function clampPan() {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var bw = document.body.scrollWidth;
+    var bh = document.body.scrollHeight;
+    var minX = vw - bw * scale;
+    var minY = vh - bh * scale;
+    panX = Math.min(0, Math.max(minX, panX));
+    panY = Math.min(0, Math.max(minY, panY));
+  }
+
+  document.body.addEventListener('dblclick', function(e) {
+    if (document.body.classList.contains('zoomed')) {
+      clearTimeout(zoomTimer);
+      resetZoom();
+      return;
+    }
+    // Center zoom on click point
+    panX = vw2() / 2 - e.pageX * scale;
+    panY = vh2() / 2 - e.pageY * scale;
+    clampPan();
+    document.body.style.transformOrigin = '0 0';
+    applyTransform();
+    document.body.classList.add('zoomed');
+    zoomTimer = setTimeout(resetZoom, 8000);
+  });
+
+  function vw2() { return window.innerWidth; }
+  function vh2() { return window.innerHeight; }
+
+  function onDragStart(x, y) {
+    if (!document.body.classList.contains('zoomed')) return;
+    dragging = true;
+    startX = x; startY = y;
+    lastPanX = panX; lastPanY = panY;
+    clearTimeout(zoomTimer);
+  }
+  function onDragMove(x, y) {
+    if (!dragging) return;
+    panX = lastPanX + (x - startX);
+    panY = lastPanY + (y - startY);
+    clampPan();
+    applyTransform();
+  }
+  function onDragEnd() {
+    if (!dragging) return;
+    dragging = false;
+    zoomTimer = setTimeout(resetZoom, 8000);
+  }
+
+  document.body.addEventListener('mousedown', function(e) { onDragStart(e.clientX, e.clientY); });
+  document.body.addEventListener('mousemove', function(e) { if (dragging) { e.preventDefault(); onDragMove(e.clientX, e.clientY); } });
+  document.body.addEventListener('mouseup', onDragEnd);
+
+  document.body.addEventListener('touchstart', function(e) { if (e.touches.length === 1) onDragStart(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+  document.body.addEventListener('touchmove', function(e) { if (dragging && e.touches.length === 1) { e.preventDefault(); onDragMove(e.touches[0].clientX, e.touches[0].clientY); } }, {passive: false});
+  document.body.addEventListener('touchend', onDragEnd);
+
+  function resetZoom() {
+    document.body.style.transform = '';
+    document.body.classList.remove('zoomed');
+    panX = 0; panY = 0;
+    zoomTimer = null;
+  }
 })();
 </script>
 <script src="build-info.js"></script>
