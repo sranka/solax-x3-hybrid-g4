@@ -369,11 +369,55 @@ async function handleModbus(req, res) {
   }
 }
 
+async function handleModbusRead(req, res, addrHex) {
+  const target = getModbusHostPort();
+  if (!target) {
+    res.writeHead(502, { 'Content-Type': 'text/plain' });
+    res.end('No Modbus target: set DEV_PROXY_TARGET or DEV_MODBUS_TARGET');
+    return;
+  }
+
+  const startAddr = parseInt(addrHex, 16);
+  if (isNaN(startAddr) || startAddr < 0 || startAddr > 0xFFFF) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end(`Invalid address: ${addrHex}`);
+    return;
+  }
+
+  try {
+    const { host, port } = target;
+    const [regs] = await modbusReadRegisters(host, port, 1, 0x04, [
+      { start: startAddr, count: 2 },
+    ]);
+
+    const [a, b] = regs;
+    const result = {
+      address: '0x' + startAddr.toString(16).padStart(4, '0'),
+      data: [a, b],
+      r16s: [r16s(a), r16s(b)],
+      r32u: a + 65536 * b,
+      r32s: r32s(a, b),
+      'r32u-reversed': b + 65536 * a,
+      'r32s-reversed': r32s(b, a),
+    };
+
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    });
+    res.end(JSON.stringify(result, null, 2));
+  } catch (err) {
+    res.writeHead(502, { 'Content-Type': 'text/plain' });
+    res.end(`Modbus error: ${err.message}`);
+  }
+}
+
 // --- Server ---
 
 const server = http.createServer((req, res) => {
+  const url = req.url.split('?')[0];
+
   if (req.method === 'POST') {
-    const url = req.url.split('?')[0];
     if (url === '/http') {
       handleHttpProxy(req, res);
     } else if (url === '/modbus') {
@@ -384,7 +428,10 @@ const server = http.createServer((req, res) => {
       handleHttpProxy(req, res);
     }
   } else {
-    if (req.url.split('?')[0] === '/modbus') {
+    const modbusReadMatch = url.match(/^\/modbus\/([0-9a-fA-F]+)$/);
+    if (modbusReadMatch) {
+      handleModbusRead(req, res, modbusReadMatch[1]);
+    } else if (url === '/modbus') {
       handleModbus(req, res);
     } else {
       serveStatic(req, res);
