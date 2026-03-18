@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = parseInt(process.env.PORT || '8080', 10);
-const PROXY_TARGET = process.env.DEV_PROXY_TARGET || '';
-const MODBUS_TARGET = process.env.DEV_MODBUS_TARGET || '';
-const MODBUS_DEFAULT = !!process.env.DEV_MODBUS;
+const PROXY_TARGET = process.env.PROXY_TARGET || '';
+const MODBUS_TARGET = process.env.MODBUS_TARGET || '';
+const MODBUS_DEFAULT = !!process.env.MODBUS;
 const WEB_DIR = path.join(__dirname, '..', 'web');
 
 const MIME_TYPES = {
@@ -292,7 +292,7 @@ function serveStatic(req, res) {
 function handleHttpProxy(req, res) {
   if (!PROXY_TARGET) {
     res.writeHead(502, { 'Content-Type': 'text/plain' });
-    res.end('DEV_PROXY_TARGET not set');
+    res.end('PROXY_TARGET not set');
     return;
   }
 
@@ -330,7 +330,7 @@ async function handleModbus(req, res) {
   const target = getModbusHostPort();
   if (!target) {
     res.writeHead(502, { 'Content-Type': 'text/plain' });
-    res.end('No Modbus target: set DEV_PROXY_TARGET or DEV_MODBUS_TARGET');
+    res.end('No Modbus target: set PROXY_TARGET or MODBUS_TARGET');
     return;
   }
 
@@ -372,7 +372,7 @@ async function handleModbusRead(req, res, addrHex) {
   const target = getModbusHostPort();
   if (!target) {
     res.writeHead(502, { 'Content-Type': 'text/plain' });
-    res.end('No Modbus target: set DEV_PROXY_TARGET or DEV_MODBUS_TARGET');
+    res.end('No Modbus target: set PROXY_TARGET or MODBUS_TARGET');
     return;
   }
 
@@ -445,8 +445,8 @@ server.listen(PORT, () => {
   if (modbusTarget) {
     console.log(`  POST /modbus → Modbus TCP ${modbusTarget.host}:${modbusTarget.port}`);
   }
-  console.log(`  POST / → ${MODBUS_DEFAULT ? 'Modbus' : 'HTTP proxy'} (DEV_MODBUS=${MODBUS_DEFAULT ? '1' : 'unset'})`);
+  console.log(`  POST / → ${MODBUS_DEFAULT ? 'Modbus' : 'HTTP proxy'} (MODBUS=${MODBUS_DEFAULT ? '1' : 'unset'})`);
   if (!PROXY_TARGET && !modbusTarget) {
-    console.log('Warning: neither DEV_PROXY_TARGET nor DEV_MODBUS_TARGET set, POST requests will fail');
+    console.log('Warning: neither PROXY_TARGET nor MODBUS_TARGET set, POST requests will fail');
   }
 });

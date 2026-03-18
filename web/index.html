@@ -995,6 +995,43 @@ function formatData(d) {
   return r;
 }
 
+// Modbus register → Values (ported from dev-server.js modbusToHttpData + dataToValues)
+function formatModbusData(regs, startAddr) {
+  const g = (addr) => regs[addr - startAddr];
+  const battRemWh = g(0x0026) + 65536 * g(0x0027);
+  const r = {
+    Yield_Today:g(0x0050)/10, Yield_Total:(g(0x0052)+65536*g(0x0053))/10,
+    PowerDc1:g(0x000A), PowerDc2:g(0x000B), BAT_Power:r16s(g(0x0016)),
+    feedInPower:r32s(g(0x0046),g(0x0047)),
+    GridAPower:r16s(g(0x006C)), GridBPower:r16s(g(0x0070)), GridCPower:r16s(g(0x0074)),
+    FeedInEnergy:(g(0x0048)+65536*g(0x0049))/100, ConsumeEnergy:(g(0x004A)+65536*g(0x004B))/100,
+    RunMode:readRunMode(g(0x0009)),
+    EPSAPower:r16s(g(0x0078)), EPSBPower:r16s(g(0x007C)), EPSCPower:r16s(g(0x0080)),
+    Vdc1:g(0x0003)/10, Vdc2:g(0x0004)/10, Idc1:g(0x0005)/10, Idc2:g(0x0006)/10,
+    EPSAVoltage:g(0x0076)/10, EPSBVoltage:g(0x007A)/10, EPSCVoltage:g(0x007E)/10,
+    EPSACurrent:r16s(g(0x0077))/10, EPSBCurrent:r16s(g(0x007B))/10, EPSCCurrent:r16s(g(0x007F))/10,
+    BatteryCapacity:g(0x001C), BatteryVoltage:g(0x0014)/10, BatteryRemainingEnergy:Math.round(battRemWh/100)/10,
+    BatteryTemperature:r16s(g(0x0018)),
+    GridAVoltage:g(0x006A)/10, GridBVoltage:g(0x006E)/10, GridCVoltage:g(0x0072)/10,
+    GridACurrent:r16s(g(0x006B))/10, GridBCurrent:r16s(g(0x006F))/10, GridCCurrent:r16s(g(0x0073))/10,
+    FreqacA:g(0x006D)/100, FreqacB:g(0x0071)/100, FreqacC:g(0x0075)/100,
+  };
+  r.GridPower=r.GridAPower+r.GridBPower+r.GridCPower;
+  r.SolarPower=r.PowerDc1+r.PowerDc2;
+  r.HomePower=r.SolarPower-r.BAT_Power-r.feedInPower;
+  if(r.HomePower<0) r.HomePower=0;
+  r.EPSTotal=r.EPSAPower+r.EPSBPower+r.EPSCPower;
+  return r;
+}
+
+async function fetchModbusData(cfg) {
+  const result = await Capacitor.Plugins.ModbusTcp.readRegisters({
+    host: cfg.host, unitId: 1, functionCode: 0x04,
+    startAddress: 0x0003, endAddress: 0x0096
+  });
+  return formatModbusData(result.registers, 0x0003);
+}
+
 // ═══════════════════════════════════════════
 //  Fetch & UI
 // ═══════════════════════════════════════════
@@ -1008,17 +1045,21 @@ async function fetchData(force) {
   rbtn.classList.add('fetching');
 
   try {
-    const hdrs = {'Content-Type':'application/x-www-form-urlencoded'};
-    if (cfg.forwardedFor) hdrs['X-Forwarded-For'] = cfg.forwardedFor;
-    const resp = await fetch(`${cfg.protocol}://${cfg.host}`, {
-      method:'POST', headers:hdrs,
-      body:`optType=ReadRealTimeData&pwd=${cfg.password}`,
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const json = await resp.json();
-    if (!json.Data||!Array.isArray(json.Data)) throw new Error(t('missingData'));
-    lastData = formatData(json.Data);
+    if (cfg.protocol === 'modbus') {
+      lastData = await fetchModbusData(cfg);
+    } else {
+      const hdrs = {'Content-Type':'application/x-www-form-urlencoded'};
+      if (cfg.forwardedFor) hdrs['X-Forwarded-For'] = cfg.forwardedFor;
+      const resp = await fetch(`${cfg.protocol}://${cfg.host}`, {
+        method:'POST', headers:hdrs,
+        body:`optType=ReadRealTimeData&pwd=${cfg.password}`,
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const json = await resp.json();
+      if (!json.Data||!Array.isArray(json.Data)) throw new Error(t('missingData'));
+      lastData = formatData(json.Data);
+    }
     consecutiveErrors = 0;
     rbtn.classList.remove('fetching');
     document.getElementById('errorBanner').classList.remove('show');
@@ -1257,13 +1298,18 @@ document.getElementById('settingsModal').addEventListener('click',e=>{if(e.targe
 // ═══════════════════════════════════════════
 //  Edit / Add
 // ═══════════════════════════════════════════
+function updateProtocolUI(){
+  const proto=document.getElementById('cfgProtocol').value;
+  const pwGroup=document.getElementById('cfgPassword').closest('.form-group');
+  pwGroup.style.display=proto==='modbus'?'none':'';
+}
 function openEditModal(id){
   editingId=id||null;
   document.getElementById('editModalTitle').textContent=editingId?t('editInverterTitle'):t('addInverterTitle');
   const $=x=>document.getElementById(x);
   if(!editingId){
     $('cfgName').value='';$('cfgHost').value='';$('cfgPassword').value='';
-    $('cfgProtocol').value='http';$('cfgInterval').value='10';
+    $('cfgProtocol').value=$('cfgProtocol').options[0].value;$('cfgInterval').value='10';
     $('cfgManualRefresh').checked=false;
   } else {
     const c=connections.find(x=>x.id===id);
@@ -1272,6 +1318,7 @@ function openEditModal(id){
     $('cfgProtocol').value=c.protocol||'http';$('cfgInterval').value=c.interval||10;
     $('cfgManualRefresh').checked=!!c.manualRefresh;
   }
+  updateProtocolUI();
   $('editModal').classList.add('open');
 }
 function closeEditModal(){ document.getElementById('editModal').classList.remove('open'); editingId=null; }
@@ -1279,6 +1326,14 @@ function closeEditModal(){ document.getElementById('editModal').classList.remove
 document.getElementById('addNewConn').addEventListener('click',()=>openEditModal(null));
 document.getElementById('cancelEdit').addEventListener('click',closeEditModal);
 document.getElementById('editModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEditModal()});
+document.getElementById('cfgProtocol').addEventListener('change',updateProtocolUI);
+
+// Add Modbus TCP option when running as native app
+if(typeof Capacitor!=='undefined'&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()){
+  const sel=document.getElementById('cfgProtocol');
+  const opt=document.createElement('option');opt.value='modbus';opt.textContent='Modbus TCP';
+  sel.insertBefore(opt,sel.firstChild);
+}
 
 document.getElementById('saveConn').addEventListener('click',async()=>{
   const host=document.getElementById('cfgHost').value.trim();
@@ -1288,7 +1343,7 @@ document.getElementById('saveConn').addEventListener('click',async()=>{
   let name=document.getElementById('cfgName').value.trim()||host;
 
   if(!host){showToast(t('enterIP'));return;}
-  if(!password){showToast(t('enterPassword'));return;}
+  if(protocol!=='modbus'&&!password){showToast(t('enterPassword'));return;}
 
   const manualRefresh=document.getElementById('cfgManualRefresh').checked;
   const entry={host,password,protocol,interval,name,manualRefresh};
