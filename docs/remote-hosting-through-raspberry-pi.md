@@ -115,52 +115,33 @@ Cloudflare Tunnel exposes the app to the internet without port forwarding.
 
 ```bash
 curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64 \
-  -o /usr/local/bin/cloudflared
-sudo chmod +x /usr/local/bin/cloudflared
+  -o /tmp/cloudflared
+sudo install /tmp/cloudflared /usr/local/bin/cloudflared
 ```
 
 > For 32-bit Raspberry Pi OS (armhf), use `cloudflared-linux-arm` instead of `cloudflared-linux-arm64`.
 
-### Authenticate and create a tunnel
+### Create and configure a tunnel
+
+Using the Cloudflare dashboard:
+- Create a tunnel.
+- It prints a `sudo cloudflared service install <TOKEN>` command — run it on your Raspberry Pi.
+- Map a route from your published domain to `http://localhost:8080` (the local address of the app on the Pi).
+
+### Control cloudflared
 
 ```bash
-cloudflared tunnel login
-cloudflared tunnel create solax-fve
-```
-
-Note the **Tunnel UUID** from the output.
-
-### Configure the tunnel
-
-Copy the example config and fill in your values:
-
-```bash
-mkdir -p ~/.cloudflared
-cp /opt/solax-fve/scripts/service/cloudflared-config-example.yml ~/.cloudflared/config.yml
-nano ~/.cloudflared/config.yml
-```
-
-Replace `<TUNNEL_UUID>` with your tunnel UUID and `solax.example.com` with your actual domain.
-
-### Add DNS route
-
-```bash
-cloudflared tunnel route dns solax-fve solax.example.com
-```
-
-### Run as a service
-
-```bash
-sudo cloudflared service install
 sudo systemctl enable cloudflared
+sudo systemctl disable cloudflared
 sudo systemctl start cloudflared
+journalctl -u cloudflared -f
 ```
 
 Verify the tunnel is working by visiting `https://solax.example.com` in your browser.
 
 ## 5. Protect POST Endpoints
 
-The POST endpoints (`/http` and `/modbus`) send commands to the inverter. You should restrict access to these endpoints to trusted IP addresses using Cloudflare WAF custom rules.
+The POST endpoints (`/`, `/http` and `/modbus`) send commands to the inverter. You should restrict access to all POST endpoints to trusted IP addresses using Cloudflare WAF custom rules.
 
 > Full documentation: https://developers.cloudflare.com/waf/custom-rules/
 
@@ -185,7 +166,7 @@ This rule blocks all POST requests to your Solax domain unless they originate fr
 ### Dynamic IP considerations
 
 If your home IP changes frequently, consider:
-- Enhance the IP filtering rule to bypass when secret is present in the URL fragment, a WAF blocking rule such as `(not ip.src in $allowed_ip_addresses and ends_with(http.request.full_uri, "#MY_TOP_SECRET"))` together with a connection setting in the application that adds `#MY_TOP_SECRET` to hostname does the trick
+- Enhance the IP filtering rule to bypass when a secret is present in the URL fragment. A WAF blocking rule such as `(not ip.src in $allowed_ip_addresses and ends_with(http.request.full_uri, "#MY_TOP_SECRET"))`, together with a connection setting in the application that appends `#MY_TOP_SECRET` to the hostname, does the trick.
 - Setting up a script that updates the WAF rule when your IP changes via the [Cloudflare API](https://developers.cloudflare.com/api/)
 
 ## 6. Maintenance
