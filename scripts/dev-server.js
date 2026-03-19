@@ -6,7 +6,7 @@ const path = require('path');
 const PORT = parseInt(process.env.PORT || '8080', 10);
 const PROXY_TARGET = process.env.PROXY_TARGET || '';
 const MODBUS_TARGET = process.env.MODBUS_TARGET || '';
-const MODBUS_DEFAULT = !!process.env.MODBUS;
+const MODBUS_DEFAULT = process.env.MODBUS === '1';
 const WEB_DIR = path.join(__dirname, '..', 'web');
 
 const MIME_TYPES = {
