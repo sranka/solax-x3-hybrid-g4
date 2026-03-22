@@ -302,7 +302,7 @@
   .node-battery.bat-mid::before { background: rgba(234,179,8,0.15); }
 
   /* ─── Energy ─── */
-  .energy-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .energy-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
   .energy-item { text-align: center; padding: 8px; border-radius: 8px; background: var(--subtle-bg); }
   .energy-item-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); }
   .energy-item-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; }
@@ -624,6 +624,11 @@
           <div class="energy-item-value" id="consumeEnergy" style="color:var(--grid-pos)">--</div>
           <div class="energy-item-unit">kWh</div>
         </div>
+        <div class="energy-item">
+          <div class="energy-item-label" id="energyLabelSolarYield"></div>
+          <div class="energy-item-value" id="solarYield" style="color:var(--solar)">--</div>
+          <div class="energy-item-unit">kWh</div>
+        </div>
       </div>
     </div>
     </div><!-- /.dashboard-col (right) -->
@@ -747,6 +752,7 @@ const i18n = {
     totalEnergy: 'Energie celkem',
     toGrid: 'Do sítě',
     fromGrid: 'Ze sítě',
+    solarYield: 'Solární výroba',
     pause: 'Pozastavit',
     resume: 'Pokračovat',
     updated: 'Aktualizace:',
@@ -816,6 +822,7 @@ const i18n = {
     totalEnergy: 'Total energy',
     toGrid: 'To grid',
     fromGrid: 'From grid',
+    solarYield: 'Solar yield',
     pause: 'Pause',
     resume: 'Resume',
     updated: 'Updated:',
@@ -922,6 +929,7 @@ function applyLanguage() {
   // Energy labels
   document.getElementById('energyLabelToGrid').textContent = t('toGrid');
   document.getElementById('energyLabelFromGrid').textContent = t('fromGrid');
+  document.getElementById('energyLabelSolarYield').textContent = t('solarYield');
 
   // Refresh bar
   if (!lastData) document.getElementById('refreshBar').textContent = t('lastUpdate');
@@ -1238,6 +1246,7 @@ function updateUI(d) {
   $('yieldTotal').textContent=tk>=1000?(tk/1000).toFixed(2)+' MWh':tk.toFixed(0)+' kWh';
   $('feedInEnergy').textContent=d.FeedInEnergy.toFixed(1);
   $('consumeEnergy').textContent=d.ConsumeEnergy.toFixed(1);
+  $('solarYield').textContent=d.Yield_Total.toFixed(1);
   const locale = currentLang === 'cs' ? 'cs-CZ' : 'en-GB';
   $('refreshBar').textContent=t('updated')+' '+new Date().toLocaleTimeString(locale);
   updateFlowArrows(d);
