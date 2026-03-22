@@ -1083,6 +1083,7 @@ function formatData(d) {
     GridAVoltage:d[0]/10, GridBVoltage:d[1]/10, GridCVoltage:d[2]/10,
     GridACurrent:r16s(d[3])/10, GridBCurrent:r16s(d[4])/10, GridCCurrent:r16s(d[5])/10,
     FreqacA:d[16]/100, FreqacB:d[17]/100, FreqacC:d[18]/100,
+    FeedInEnergyToday:r32u(d[92],d[93])*10, ConsumeEnergyToday:r32u(d[90],d[91])/10,
   };
   r.GridPower=r.GridAPower+r.GridBPower+r.GridCPower;
   r.SolarPower=r.PowerDc1+r.PowerDc2;
@@ -1112,6 +1113,7 @@ function formatModbusData(regs, startAddr) {
     GridAVoltage:g(0x006A)/10, GridBVoltage:g(0x006E)/10, GridCVoltage:g(0x0072)/10,
     GridACurrent:r16s(g(0x006B))/10, GridBCurrent:r16s(g(0x006F))/10, GridCCurrent:r16s(g(0x0073))/10,
     FreqacA:g(0x006D)/100, FreqacB:g(0x0071)/100, FreqacC:g(0x0075)/100,
+    FeedInEnergyToday:(g(0x0098)+65536*g(0x0099))*10, ConsumeEnergyToday:(g(0x009A)+65536*g(0x009B))*10,
   };
   r.GridPower=r.GridAPower+r.GridBPower+r.GridCPower;
   r.SolarPower=r.PowerDc1+r.PowerDc2;
@@ -1124,7 +1126,7 @@ function formatModbusData(regs, startAddr) {
 async function fetchModbusData(cfg) {
   const result = await Capacitor.Plugins.ModbusTcp.readRegisters({
     host: cfg.host, unitId: 1, functionCode: 0x04,
-    startAddress: 0x0003, endAddress: 0x0096
+    startAddress: 0x0003, endAddress: 0x009B
   });
   return formatModbusData(result.registers, 0x0003);
 }
@@ -1233,7 +1235,7 @@ function updateUI(d) {
 
   $('yieldToday').textContent=d.Yield_Today.toFixed(1)+' kWh';
   const tk=d.Yield_Total;
-  $('yieldTotal').textContent=tk>=1000?(tk/1000).toFixed(1)+' MWh':tk.toFixed(0)+' kWh';
+  $('yieldTotal').textContent=tk>=1000?(tk/1000).toFixed(2)+' MWh':tk.toFixed(0)+' kWh';
   $('feedInEnergy').textContent=d.FeedInEnergy.toFixed(1);
   $('consumeEnergy').textContent=d.ConsumeEnergy.toFixed(1);
   const locale = currentLang === 'cs' ? 'cs-CZ' : 'en-GB';
