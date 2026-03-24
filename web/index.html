@@ -1568,6 +1568,14 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 // ═══════════════════════════════════════════
 (async()=>{
   connections = await loadConnections();
+  if(!connections.length&&(typeof Capacitor==='undefined'||!Capacitor.isNativePlatform||!Capacitor.isNativePlatform())){
+    const loc=window.location;
+    const id=generateId();
+    const entry={id,name:'local',host:loc.host,password:'',protocol:loc.protocol.replace(':',''),interval:10,manualRefresh:false};
+    connections.push(entry);
+    activeId=id;setActiveId(id);
+    await saveConnections(connections);
+  }
   applyLanguage();
   startPolling();
 })();
