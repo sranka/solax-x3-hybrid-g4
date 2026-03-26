@@ -1,6 +1,6 @@
 # Solax FVE Live Monitor
 
-Live monitoring app for Solax X3 Hybrid G4 inverters. Android Phone or TV connects directly to the inverter on your home network. A web application is provided for all other devices and to allow remote access to your inverter from the internet over HTTPS, also for the Android application.
+Live monitoring app for Solax X3 Hybrid G4 inverters. The Android app connects directly to the inverter on your home network. A web application is also provided for other devices and for remote access over HTTPS.
 
 <a href="docs/tablet-screenshot.png"><img src="docs/tablet-screenshot.png" height="300" alt="Solax FVE Monitor on Tablet"></a> <a href="docs/phone-screenshot.png"><img src="docs/phone-screenshot.png" height="300" alt="Solax FVE Monitor on Phone"></a>
 
@@ -11,13 +11,13 @@ Live monitoring app for Solax X3 Hybrid G4 inverters. Android Phone or TV connec
 - EPS (backup power) monitoring
 - Energy totals (daily solar, battery, grid in/out; totals)
 - Multiple inverter support with quick switching
-- Works as a standalone Android app (phone and also TV) or a web app in the browser
+- Works as a standalone Android app (phone and TV) or a web app in the browser
 - Dark and Light mode (dark by default)
 - Double tap to zoom, then zoom out on double tap or automatically after 8 seconds
 - Full screen support, show/hide top menu on app icon tap
-- Use TCP modbus from within the home network, HTTP for WiFi 3.0 dongle HTTP API, or HTTPS when connecting from outside to a proxy.
-- PWA support — install the web app to your home screen for a native-like experience (install icon available in the Settings menu)
-- Instructions provided on how to install and host the web application and a proxy server as a [service on Raspberry Pi](./docs/remote-hosting-through-raspberry-pi.md)
+- Modbus TCP from within the home network, HTTP for WiFi 3.0 dongle HTTP API, or HTTPS when connecting through a proxy
+- PWA support — install the web app to your home screen for a native-like experience
+- Guide for hosting the web application and proxy server as a [service on Raspberry Pi](./docs/remote-hosting-through-raspberry-pi.md)
 
 ### Install on Android phone / TV
 
@@ -30,13 +30,13 @@ The easiest way to install the APK package on your phone/TV without a USB cable 
 5. From your computer, send the APK file to phone/TV
 6. Accept the file on your phone/TV and open it to install
 7. You may need to allow installation from unknown sources in settings
-8. Open the application and connect to your Solax inverter. You need to know the IP address of your Solax dongle.
+8. Open the application and connect to your Solax inverter. Use **Scan Network** in the settings to discover dongles on your local network, or add a connection manually if you know the connection settings.
 
 ### Install as PWA (Progressive Web App)
 
 The web application can be installed as a PWA on any device — phone, tablet, or desktop. Once installed, it runs in its own window without browser chrome, just like a native app.
 
-**Note:** Unlike the native Android app, a PWA runs inside the browser and cannot connect directly to the inverter on your local network due to browser security restrictions (CORS, mixed content). You need to use the web application's proxy server (see [Web Application](#web-application) below) or an HTTPS proxy to access your inverter.
+**Note:** Unlike the native Android app, a PWA runs inside the browser and cannot connect directly to the inverter on your local network due to browser security restrictions (CORS, mixed content). You need to use the web application's proxy server (see [Web Application Server](#web-application-server) below) or an HTTPS proxy to access your inverter.
 
 1. Open the web app in your browser
    - Running the app from an **HTTPS** URL, such as https://solax-fve-live-app.sranka.fun, will disallow connections to inverters over HTTP, because browsers block mixed content (HTTPS→HTTP)
