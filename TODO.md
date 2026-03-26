@@ -1,4 +1,0 @@
-- fix bad UX of the settings menu on wide-screens
-- provide instructions of how to host a web application on cloudflare with CORS
-- make it work on android TVs (settings inaccessible), better TV usability, make it PWA for phone
-- allow better protection using HTTP headers with a cloudflare example
