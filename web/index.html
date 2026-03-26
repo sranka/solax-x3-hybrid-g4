@@ -563,6 +563,7 @@
     <button class="header-btn pause-btn" id="pauseBtn" aria-label="Pause">⏸</button>
     <button class="header-btn refresh-btn" id="refreshBtn" aria-label="Refresh"><span class="refresh-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.636-6.364"/><polyline points="21 2 21 8 15 8"/></svg></span></button>
     <button class="header-btn" id="fullscreenBtn" aria-label="Fullscreen">⛶</button>
+    <button class="header-btn" id="installBtn" aria-label="Install" style="display:none">📲</button>
     <button class="header-btn" id="openSettings" aria-label="Settings">⚙</button>
   </div>
 </div>
@@ -1918,6 +1919,25 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
+var deferredInstallPrompt = null;
+var installBtn = document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  installBtn.style.display = '';
+});
+installBtn.addEventListener('click', function() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(function() {
+    deferredInstallPrompt = null;
+    installBtn.style.display = 'none';
+  });
+});
+window.addEventListener('appinstalled', function() {
+  installBtn.style.display = 'none';
+  deferredInstallPrompt = null;
+});
 </script>
 </body>
 </html>
