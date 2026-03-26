@@ -371,17 +371,28 @@
     background: var(--bg2); border: 1px solid var(--card-border);
     border-radius: 20px 20px 0 0; width: 100%; max-width: var(--modal-max-w, 600px);
     max-height: var(--modal-max-h, 90dvh); overflow: hidden; display: flex; flex-direction: column;
-    padding: 24px 20px calc(40px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
     animation: slide-up 0.3s ease;
   }
+  .modal-header {
+    padding: 24px 20px 16px; flex-shrink: 0; border-bottom: 1px solid var(--card-border);
+  }
+  .modal-body {
+    padding: 20px; flex: 1; overflow-y: auto; min-height: 0;
+  }
+  .modal-footer {
+    padding: 16px 20px calc(24px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    border-top: 1px solid var(--card-border);
+    display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0;
+  }
+  .modal-footer .btn { margin: 0; flex: 1; }
   .modal .build-fingerprint { position: absolute; bottom: 2px; left: 0; right: 0; }
   @keyframes slide-up { from{transform:translateY(100%)} to{transform:translateY(0)} }
   @media (min-width: 800px) {
     .modal-overlay { align-items: center; }
     .modal { border-radius: 20px; }
   }
-  .modal-handle { width: 36px; height: 4px; background: var(--card-border); border-radius: 2px; margin: 0 auto 20px; }
-  .modal h2 { font-size: 18px; margin-bottom: 20px; }
+  .modal-handle { width: 36px; height: 4px; background: var(--card-border); border-radius: 2px; margin: 0 auto 16px; }
+  .modal h2 { font-size: 18px; margin: 0; }
 
   .form-group { margin-bottom: 16px; }
   .form-group label {
@@ -403,8 +414,8 @@
     cursor: pointer; transition: transform 0.1s, opacity 0.2s;
   }
   .btn:active { transform: scale(0.98); }
-  .btn-primary { background: linear-gradient(135deg, var(--accent), #0ea5e9); color: #fff; margin-bottom: 8px; }
-  .btn-danger { background: var(--danger); color: #fff; margin-bottom: 8px; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), #0ea5e9); color: #fff; }
+  .btn-danger { background: var(--danger); color: #fff; }
   .btn-secondary { background: var(--card); color: var(--text-dim); border: 1px solid var(--card-border); }
   .btn-sm { width: auto; padding: 8px 16px; font-size: 13px; border-radius: 8px; }
 
@@ -687,26 +698,32 @@
 <!-- Settings Modal — Connection List -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="settingsTitle"></h2>
-    <div class="conn-list" id="connList"></div>
-    <button class="btn btn-primary" id="addNewConn"></button>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-border)">
-      <span id="themeLabel" style="color:var(--text-dim);font-size:14px"></span>
-      <div style="display:flex;gap:6px" id="themeButtons">
-        <button class="header-btn lang-btn theme-btn" data-theme="auto" id="themeBtnAuto"></button>
-        <button class="header-btn lang-btn theme-btn" data-theme="light" id="themeBtnLight"></button>
-        <button class="header-btn lang-btn theme-btn" data-theme="dark" id="themeBtnDark"></button>
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <h2 id="settingsTitle"></h2>
+    </div>
+    <div class="modal-body">
+      <div class="conn-list" id="connList"></div>
+      <button class="btn btn-primary" id="addNewConn"></button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-border)">
+        <span id="themeLabel" style="color:var(--text-dim);font-size:14px"></span>
+        <div style="display:flex;gap:6px" id="themeButtons">
+          <button class="header-btn lang-btn theme-btn" data-theme="auto" id="themeBtnAuto"></button>
+          <button class="header-btn lang-btn theme-btn" data-theme="light" id="themeBtnLight"></button>
+          <button class="header-btn lang-btn theme-btn" data-theme="dark" id="themeBtnDark"></button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-border)">
+        <span id="langLabel" style="color:var(--text-dim);font-size:14px"></span>
+        <div style="display:flex;gap:6px" id="langButtons">
+          <button class="header-btn lang-btn" data-lang="cs">CZ</button>
+          <button class="header-btn lang-btn" data-lang="en">EN</button>
+        </div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-border)">
-      <span id="langLabel" style="color:var(--text-dim);font-size:14px"></span>
-      <div style="display:flex;gap:6px" id="langButtons">
-        <button class="header-btn lang-btn" data-lang="cs">CZ</button>
-        <button class="header-btn lang-btn" data-lang="en">EN</button>
-      </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="closeSettings"></button>
     </div>
-    <button class="btn btn-secondary" id="closeSettings" style="margin-top:16px"></button>
     <div class="build-fingerprint" id="buildFingerprint"></div>
   </div>
 </div>
@@ -714,40 +731,44 @@
 <!-- Edit/Add Connection Modal -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="editModalTitle"></h2>
-
-    <div class="form-group">
-      <label id="labelName"></label>
-      <input type="text" id="cfgName" autocomplete="off">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <h2 id="editModalTitle"></h2>
     </div>
-    <div class="form-group">
-      <label id="labelIP"></label>
-      <input type="text" id="cfgHost" placeholder="192.168.199.192" inputmode="url" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <div class="form-hint" id="hintIP"></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label id="labelName"></label>
+        <input type="text" id="cfgName" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label id="labelIP"></label>
+        <input type="text" id="cfgHost" placeholder="192.168.199.192" inputmode="url" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="form-hint" id="hintIP"></div>
+      </div>
+      <div class="form-group">
+        <label id="labelPassword"></label>
+        <input type="text" id="cfgPassword" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="form-hint" id="hintPassword"></div>
+      </div>
+      <div class="form-group">
+        <label id="labelProtocol"></label>
+        <select id="cfgProtocol">
+          <option value="http">HTTP</option>
+          <option value="https">HTTPS</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label id="labelInterval"></label>
+        <input type="number" id="cfgInterval" value="10" min="3" max="300" inputmode="numeric">
+      </div>
+      <div class="form-group form-check">
+        <label><span id="labelManualRefresh"></span> <input type="checkbox" id="cfgManualRefresh"></label>
+      </div>
     </div>
-    <div class="form-group">
-      <label id="labelPassword"></label>
-      <input type="text" id="cfgPassword" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <div class="form-hint" id="hintPassword"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="cancelEdit"></button>
+      <button class="btn btn-primary" id="saveConn"></button>
     </div>
-    <div class="form-group">
-      <label id="labelProtocol"></label>
-      <select id="cfgProtocol">
-        <option value="http">HTTP</option>
-        <option value="https">HTTPS</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label id="labelInterval"></label>
-      <input type="number" id="cfgInterval" value="10" min="3" max="300" inputmode="numeric">
-    </div>
-    <div class="form-group form-check">
-      <label><span id="labelManualRefresh"></span> <input type="checkbox" id="cfgManualRefresh"></label>
-    </div>
-
-    <button class="btn btn-primary" id="saveConn"></button>
-    <button class="btn btn-secondary" id="cancelEdit"></button>
   </div>
 </div>
 
