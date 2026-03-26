@@ -814,8 +814,6 @@ const i18n = {
     passwordHint: 'Obvykle sériové číslo WiFi donglu nebo vlastní heslo',
     protocol: 'Protokol',
     interval: 'Interval obnovení (s)',
-    forwardedFor: 'X-Forwarded-For (volitelné)',
-    forwardedForHint: 'Některé novější dongly vyžadují tento header',
     save: 'Uložit',
     cancel: 'Zrušit',
     confirmNo: 'Ne',
@@ -889,8 +887,6 @@ const i18n = {
     passwordHint: 'Usually WiFi dongle serial or custom password',
     protocol: 'Protocol',
     interval: 'Refresh interval (s)',
-    forwardedFor: 'X-Forwarded-For (optional)',
-    forwardedForHint: 'Some newer dongles require this header',
     save: 'Save',
     cancel: 'Cancel',
     confirmNo: 'No',
@@ -1213,7 +1209,6 @@ async function fetchData(force) {
       lastData = await fetchModbusData(cfg);
     } else {
       const hdrs = {'Content-Type':'application/x-www-form-urlencoded'};
-      if (cfg.forwardedFor) hdrs['X-Forwarded-For'] = cfg.forwardedFor;
       const controller = new AbortController();
       setTimeout(() => controller.abort(), 8000);
       const resp = await fetch(`${cfg.protocol}://${cfg.host}`, {
