@@ -1613,9 +1613,17 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
     const loc=window.location;
     const id=generateId();
     const entry={id,name:'local',host:loc.host,password:'',protocol:loc.protocol.replace(':',''),interval:10,manualRefresh:false};
-    connections.push(entry);
-    activeId=id;setActiveId(id);
-    await saveConnections(connections);
+    try{
+      const ctrl=new AbortController();
+      const timer=setTimeout(()=>ctrl.abort(),1000);
+      const resp=await fetch(loc.protocol+'//'+loc.host,{method:'POST',signal:ctrl.signal});
+      clearTimeout(timer);
+      if(resp.headers.get('X-App-Local-Proxy')){
+        connections.push(entry);
+        activeId=id;setActiveId(id);
+        await saveConnections(connections);
+      }
+    }catch(e){/* timeout or fetch error — skip auto-add */}
   }
   applyLanguage();
   startPolling();

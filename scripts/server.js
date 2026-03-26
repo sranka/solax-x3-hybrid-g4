@@ -326,7 +326,8 @@ function handleHttpProxy(req, res) {
     };
 
     const proxyReq = http.request(options, proxyRes => {
-      const responseHeaders = { ...proxyRes.headers, ...corsHeaders() };
+      const responseHeaders = { ...proxyRes.headers, ...corsHeaders(), "X-Solax-Local-Proxy": "1" };
+      console.log(responseHeaders)
       res.writeHead(proxyRes.statusCode, responseHeaders);
       proxyRes.pipe(res);
     });
@@ -362,6 +363,8 @@ async function handleModbus(req, res) {
       res.writeHead(200, {
         'Content-Type': 'application/json',
         ...corsHeaders(),
+        "X-App-Local-Proxy": "1",
+        "X-App-Cached": "1",
       });
       res.end(modbusCache.data);
       return;
@@ -398,6 +401,7 @@ async function handleModbus(req, res) {
     res.writeHead(200, {
       'Content-Type': 'application/json',
       ...corsHeaders(),
+      "X-App-Local-Proxy": "1",
     });
     res.end(json);
   } catch (err) {
