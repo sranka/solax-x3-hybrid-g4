@@ -20,9 +20,9 @@ Live monitoring app for Solax X3 Hybrid G4 inverters. The Android app connects d
 - PWA support — install the web app to your home screen for a native-like experience
 - Guide for hosting the web application and proxy server as a [service on Raspberry Pi](./docs/remote-hosting-through-raspberry-pi.md)
 
-### Install on Android phone / TV
+## Install on Android phone / TV
 
-The easiest way to install the APK package on your phone/TV without a USB cable is via [LocalSend](https://localsend.org/):
+The easiest way to install the application on your phone/TV without a USB cable is via [LocalSend](https://localsend.org/):
 
 1. Install LocalSend on both your computer and phone/TV
 2. Make sure both devices are on the same WiFi network
@@ -33,11 +33,15 @@ The easiest way to install the APK package on your phone/TV without a USB cable 
 7. You may need to allow installation from unknown sources in settings
 8. Open the application and connect to your Solax inverter. Use **Scan Network** in the settings to discover dongles on your local network, or add a connection manually if you know the connection settings.
 
-### Install as PWA (Progressive Web App)
+## Install on iOS
 
-The web application can be installed as a PWA on any device — phone, tablet, or desktop. Once installed, it runs in its own window without browser chrome, just like a native app.
+It is technically possible to build this app for iOS using Capacitor, but installing apps outside the Apple App Store is cumbersome and not practical for open distribution. If you are an experienced developer, you can build and install the application to your phone directly. Otherwise, you can run the app on iOS as a [PWA](#install-as-pwa-progressive-web-app) (see next section), but a PWA cannot communicate directly with inverters on your home network over Modbus due to browser security restrictions.
 
-**Note:** Unlike the native Android app, a PWA runs inside the browser and cannot connect directly to the inverter on your local network due to browser security restrictions (CORS, mixed content). You need to use the web application's proxy server (see [Web Application Server](#web-application-server) below) or an HTTPS proxy to access your inverter.
+## Install as PWA (Progressive Web App)
+
+The application can be installed as a PWA on any device — phone, tablet, or desktop. Once installed, it runs in its own window without browser, just like a native app.
+
+**Note:** Unlike the native application, a PWA runs inside the browser and cannot connect directly to the inverter on your local network due to browser security restrictions (CORS, mixed content). You need to connect to the web application's proxy server (see [Web Application Server](#web-application-server) below) to access your inverter.
 
 1. Open the web app in your browser
    - Running the app from an **HTTPS** URL, such as https://solax.sranka.fun, will disallow connections to inverters over HTTP, because browsers block mixed content (HTTPS→HTTP)
@@ -47,7 +51,7 @@ The web application can be installed as a PWA on any device — phone, tablet, o
 
 For more details on how PWA installation works, see [web.dev — Install your PWA](https://web.dev/learn/pwa/installation).
 
-## Web Application Server
+## Web Application and Proxy Server
 
 Web application server is run with [Node.js 18+](https://nodejs.org/en/download), no other dependencies are required.
 
