@@ -8,10 +8,11 @@
   },
   "env": {
     "sranka":{
+      "name": "solax-fve-live-app",
       "account_id": "0ef2d213ab6df117010608d4913d8f1c",
 			"routes": [
 				{
-					"pattern": "solax-fve-live-app.sranka.fun",
+					"pattern": "solax.sranka.fun",
 					"custom_domain": true
 				}
 			],      
