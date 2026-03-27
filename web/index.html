@@ -1812,9 +1812,9 @@ async function startNetworkScan(){
   }
 }
 
-function addScannedConnection(host){
+function addScannedConnection(host, label){
   const id=generateId();
-  const entry={id,name:host,host:host,password:'',protocol:'modbus',interval:10,manualRefresh:false};
+  const entry={id,name:label,host:host,password:'',protocol:'modbus',interval:10,manualRefresh:false};
   connections.push(entry);
   if(connections.length===1){activeId=id;setActiveId(id);}
   saveConnections(connections);
