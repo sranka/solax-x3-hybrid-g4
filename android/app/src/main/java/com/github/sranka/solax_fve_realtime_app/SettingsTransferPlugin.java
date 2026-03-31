@@ -14,9 +14,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -256,6 +258,51 @@ public class SettingsTransferPlugin extends Plugin {
                 "\r\n";
         out.write(response.getBytes("UTF-8"));
         out.flush();
+    }
+
+    @PluginMethod
+    public void sendSettings(PluginCall call) {
+        String url = call.getString("url", "");
+        String payload = call.getString("payload", "");
+        if (url.isEmpty()) {
+            call.reject("Missing url");
+            return;
+        }
+        Log.i(TAG, "sendSettings: url=" + url + " payload length=" + payload.length());
+
+        new Thread(() -> {
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "text/plain");
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+                conn.setDoOutput(true);
+
+                byte[] bodyBytes = payload.getBytes("UTF-8");
+                conn.setFixedLengthStreamingMode(bodyBytes.length);
+                OutputStream os = conn.getOutputStream();
+                os.write(bodyBytes);
+                os.flush();
+                os.close();
+
+                int code = conn.getResponseCode();
+                Log.i(TAG, "sendSettings: response code=" + code);
+                if (code >= 200 && code < 300) {
+                    JSObject result = new JSObject();
+                    result.put("status", code);
+                    call.resolve(result);
+                } else {
+                    call.reject("HTTP " + code);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "sendSettings: error", e);
+                call.reject("Send failed: " + e.getMessage());
+            } finally {
+                if (conn != null) conn.disconnect();
+            }
+        }).start();
     }
 
     @PluginMethod

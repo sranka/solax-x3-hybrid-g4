@@ -2147,6 +2147,7 @@ async function openTransferReceive(){
       showToast(t('receiveSettingsSaved'),'success');
     }
     closeTransferModal();
+    closeSettingsModal();
   }catch(e){
     if(document.getElementById('transferModal').classList.contains('open')){
       document.getElementById('transferStatus').textContent=t('receiveSettingsTimeout');
@@ -2173,21 +2174,21 @@ window._handleDeepLink=function(urlStr){
 
     var payload=JSON.stringify({name:cfg.name,host:cfg.host,password:cfg.password,protocol:cfg.protocol,interval:cfg.interval,manualRefresh:cfg.manualRefresh||false,headers:cfg.headers||{}});
 
-    var ctrl=new AbortController();
-    var timer=setTimeout(function(){ctrl.abort();},3000);
-    fetch('http://'+to+'/transfer?token='+encodeURIComponent(token),{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:payload,
-      signal:ctrl.signal
-    }).then(function(resp){
-      clearTimeout(timer);
-      if(resp.ok)showToast(t('sendSettingsSuccess'),'success');
-      else showToast(t('sendSettingsError'));
-    }).catch(function(){
-      clearTimeout(timer);
-      showToast(t('sendSettingsError'));
-    });
+    var url='http://'+to+'/transfer?token='+encodeURIComponent(token);
+    if(typeof Capacitor!=='undefined'&&Capacitor.Plugins.SettingsTransfer){
+      Capacitor.Plugins.SettingsTransfer.sendSettings({url:url,payload:payload}).then(function(){
+        showToast(t('sendSettingsSuccess'),'success');
+      }).catch(function(){
+        showToast(t('sendSettingsError'));
+      });
+    }else{
+      fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:payload}).then(function(resp){
+        if(resp.ok)showToast(t('sendSettingsSuccess'),'success');
+        else showToast(t('sendSettingsError'));
+      }).catch(function(){
+        showToast(t('sendSettingsError'));
+      });
+    }
   }catch(e){
     showToast(t('sendSettingsError'));
   }
