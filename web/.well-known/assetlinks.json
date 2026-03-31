@@ -2,7 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "com.github.sranka.solax_fve_realtime_app",
+    "package_name": "com.github.sranka.solax_fve_live_app",
     "sha256_cert_fingerprints": [
       "AD:49:42:FE:88:89:C4:13:F8:5F:50:AA:D6:3E:C0:00:91:E7:38:88:DA:02:3F:5C:A5:22:1C:26:13:99:DA:57"
     ]

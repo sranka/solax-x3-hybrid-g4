@@ -1,4 +1,4 @@
-package com.github.sranka.solax_fve_realtime_app;
+package com.github.sranka.solax_fve_live_app;
 
 import android.content.Intent;
 import android.net.Uri;

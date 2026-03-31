@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.github.sranka.solax_fve_realtime_app"
+    namespace = "com.github.sranka.solax_fve_live_app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.github.sranka.solax_fve_realtime_app"
+        applicationId "com.github.sranka.solax_fve_live_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
