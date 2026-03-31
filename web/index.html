@@ -2179,22 +2179,13 @@ window._handleDeepLink=function(urlStr){
     showToast(t('sendingSettings'));
 
     var payload=JSON.stringify({name:cfg.name,host:cfg.host,password:cfg.password,protocol:cfg.protocol,interval:cfg.interval,manualRefresh:cfg.manualRefresh||false,headers:cfg.headers||{}});
-
-    if(typeof Capacitor!=='undefined'&&Capacitor.Plugins.SettingsTransfer){
-      Capacitor.Plugins.SettingsTransfer.sendSettings({host:match[1],port:parseInt(match[2]),token:token,payload:payload}).then(function(){
-        showToast(t('sendSettingsSuccess'),'success');
-      }).catch(function(){
-        showToast(t('sendSettingsError'));
-      });
-    }else{
-      var url='http://'+to+'/transfer?token='+encodeURIComponent(token);
-      fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:payload}).then(function(resp){
-        if(resp.ok)showToast(t('sendSettingsSuccess'),'success');
-        else showToast(t('sendSettingsError'));
-      }).catch(function(){
-        showToast(t('sendSettingsError'));
-      });
-    }
+    var url='http://'+to+'/transfer?token='+encodeURIComponent(token);
+    fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:payload}).then(function(resp){
+      if(resp.ok)showToast(t('sendSettingsSuccess'),'success');
+      else showToast(t('sendSettingsError'));
+    }).catch(function(){
+      showToast(t('sendSettingsError'));
+    });
   }catch(e){
     showToast(t('sendSettingsError'));
   }
