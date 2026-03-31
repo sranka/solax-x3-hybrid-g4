@@ -182,7 +182,7 @@ public class SettingsTransferPlugin extends Plugin {
             }
 
             // Read headers to find Content-Length
-            int contentLength = 0;
+            int contentLength = -1;
             String line;
             while ((line = readHttpLine(rawIn)) != null && !line.isEmpty()) {
                 if (line.toLowerCase().startsWith("content-length:")) {
@@ -190,6 +190,17 @@ public class SettingsTransferPlugin extends Plugin {
                 }
             }
             Log.d(TAG, "handleClient: content-length=" + contentLength);
+
+            if (contentLength < 0) {
+                Log.w(TAG, "handleClient: missing Content-Length, sending 411");
+                sendResponse(out, 411, "Length Required");
+                return false;
+            }
+            if (contentLength > 5000) {
+                Log.w(TAG, "handleClient: Content-Length " + contentLength + " exceeds limit, sending 413");
+                sendResponse(out, 413, "Content Too Large");
+                return false;
+            }
 
             // Read body as raw bytes (Content-Length is in bytes, not characters)
             byte[] body = new byte[contentLength];
