@@ -504,6 +504,8 @@
   .loading-screen h2 { font-size: 20px; margin-bottom: 8px; }
   .loading-screen p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
   .loading-screen .btn { max-width: 280px; }
+  .setup-hint { color: var(--text-dim); font-size: 12px; max-width: 300px; margin-top: 8px; line-height: 1.5; }
+  .setup-hint a { color: var(--text-dim); text-decoration: underline; }
 
   /* ─── Confirm dialog ─── */
   .confirm-overlay {
@@ -588,6 +590,7 @@
     <h2>Solax FVE Monitor</h2>
     <p id="setupSubtitle"></p>
     <button class="btn btn-primary" id="setupBtn" onclick="openSettingsModal()"></button>
+    <p class="setup-hint" id="setupHint"></p>
   </div>
 
   <!-- Dashboard -->
@@ -880,6 +883,8 @@ const i18n = {
     errorDefaultMsg: 'Zkontrolujte hostname a heslo',
     setupSubtitle: 'Přidejte první střídač',
     setupBtn: 'Nastavení připojení',
+    setupHintWeb: 'Nainstalujte si <a href="https://github.com/sranka/solax-fve-live-app?tab=readme-ov-file#install-on-android-phone--tv" target="_blank" rel="noopener">aplikaci</a> pro skenování sítě a přímé Modbus připojení',
+    setupHintNative: 'V nastavení můžete prohledat domácí síť nebo přijmout aktivní připojení z telefonu',
     battery: 'Baterie',
     grid: 'Síť',
     consumption: 'Spotřeba',
@@ -977,6 +982,8 @@ const i18n = {
     errorDefaultMsg: 'Check hostname and password',
     setupSubtitle: 'Add your first inverter',
     setupBtn: 'Connection settings',
+    setupHintWeb: 'Install the <a href="https://github.com/sranka/solax-fve-live-app?tab=readme-ov-file#install-on-android-phone--tv" target="_blank" rel="noopener">app</a> for network scanning and direct Modbus connection',
+    setupHintNative: 'Use Connection settings to scan your home network or receive active connection from a phone',
     battery: 'Battery',
     grid: 'Grid',
     consumption: 'Consumption',
@@ -1093,6 +1100,8 @@ function applyLanguage() {
   // Setup screen
   document.getElementById('setupSubtitle').textContent = t('setupSubtitle');
   document.getElementById('setupBtn').textContent = t('setupBtn');
+  var _native = typeof Capacitor!=='undefined'&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform();
+  document.getElementById('setupHint').innerHTML = t(_native ? 'setupHintNative' : 'setupHintWeb');
 
   // Flow labels
   document.getElementById('flowLabelBattery').textContent = t('battery');
