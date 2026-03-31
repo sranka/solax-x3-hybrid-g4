@@ -297,6 +297,10 @@ function serveStatic(req, res) {
       return;
     }
     const ext = path.extname(filePath).toLowerCase();
+    // Activate server-only code blocks in index.html
+    if (filePath.endsWith('index.html')) {
+      data = Buffer.from(data.toString().replace(/\/\*__SERVER__/g, '').replace(/__SERVER__\*\//g, ''));
+    }
     res.writeHead(200, {
       'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
       'Cache-Control': 'no-cache',

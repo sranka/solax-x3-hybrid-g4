@@ -2350,6 +2350,7 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 // ═══════════════════════════════════════════
 (async()=>{
   connections = await loadConnections();
+  /*__SERVER__ // this code runs only in the server-rendered version to auto-detect local proxy and add it as a connection if not already present
   if(!connections.length&&(typeof Capacitor==='undefined'||!Capacitor.isNativePlatform||!Capacitor.isNativePlatform())){
     const loc=window.location;
     const id=generateId();
@@ -2364,8 +2365,9 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
         activeId=id;setActiveId(id);
         await saveConnections(connections);
       }
-    }catch(e){/* timeout or fetch error — skip auto-add */}
+    }catch(e){}
   }
+  __SERVER__*/
   applyLanguage();
   // Web: handle /send/<ip>/<port>/<token> path (browser fallback for App Links)
   var sendMatch=location.pathname.match(/\/send\/([^\/]+)\/(\d+)\/([^\/]+)$/i);
