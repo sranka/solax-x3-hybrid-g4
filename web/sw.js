@@ -1,7 +1,8 @@
-var CACHE = 'solax-fve-v1';
+var CACHE = 'solax-fve-v2';
 var ASSETS = [
   '/',
   '/index.html',
+  '/i18n.js',
   '/build-info.js',
   '/manifest.json',
   '/apple-touch-icon.png',
